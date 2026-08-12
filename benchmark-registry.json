@@ -23,9 +23,11 @@
     },
     {
       "id": "authority-relations-v0.1",
-      "status": "candidate-conformance",
+      "status": "frozen-candidate-conformance",
       "protocol": "AUTHORITY-RELATIONS-NOTE.md",
       "vectors": "vectors/authority-relations-v0.1",
+      "release_manifest": "releases/authority-relations-v0.1.json",
+      "release_tag": "authority-relations-v0.1",
       "vector_count": 8,
       "decision_model": "derive-authority-then-apply-explicit-policy",
       "invariant": "REQUEST CAUSALITY MUST NOT IMPLY AUTHORITY PROVENANCE"

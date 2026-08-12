@@ -102,6 +102,11 @@ permissionless-request cases. The relation-aware control must pass all eight.
 This is synthetic post-verification conformance evidence and makes no claim
 that an external protocol currently fails or that signatures were verified.
 
+The eight vectors are frozen at tag `authority-relations-v0.1` with manifest
+hash `sha256:ffc2363895a77a62b5673366e334140d2682f436891f570b9bfb321bdfa4ade3`.
+The runner verifies that manifest before executing adapters. Independent
+implementers should follow the [adapter and submission guide](docs/AUTHORITY-RELATIONS-ADAPTER.md).
+
 ## Current provider boundary
 
 - `baseline`: fully runnable local reference implementation.

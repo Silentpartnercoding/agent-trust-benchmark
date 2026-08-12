@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-trust-benchmark.example/schemas/authority-relations-submission-v0.1.json",
+  "title": "Authority Relations v0.1 external submission",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "suite", "release_tag", "vector_manifest_hash", "implementation", "run", "artifacts", "attestation", "acceptance"],
+  "properties": {
+    "schema": {"const": "atb-authority-relations-submission/0.1"},
+    "suite": {"const": "authority-relations-v0.1"},
+    "release_tag": {"const": "authority-relations-v0.1"},
+    "vector_manifest_hash": {"const": "sha256:ffc2363895a77a62b5673366e334140d2682f436891f570b9bfb321bdfa4ade3"},
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "repository", "commit"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "repository": {"type": "string", "format": "uri"},
+        "commit": {"type": "string", "minLength": 7}
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timestamp", "runtime", "command"],
+      "properties": {
+        "timestamp": {"type": "string", "format": "date-time"},
+        "runtime": {"type": "string", "minLength": 1},
+        "command": {"type": "string", "minLength": 1}
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["result", "summary"],
+      "properties": {
+        "result": {"$ref": "#/$defs/artifact"},
+        "summary": {"$ref": "#/$defs/artifact"}
+      }
+    },
+    "attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["native_engine_used", "reference_adapter_imported", "expected_oracle_inspected", "notes"],
+      "properties": {
+        "native_engine_used": {"const": true},
+        "reference_adapter_imported": {"const": false},
+        "expected_oracle_inspected": {"const": false},
+        "notes": {"type": "string"}
+      }
+    },
+    "acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "assigned_by", "notes"],
+      "properties": {
+        "state": {"enum": ["SUBMITTED", "HASH_VALIDATED", "REPRODUCED", "DISPUTED"]},
+        "assigned_by": {"type": ["string", "null"]},
+        "notes": {"type": "string"}
+      }
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    }
+  }
+}
