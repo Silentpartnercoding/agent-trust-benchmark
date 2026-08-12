@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-trust-benchmark.example/schemas/authority-relation-vector-0.1.json",
+  "title": "Candidate Authority Relation Interoperability Vector v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "vector_id", "title", "description", "policy", "observed", "expected"],
+  "properties": {
+    "schema": {"const": "atb-authority-relation-vector/0.1"},
+    "vector_id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "description": {"type": "string", "minLength": 1},
+    "policy": {"$ref": "#/$defs/policy"},
+    "observed": {"$ref": "#/$defs/observed"},
+    "expected": {"$ref": "#/$defs/output"}
+  },
+  "$defs": {
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resource", "action", "target"],
+      "properties": {
+        "resource": {"type": "string", "minLength": 1},
+        "action": {"type": "string", "minLength": 1},
+        "target": {"type": "string", "minLength": 1}
+      }
+    },
+    "authorityEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "source", "subject", "kind", "action", "independently_issued"],
+      "properties": {
+        "status": {"enum": ["VALID", "MISSING", "INVALID"]},
+        "source": {"type": ["string", "null"]},
+        "subject": {"type": ["string", "null"]},
+        "kind": {"enum": ["REQUEST", "EXECUTION"]},
+        "action": {"$ref": "#/$defs/action"},
+        "independently_issued": {"type": "boolean"}
+      }
+    },
+    "delegationEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "authority_source", "delegator", "delegatee", "action", "attenuated"],
+      "properties": {
+        "status": {"enum": ["VALID", "MISSING", "INVALID"]},
+        "authority_source": {"type": ["string", "null"]},
+        "delegator": {"type": ["string", "null"]},
+        "delegatee": {"type": ["string", "null"]},
+        "action": {"$ref": "#/$defs/action"},
+        "attenuated": {"type": "boolean"}
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile", "requester_authority", "allowed_relations", "require_declared_relation_match", "reject_invalid_evidence"],
+      "properties": {
+        "profile": {"type": "string", "minLength": 1},
+        "requester_authority": {"enum": ["REQUIRED", "NOT_REQUIRED"]},
+        "allowed_relations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"enum": ["DELEGATED", "INDEPENDENT"]}
+        },
+        "require_declared_relation_match": {"type": "boolean"},
+        "reject_invalid_evidence": {"type": "boolean"}
+      }
+    },
+    "observed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requester", "actor", "requested_action", "declared_relation", "request_authority", "execution_authority", "delegation"],
+      "properties": {
+        "requester": {"type": "string", "minLength": 1},
+        "actor": {"type": "string", "minLength": 1},
+        "requested_action": {"$ref": "#/$defs/action"},
+        "declared_relation": {"type": ["string", "null"], "enum": ["DELEGATED", "INDEPENDENT", "NONE", null]},
+        "request_authority": {"$ref": "#/$defs/authorityEvidence"},
+        "execution_authority": {"$ref": "#/$defs/authorityEvidence"},
+        "delegation": {"$ref": "#/$defs/delegationEvidence"}
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "status", "vector_id", "requester", "actor", "evidence_status", "declared_relation", "declared_relation_matches", "request_authority_source", "request_authority_valid", "execution_authority_source", "immediate_authority_grantor", "execution_authority_valid", "derived_authority_relation", "policy_profile", "requester_authority_required", "authorized", "reason"],
+      "properties": {
+        "schema": {"const": "atb-authority-relation-output/0.1"},
+        "status": {"enum": ["DECIDED", "UNSUPPORTED"]},
+        "vector_id": {"type": "string", "minLength": 1},
+        "requester": {"type": "string", "minLength": 1},
+        "actor": {"type": "string", "minLength": 1},
+        "evidence_status": {"enum": ["VERIFIED", "INCOMPLETE", "INVALID"]},
+        "declared_relation": {"type": ["string", "null"], "enum": ["DELEGATED", "INDEPENDENT", "NONE", null]},
+        "declared_relation_matches": {"type": ["boolean", "null"]},
+        "request_authority_source": {"type": ["string", "null"]},
+        "request_authority_valid": {"type": "boolean"},
+        "execution_authority_source": {"type": ["string", "null"]},
+        "immediate_authority_grantor": {"type": ["string", "null"]},
+        "execution_authority_valid": {"type": "boolean"},
+        "derived_authority_relation": {"enum": ["DELEGATED", "INDEPENDENT", "NONE"]},
+        "policy_profile": {"type": "string", "minLength": 1},
+        "requester_authority_required": {"type": "boolean"},
+        "authorized": {"type": "boolean"},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
