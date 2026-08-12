@@ -85,6 +85,21 @@ The checked-in Notion-style reference runs passed 16/16 delegation checks and
 19/19 Mandate checks. They are exploratory mock-resource results, not a claim
 of production Notion integration or universal enforcement.
 
+## Candidate authority-relation conformance pack
+
+[Authority Relations v0.1](AUTHORITY-RELATIONS-NOTE.md) turns the E005
+distinction into seven provider-neutral black-box vectors. It tests whether an
+implementation keeps request causality separate from authority provenance.
+
+```bash
+PYTHONPATH=src python3 -m agent_trust_benchmark authority-relations \
+  --output-dir results/authority-relations-v0.1/latest
+```
+
+The intentionally limited delegation-only adapter must fail the Mandate case.
+The relation-aware control must pass all seven. This is synthetic conformance
+evidence and makes no claim that an external protocol currently fails.
+
 ## Current provider boundary
 
 - `baseline`: fully runnable local reference implementation.

@@ -19,8 +19,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - run: python -m pip install --upgrade pip pytest
-      - run: python -m pip install -e .
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e '.[test]'
       - run: python -m pytest -q
       - run: python -m agent_trust_benchmark e004 --output-dir /tmp/e004
       - run: python -m agent_trust_benchmark e005 --output-dir /tmp/e005
+      - run: python -m agent_trust_benchmark authority-relations --output-dir /tmp/authority-relations

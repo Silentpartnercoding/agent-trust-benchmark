@@ -1,0 +1,16 @@
+{
+  "schema": "atb-authority-relation-vector/0.1",
+  "vector_id": "AR-003-UNAUTHORIZED-REQUESTER",
+  "title": "Independent executor cannot launder an unauthorized request",
+  "description": "B may execute the action, but A lacks authority to request or cause it.",
+  "observed": {
+    "requester": "agent-a",
+    "actor": "agent-b",
+    "requested_action": {"resource": "documents", "action": "archive", "target": "doc:123"},
+    "claimed_relation": "INDEPENDENT",
+    "request_authority": {"status": "INVALID", "source": "workflow-policy-h", "subject": "agent-a", "kind": "REQUEST", "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "independently_issued": true},
+    "execution_authority": {"status": "VALID", "source": "resource-admin-c", "subject": "agent-b", "kind": "EXECUTION", "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "independently_issued": true},
+    "delegation": {"status": "MISSING", "authority_source": null, "delegator": null, "delegatee": null, "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "attenuated": false}
+  },
+  "expected": {"schema": "atb-authority-relation-output/0.1", "status": "DECIDED", "vector_id": "AR-003-UNAUTHORIZED-REQUESTER", "requester": "agent-a", "actor": "agent-b", "request_authority_source": null, "request_authority_valid": false, "execution_authority_source": "resource-admin-c", "immediate_authority_grantor": "resource-admin-c", "execution_authority_valid": true, "authority_relation": "INDEPENDENT", "authorized": false, "reason": "REQUEST_AUTHORITY_INVALID"}
+}

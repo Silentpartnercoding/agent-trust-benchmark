@@ -1,0 +1,32 @@
+{
+  "schema": "atb-benchmark-registry/0.1",
+  "entries": [
+    {
+      "id": "E001",
+      "status": "development",
+      "protocol": "docs/E001.md"
+    },
+    {
+      "id": "E002",
+      "status": "development",
+      "protocol": "docs/E002.md"
+    },
+    {
+      "id": "E004",
+      "status": "exploratory",
+      "protocol": "docs/E004.md"
+    },
+    {
+      "id": "E005",
+      "status": "exploratory",
+      "protocol": "docs/E005.md"
+    },
+    {
+      "id": "authority-relations-v0.1",
+      "status": "candidate-conformance",
+      "protocol": "AUTHORITY-RELATIONS-NOTE.md",
+      "vectors": "vectors/authority-relations-v0.1",
+      "invariant": "REQUEST CAUSALITY MUST NOT IMPLY AUTHORITY PROVENANCE"
+    }
+  ]
+}

@@ -9,6 +9,9 @@ description = "Vendor-neutral evidence benchmark for human-to-agent authority"
 requires-python = ">=3.11"
 dependencies = []
 
+[project.optional-dependencies]
+test = ["pytest>=8", "jsonschema>=4.23"]
+
 [project.scripts]
 benchmark = "agent_trust_benchmark.cli:main"
 

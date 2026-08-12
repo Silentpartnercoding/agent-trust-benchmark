@@ -1,0 +1,16 @@
+{
+  "schema": "atb-authority-relation-vector/0.1",
+  "vector_id": "AR-005-NO-AUTHORITY",
+  "title": "Request without authority",
+  "description": "A requests the action, but neither A nor B presents a valid authority path.",
+  "observed": {
+    "requester": "agent-a",
+    "actor": "agent-b",
+    "requested_action": {"resource": "documents", "action": "archive", "target": "doc:123"},
+    "claimed_relation": "NONE",
+    "request_authority": {"status": "MISSING", "source": null, "subject": null, "kind": "REQUEST", "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "independently_issued": false},
+    "execution_authority": {"status": "MISSING", "source": null, "subject": null, "kind": "EXECUTION", "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "independently_issued": false},
+    "delegation": {"status": "MISSING", "authority_source": null, "delegator": null, "delegatee": null, "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "attenuated": false}
+  },
+  "expected": {"schema": "atb-authority-relation-output/0.1", "status": "DECIDED", "vector_id": "AR-005-NO-AUTHORITY", "requester": "agent-a", "actor": "agent-b", "request_authority_source": null, "request_authority_valid": false, "execution_authority_source": null, "immediate_authority_grantor": null, "execution_authority_valid": false, "authority_relation": "NONE", "authorized": false, "reason": "NO_VALID_AUTHORITY"}
+}

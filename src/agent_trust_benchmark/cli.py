@@ -6,6 +6,7 @@ from pathlib import Path
 from .experiment import ADAPTERS, run_e001
 from .e004 import write_e004
 from .e005 import write_e005
+from .authority_relations import write_conformance
 from .report import render_markdown, write_result
 
 
@@ -21,6 +22,20 @@ def build_parser() -> argparse.ArgumentParser:
     e004.add_argument("--output-dir", type=Path, default=Path("results/e004/latest"))
     e005 = subcommands.add_parser("e005")
     e005.add_argument("--output-dir", type=Path, default=Path("results/e005/latest"))
+    relations = subcommands.add_parser("authority-relations")
+    relations.add_argument(
+        "--vector-dir", type=Path, default=Path("vectors/authority-relations-v0.1")
+    )
+    relations.add_argument(
+        "--adapter",
+        action="append",
+        type=Path,
+        dest="adapters",
+        help="JSON stdin/stdout adapter; may be supplied more than once",
+    )
+    relations.add_argument(
+        "--output-dir", type=Path, default=Path("results/authority-relations-v0.1/latest")
+    )
     return parser
 
 
@@ -34,6 +49,30 @@ def main(argv: list[str] | None = None) -> int:
         json_path, markdown_path = write_e005(args.output_dir)
         print(f"Wrote {json_path} and {markdown_path}")
         return 0
+    if args.command == "authority-relations":
+        using_reference_controls = not args.adapters
+        adapters = args.adapters or [
+            Path("adapters/delegation_only.py"),
+            Path("adapters/relation_aware.py"),
+        ]
+        json_path, markdown_path, result = write_conformance(
+            args.output_dir, vector_dir=args.vector_dir, adapters=adapters
+        )
+        print(f"Wrote {json_path} and {markdown_path}")
+        if not using_reference_controls:
+            return 0 if all(run["passed"] == run["total"] for run in result["runs"]) else 1
+        by_adapter = {run["adapter"]: run for run in result["runs"]}
+        aware = by_adapter["relation_aware.py"]
+        limited = by_adapter["delegation_only.py"]
+        mandate = next(
+            case for case in limited["cases"] if case["vector_id"] == "AR-002-VALID-MANDATE"
+        )
+        controls_discriminate = (
+            aware["passed"] == aware["total"]
+            and limited["passed"] < limited["total"]
+            and mandate["outcome"] == "FAIL"
+        )
+        return 0 if controls_discriminate else 1
     providers = list(ADAPTERS) if args.provider == "all" else [args.provider]
     for provider in providers:
         result = run_e001(provider)

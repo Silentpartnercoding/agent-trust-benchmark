@@ -1,0 +1,16 @@
+{
+  "schema": "atb-authority-relation-vector/0.1",
+  "vector_id": "AR-001-VALID-DELEGATION",
+  "title": "Valid attenuated delegation",
+  "description": "A holds authority for the exact action and validly delegates no more than that authority to B.",
+  "observed": {
+    "requester": "agent-a",
+    "actor": "agent-b",
+    "requested_action": {"resource": "documents", "action": "archive", "target": "doc:123"},
+    "claimed_relation": "DELEGATED",
+    "request_authority": {"status": "VALID", "source": "principal-h", "subject": "agent-a", "kind": "EXECUTION", "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "independently_issued": true},
+    "execution_authority": {"status": "MISSING", "source": null, "subject": null, "kind": "EXECUTION", "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "independently_issued": false},
+    "delegation": {"status": "VALID", "authority_source": "principal-h", "delegator": "agent-a", "delegatee": "agent-b", "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "attenuated": true}
+  },
+  "expected": {"schema": "atb-authority-relation-output/0.1", "status": "DECIDED", "vector_id": "AR-001-VALID-DELEGATION", "requester": "agent-a", "actor": "agent-b", "request_authority_source": "principal-h", "request_authority_valid": true, "execution_authority_source": "principal-h", "immediate_authority_grantor": "agent-a", "execution_authority_valid": true, "authority_relation": "DELEGATED", "authorized": true, "reason": "VALID_DELEGATION"}
+}
