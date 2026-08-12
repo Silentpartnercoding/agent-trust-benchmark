@@ -1,0 +1,99 @@
+{
+  "authorization_mode_observed": "administrator_configured",
+  "checks": [
+    {
+      "check": "TRUSTED_ISSUER_PROVEN",
+      "detail": "The detached Ed25519 JWS verifies under the caller-trusted receipt-issuer key.",
+      "status": "PASS"
+    },
+    {
+      "check": "HUMAN_AUTHORIZATION_WITNESSED",
+      "detail": "Only an administrator-configured relationship was observed; interactive human authorization was not proven.",
+      "status": "FAIL"
+    },
+    {
+      "check": "AGENT_IDENTITY_BOUND",
+      "detail": "The verified action credential and receipt name the same agent identity.",
+      "status": "PASS"
+    },
+    {
+      "check": "AGENT_KEY_BOUND",
+      "detail": "The agent proved possession of the key bound by the receipt and credential.",
+      "status": "PASS"
+    },
+    {
+      "check": "CREDENTIAL_RECEIPT_BOUND",
+      "detail": "The signed action credential carries the exact signed-receipt digest.",
+      "status": "PASS"
+    },
+    {
+      "check": "AUDIENCE_BOUND",
+      "detail": "Receipt and credential address the exercised payments gate.",
+      "status": "PASS"
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "detail": "Preview was safely denied because the required human witness was absent.",
+      "status": "FAIL"
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "detail": "Execute was rejected before effect.",
+      "status": "PASS"
+    },
+    {
+      "check": "RECEIPT_SWAP_BLOCKED",
+      "detail": "A newly signed but differently digested receipt could not be paired with the existing credential.",
+      "status": "PASS"
+    },
+    {
+      "check": "UNAVAILABLE_REVOCATION_FAILS_CLOSED",
+      "detail": "An unavailable revocation answer remained visibly indeterminate and produced no effect.",
+      "status": "PASS"
+    },
+    {
+      "check": "ADMIN_LABEL_REJECTED_AS_CONSENT",
+      "detail": "A signed administrator-configured label did not satisfy an interactive-consent policy.",
+      "status": "PASS"
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "detail": "The receipt was valid before its receipt-specific handle was revoked.",
+      "status": "PASS"
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "detail": "The next preview attempt was rejected after receipt revocation.",
+      "status": "PASS"
+    },
+    {
+      "check": "FULL_PATH_AUDITABLE",
+      "detail": "Provider witness references, receipt ID, credential ID, and gate outcomes form one reconstructable path.",
+      "status": "PASS"
+    }
+  ],
+  "completed_at": "2026-08-11T17:55:44.527022Z",
+  "evidence_refs": [
+    "zitadel:management/users/385833931544461316/metadata",
+    "zitadel:management/users/385833931544461316/grants/385833931611570180",
+    "local-receipt-issuer:detached-jws/receipt-id",
+    "local-receipt-issuer:compact-jws/credential-id",
+    "opa:decision/e002-allow-deny-revoke"
+  ],
+  "experiment_id": "e002",
+  "limitations": [
+    "The current ZITADEL fixture proves an administrator-authored link and role grant, not an interactive human authorization event.",
+    "The receipt issuer and short-lived action credential authority are benchmark-owned neutral components, not provider-native features.",
+    "Provider bearer tokens, JWS values, signatures, private keys, and raw proofs are not retained."
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 85.7,
+    "RECEIPT_LIFETIME_SECONDS": 300,
+    "REVOCATION_LATENCY_MS": 5.531707778573036,
+    "VERIFICATION_LATENCY_MS": 6.4682080410420895
+  },
+  "provider": "zitadel",
+  "run_id": "e002-zitadel-1cebd3a7-8082-48a4-a494-b75f91b4d7e5",
+  "schema_version": "0.1",
+  "started_at": "2026-08-11T17:55:44.385685Z"
+}
