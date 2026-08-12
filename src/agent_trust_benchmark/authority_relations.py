@@ -12,19 +12,24 @@ VECTOR_SCHEMA = "atb-authority-relation-vector/0.1"
 CASE_SCHEMA = "atb-authority-relation-case/0.1"
 OUTPUT_SCHEMA = "atb-authority-relation-output/0.1"
 RESULT_SCHEMA = "atb-authority-relations-result/0.1"
-RELATIONS = {"DELEGATED", "INDEPENDENT", "NONE", "INVALID"}
+RELATIONS = {"DELEGATED", "INDEPENDENT", "NONE"}
 REQUIRED_OUTPUT_KEYS = {
     "schema",
     "status",
     "vector_id",
     "requester",
     "actor",
+    "evidence_status",
+    "declared_relation",
+    "declared_relation_matches",
     "request_authority_source",
     "request_authority_valid",
     "execution_authority_source",
     "immediate_authority_grantor",
     "execution_authority_valid",
-    "authority_relation",
+    "derived_authority_relation",
+    "policy_profile",
+    "requester_authority_required",
     "authorized",
     "reason",
 }
@@ -74,8 +79,18 @@ def validate_output(value: Any, *, vector_id: str) -> dict[str, Any]:
     for field in ("request_authority_valid", "execution_authority_valid", "authorized"):
         if type(value[field]) is not bool:
             raise ConformanceError(f"adapter output {field} must be boolean")
-    if value["authority_relation"] not in RELATIONS:
-        raise ConformanceError("adapter output authority_relation is unsupported")
+    if value["derived_authority_relation"] not in RELATIONS:
+        raise ConformanceError("adapter output derived_authority_relation is unsupported")
+    if value["declared_relation"] is not None and value["declared_relation"] not in RELATIONS:
+        raise ConformanceError("adapter output declared_relation is unsupported")
+    if value["evidence_status"] not in {"VERIFIED", "INCOMPLETE", "INVALID"}:
+        raise ConformanceError("adapter output evidence_status is unsupported")
+    if not isinstance(value["policy_profile"], str) or not value["policy_profile"]:
+        raise ConformanceError("adapter output policy_profile must be a non-empty string")
+    if type(value["requester_authority_required"]) is not bool:
+        raise ConformanceError("adapter output requester_authority_required must be boolean")
+    if value["declared_relation_matches"] is not None and type(value["declared_relation_matches"]) is not bool:
+        raise ConformanceError("adapter output declared_relation_matches must be boolean or null")
     return value
 
 
@@ -85,7 +100,7 @@ def validate_vector(value: Any, *, source: Path | None = None) -> dict[str, Any]
         raise ConformanceError(f"{where} must be an object")
     _require_exact_keys(
         value,
-        {"schema", "vector_id", "title", "description", "observed", "expected"},
+        {"schema", "vector_id", "title", "description", "policy", "observed", "expected"},
         where,
     )
     if value["schema"] != VECTOR_SCHEMA:
@@ -103,15 +118,43 @@ def validate_vector(value: Any, *, source: Path | None = None) -> dict[str, Any]
             "requester",
             "actor",
             "requested_action",
-            "claimed_relation",
+            "declared_relation",
             "request_authority",
             "execution_authority",
             "delegation",
         },
         f"{where} observed",
     )
-    if observed["claimed_relation"] not in {"DELEGATED", "INDEPENDENT", "NONE"}:
-        raise ConformanceError(f"{where} claimed_relation is unsupported")
+    if observed["declared_relation"] is not None and observed["declared_relation"] not in RELATIONS:
+        raise ConformanceError(f"{where} declared_relation is unsupported")
+    policy = value["policy"]
+    if not isinstance(policy, dict):
+        raise ConformanceError(f"{where} policy must be an object")
+    _require_exact_keys(
+        policy,
+        {
+            "profile",
+            "requester_authority",
+            "allowed_relations",
+            "require_declared_relation_match",
+            "reject_invalid_evidence",
+        },
+        f"{where} policy",
+    )
+    if not isinstance(policy["profile"], str) or not policy["profile"]:
+        raise ConformanceError(f"{where} policy.profile must be non-empty")
+    if policy["requester_authority"] not in {"REQUIRED", "NOT_REQUIRED"}:
+        raise ConformanceError(f"{where} policy.requester_authority is unsupported")
+    if (
+        not isinstance(policy["allowed_relations"], list)
+        or not policy["allowed_relations"]
+        or any(relation not in RELATIONS - {"NONE"} for relation in policy["allowed_relations"])
+        or len(policy["allowed_relations"]) != len(set(policy["allowed_relations"]))
+    ):
+        raise ConformanceError(f"{where} policy.allowed_relations is invalid")
+    for field in ("require_declared_relation_match", "reject_invalid_evidence"):
+        if type(policy[field]) is not bool:
+            raise ConformanceError(f"{where} policy.{field} must be boolean")
     action = observed["requested_action"]
     if not isinstance(action, dict):
         raise ConformanceError(f"{where} requested_action must be an object")
@@ -154,6 +197,14 @@ def validate_vector(value: Any, *, source: Path | None = None) -> dict[str, Any]
         raise ConformanceError(f"{where} expected requester differs from observed requester")
     if value["expected"]["actor"] != observed["actor"]:
         raise ConformanceError(f"{where} expected actor differs from observed actor")
+    if value["expected"]["declared_relation"] != observed["declared_relation"]:
+        raise ConformanceError(f"{where} expected declared_relation differs from observed input")
+    if value["expected"]["policy_profile"] != policy["profile"]:
+        raise ConformanceError(f"{where} expected policy_profile differs from supplied policy")
+    if value["expected"]["requester_authority_required"] != (
+        policy["requester_authority"] == "REQUIRED"
+    ):
+        raise ConformanceError(f"{where} expected requester-authority rule differs from policy")
     return value
 
 
@@ -178,6 +229,7 @@ def adapter_case(vector: dict[str, Any]) -> dict[str, Any]:
         "vector_id": vector["vector_id"],
         "title": vector["title"],
         "description": vector["description"],
+        "policy": vector["policy"],
         "observed": vector["observed"],
     }
 
@@ -259,7 +311,8 @@ def run_conformance(vector_dir: Path, adapters: list[Path]) -> dict[str, Any]:
         "claim_boundary": [
             "Synthetic black-box conformance evidence only.",
             "No external protocol or provider was tested.",
-            "ALLOW is correct only when the authority relation and both required authority paths are correct.",
+            "Evidence classification is evaluated separately from the supplied policy verdict.",
+            "This suite evaluates post-verification semantics; it does not verify signatures or credential provenance.",
         ],
     }
     return {**result, "result_hash": digest(result)}

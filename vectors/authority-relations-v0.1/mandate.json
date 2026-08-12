@@ -3,14 +3,15 @@
   "vector_id": "AR-002-VALID-MANDATE",
   "title": "Valid independent-authority mandate",
   "description": "A may request the exact action while B independently received execution authority from a different source.",
+  "policy": {"profile": "dual-authority", "requester_authority": "REQUIRED", "allowed_relations": ["INDEPENDENT"], "require_declared_relation_match": true, "reject_invalid_evidence": true},
   "observed": {
     "requester": "agent-a",
     "actor": "agent-b",
     "requested_action": {"resource": "documents", "action": "archive", "target": "doc:123"},
-    "claimed_relation": "INDEPENDENT",
+    "declared_relation": "INDEPENDENT",
     "request_authority": {"status": "VALID", "source": "workflow-policy-h", "subject": "agent-a", "kind": "REQUEST", "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "independently_issued": true},
     "execution_authority": {"status": "VALID", "source": "resource-admin-c", "subject": "agent-b", "kind": "EXECUTION", "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "independently_issued": true},
     "delegation": {"status": "MISSING", "authority_source": null, "delegator": null, "delegatee": null, "action": {"resource": "documents", "action": "archive", "target": "doc:123"}, "attenuated": false}
   },
-  "expected": {"schema": "atb-authority-relation-output/0.1", "status": "DECIDED", "vector_id": "AR-002-VALID-MANDATE", "requester": "agent-a", "actor": "agent-b", "request_authority_source": "workflow-policy-h", "request_authority_valid": true, "execution_authority_source": "resource-admin-c", "immediate_authority_grantor": "resource-admin-c", "execution_authority_valid": true, "authority_relation": "INDEPENDENT", "authorized": true, "reason": "VALID_INDEPENDENT_AUTHORITY_PATHS"}
+  "expected": {"schema": "atb-authority-relation-output/0.1", "status": "DECIDED", "vector_id": "AR-002-VALID-MANDATE", "requester": "agent-a", "actor": "agent-b", "evidence_status": "VERIFIED", "declared_relation": "INDEPENDENT", "declared_relation_matches": true, "request_authority_source": "workflow-policy-h", "request_authority_valid": true, "execution_authority_source": "resource-admin-c", "immediate_authority_grantor": "resource-admin-c", "execution_authority_valid": true, "derived_authority_relation": "INDEPENDENT", "policy_profile": "dual-authority", "requester_authority_required": true, "authorized": true, "reason": "VALID_INDEPENDENT_AUTHORITY_PATHS"}
 }

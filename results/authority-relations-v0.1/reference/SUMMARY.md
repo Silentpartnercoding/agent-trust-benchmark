@@ -4,20 +4,21 @@
 
 | Adapter | Passed | Total |
 |---|---:|---:|
-| `delegation_only.py` | 4 | 7 |
-| `relation_aware.py` | 7 | 7 |
+| `delegation_only.py` | 4 | 8 |
+| `relation_aware.py` | 8 | 8 |
 
 ## delegation_only.py
 
 | Vector | Outcome | Mismatch |
 |---|---|---|
 | AR-001-VALID-DELEGATION | PASS | — |
-| AR-002-VALID-MANDATE | FAIL | authority_relation, execution_authority_source, immediate_authority_grantor, reason |
-| AR-003-UNAUTHORIZED-REQUESTER | FAIL | authority_relation, execution_authority_source, execution_authority_valid, immediate_authority_grantor |
+| AR-002-VALID-MANDATE | FAIL | authorized, declared_relation_matches, derived_authority_relation, execution_authority_source, immediate_authority_grantor, reason |
+| AR-003-UNAUTHORIZED-REQUESTER | FAIL | declared_relation_matches, derived_authority_relation, execution_authority_source, immediate_authority_grantor |
 | AR-004-UNAUTHORIZED-EXECUTOR | PASS | — |
 | AR-005-NO-AUTHORITY | PASS | — |
 | AR-006-SPOOFED-DELEGATION | PASS | — |
-| AR-007-RELATIONSHIP-MISMATCH | FAIL | authority_relation, authorized, execution_authority_source, immediate_authority_grantor, reason |
+| AR-007-RELATIONSHIP-MISMATCH | FAIL | declared_relation_matches, derived_authority_relation, execution_authority_source, immediate_authority_grantor, reason |
+| AR-008-PERMISSIONLESS-REQUEST | FAIL | authorized, declared_relation_matches, derived_authority_relation, execution_authority_source, immediate_authority_grantor, reason |
 
 ## relation_aware.py
 
@@ -30,9 +31,11 @@
 | AR-005-NO-AUTHORITY | PASS | — |
 | AR-006-SPOOFED-DELEGATION | PASS | — |
 | AR-007-RELATIONSHIP-MISMATCH | PASS | — |
+| AR-008-PERMISSIONLESS-REQUEST | PASS | — |
 
 ## Claim boundary
 
 - Synthetic black-box conformance evidence only.
 - No external protocol or provider was tested.
-- ALLOW is correct only when the authority relation and both required authority paths are correct.
+- Evidence classification is evaluated separately from the supplied policy verdict.
+- This suite evaluates post-verification semantics; it does not verify signatures or credential provenance.
