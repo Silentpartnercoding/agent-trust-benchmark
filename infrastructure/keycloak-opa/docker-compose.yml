@@ -1,0 +1,27 @@
+name: agent-trust-keycloak-opa
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.0
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: atb-admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: local-admin-password
+    ports:
+      - "127.0.0.1:18080:8080"
+    volumes:
+      - ./realm.json:/opt/keycloak/data/import/atb-realm.json:ro
+
+  opa:
+    image: openpolicyagent/opa:1.19.0
+    command:
+      - run
+      - --server
+      - --addr=0.0.0.0:8181
+      - --config-file=/config/opa.yaml
+      - /policy
+    ports:
+      - "127.0.0.1:18181:8181"
+    volumes:
+      - ./opa.yaml:/config/opa.yaml:ro
+      - ./policy.rego:/policy/policy.rego:ro

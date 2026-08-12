@@ -1,0 +1,79 @@
+{
+  "checks": [
+    {
+      "check": "DISTINCT_AGENT_IDENTITY",
+      "detail": "create_agent not run: external test access is unavailable; missing ATB_OKTA_ISSUER, ATB_OKTA_CLIENT_ID, ATB_OKTA_PRIVATE_KEY_FILE, ATB_OKTA_RESOURCE_SERVER",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "DELEGATION_PROVABLE",
+      "detail": "delegate not run: external test access is unavailable; missing ATB_OKTA_ISSUER, ATB_OKTA_CLIENT_ID, ATB_OKTA_PRIVATE_KEY_FILE, ATB_OKTA_RESOURCE_SERVER",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "SCOPE_VISIBLE",
+      "detail": "inspect_credential not run: external test access is unavailable; missing ATB_OKTA_ISSUER, ATB_OKTA_CLIENT_ID, ATB_OKTA_PRIVATE_KEY_FILE, ATB_OKTA_RESOURCE_SERVER",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "detail": "execute_allowed_action not run: external test access is unavailable; missing ATB_OKTA_ISSUER, ATB_OKTA_CLIENT_ID, ATB_OKTA_PRIVATE_KEY_FILE, ATB_OKTA_RESOURCE_SERVER",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "detail": "execute_forbidden_action not run: external test access is unavailable; missing ATB_OKTA_ISSUER, ATB_OKTA_CLIENT_ID, ATB_OKTA_PRIVATE_KEY_FILE, ATB_OKTA_RESOURCE_SERVER",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "HUMAN_ATTRIBUTION_PROVABLE",
+      "detail": "get_audit_events not run: external test access is unavailable; missing ATB_OKTA_ISSUER, ATB_OKTA_CLIENT_ID, ATB_OKTA_PRIVATE_KEY_FILE, ATB_OKTA_RESOURCE_SERVER",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "AGENT_ATTRIBUTION_PROVABLE",
+      "detail": "get_audit_events not run: external test access is unavailable; missing ATB_OKTA_ISSUER, ATB_OKTA_CLIENT_ID, ATB_OKTA_PRIVATE_KEY_FILE, ATB_OKTA_RESOURCE_SERVER",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "ACTION_AUDITABLE",
+      "detail": "get_audit_events not run: external test access is unavailable; missing ATB_OKTA_ISSUER, ATB_OKTA_CLIENT_ID, ATB_OKTA_PRIVATE_KEY_FILE, ATB_OKTA_RESOURCE_SERVER",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "detail": "revoke not run: external test access is unavailable; missing ATB_OKTA_ISSUER, ATB_OKTA_CLIENT_ID, ATB_OKTA_PRIVATE_KEY_FILE, ATB_OKTA_RESOURCE_SERVER",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "detail": "execute_after_revocation not run: external test access is unavailable; missing ATB_OKTA_ISSUER, ATB_OKTA_CLIENT_ID, ATB_OKTA_PRIVATE_KEY_FILE, ATB_OKTA_RESOURCE_SERVER",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    }
+  ],
+  "completed_at": "2026-08-11T16:34:04.714815Z",
+  "evidence": [],
+  "experiment_id": "e001",
+  "limitations": [
+    "No vendor behavior was tested because required external tenant access was unavailable."
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 0.0,
+    "REVOCATION_LATENCY_MS": null,
+    "TOKEN_LIFETIME_SECONDS": null
+  },
+  "provider": "okta",
+  "run_id": "e001-okta-8704dc94-a5f7-4ccf-a720-01c3b89bf77d",
+  "schema_version": "0.1",
+  "started_at": "2026-08-11T16:34:04.714771Z"
+}

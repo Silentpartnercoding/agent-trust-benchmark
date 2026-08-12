@@ -1,0 +1,343 @@
+{
+  "checks": [
+    {
+      "check": "DISTINCT_AGENT_IDENTITY",
+      "detail": "The agent has a distinct identity.",
+      "evidence_refs": [
+        "keycloak:admin/clients/agent-e001"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "DELEGATION_PROVABLE",
+      "detail": "The human-to-agent delegation is provable.",
+      "evidence_refs": [
+        "keycloak:admin/e001-role-and-claim-mapping"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "SCOPE_VISIBLE",
+      "detail": "The granted preview scope is visible.",
+      "evidence_refs": [
+        "keycloak:introspection/credential-hash"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "detail": "The allowed action succeeded exactly once.",
+      "evidence_refs": [
+        "opa:decision/436a51f1-5860-4d5d-a5ca-b41468271205"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "detail": "The forbidden action was blocked before effect.",
+      "evidence_refs": [
+        "opa:decision/e1b0a4bb-b9ec-4a4b-806a-eff44378cea8"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "HUMAN_ATTRIBUTION_PROVABLE",
+      "detail": "The action is attributable to the human principal.",
+      "evidence_refs": [
+        "keycloak:events/e001-filtered"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "AGENT_ATTRIBUTION_PROVABLE",
+      "detail": "The action is attributable to the authenticated agent identity at the exercised enforcement point.",
+      "evidence_refs": [
+        "opa:decision/436a51f1-5860-4d5d-a5ca-b41468271205"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ACTION_AUDITABLE",
+      "detail": "The action can be reconstructed from audit evidence.",
+      "evidence_refs": [
+        "keycloak:events/e001-filtered"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "detail": "The credential or delegation can be revoked.",
+      "evidence_refs": [
+        "keycloak:admin/realm/not-before"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "detail": "The action was blocked after revocation.",
+      "evidence_refs": [
+        "opa:decision/8223bfb3-3443-42a2-8d6c-2be907ececf2"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "completed_at": "2026-08-11T17:06:10.134746Z",
+  "evidence": [
+    {
+      "action": null,
+      "agent_id": null,
+      "correlation_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": null,
+      "effect_count": 0,
+      "event_type": "human.directory_record",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "1df911d7-c79a-4ddd-a2d8-01983a2d7024",
+      "observed_at": "2026-08-11T17:06:09.109797Z",
+      "provider": "keycloak-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "keycloak:admin/users/human-e001",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "keycloak-client:cc0177a0-0b5d-4d2b-9ba0-5b6db44353d3",
+      "correlation_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": null,
+      "effect_count": 0,
+      "event_type": "agent.client_record",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "1df911d7-c79a-4ddd-a2d8-01983a2d7024",
+      "observed_at": "2026-08-11T17:06:09.132245Z",
+      "provider": "keycloak-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "keycloak:admin/clients/agent-e001",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "keycloak-client:cc0177a0-0b5d-4d2b-9ba0-5b6db44353d3",
+      "correlation_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": "keycloak-delegation-e001",
+      "effect_count": 0,
+      "event_type": "delegation.configuration",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "1df911d7-c79a-4ddd-a2d8-01983a2d7024",
+      "observed_at": "2026-08-11T17:06:09.159186Z",
+      "provider": "keycloak-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "keycloak:admin/e001-role-and-claim-mapping",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "keycloak-client:cc0177a0-0b5d-4d2b-9ba0-5b6db44353d3",
+      "correlation_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "credential_id": "sha256:d310ed6b345fbae041f7fdd8d29339f6069de9f97d1d574834e04bd3ccaadbd0",
+      "decision": "observe",
+      "delegation_id": "keycloak-delegation-e001",
+      "effect_count": 0,
+      "event_type": "credential.issued",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "1df911d7-c79a-4ddd-a2d8-01983a2d7024",
+      "observed_at": "2026-08-11T17:06:09.254436Z",
+      "provider": "keycloak-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "keycloak:token/credential-hash",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "keycloak-client:cc0177a0-0b5d-4d2b-9ba0-5b6db44353d3",
+      "correlation_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "credential_id": "sha256:d310ed6b345fbae041f7fdd8d29339f6069de9f97d1d574834e04bd3ccaadbd0",
+      "decision": "observe",
+      "delegation_id": "keycloak-delegation-e001",
+      "effect_count": 0,
+      "event_type": "credential.introspected",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "1df911d7-c79a-4ddd-a2d8-01983a2d7024",
+      "observed_at": "2026-08-11T17:06:09.268113Z",
+      "provider": "keycloak-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "keycloak:introspection/credential-hash",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "preview",
+      "agent_id": "keycloak-client:cc0177a0-0b5d-4d2b-9ba0-5b6db44353d3",
+      "correlation_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "credential_id": "sha256:d310ed6b345fbae041f7fdd8d29339f6069de9f97d1d574834e04bd3ccaadbd0",
+      "decision": "allow",
+      "delegation_id": "keycloak-delegation-e001",
+      "effect_count": 1,
+      "event_type": "policy.allowed",
+      "evidence_origin": "enforcement_point",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "1df911d7-c79a-4ddd-a2d8-01983a2d7024",
+      "observed_at": "2026-08-11T17:06:09.279851Z",
+      "provider": "keycloak-opa",
+      "provider_event_id": "436a51f1-5860-4d5d-a5ca-b41468271205",
+      "raw_evidence_ref": "opa:decision/436a51f1-5860-4d5d-a5ca-b41468271205",
+      "requested_scopes": [
+        "payments:preview"
+      ],
+      "resource": "payments",
+      "run_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "execute",
+      "agent_id": "keycloak-client:cc0177a0-0b5d-4d2b-9ba0-5b6db44353d3",
+      "correlation_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "credential_id": "sha256:d310ed6b345fbae041f7fdd8d29339f6069de9f97d1d574834e04bd3ccaadbd0",
+      "decision": "deny",
+      "delegation_id": "keycloak-delegation-e001",
+      "effect_count": 0,
+      "event_type": "policy.denied",
+      "evidence_origin": "enforcement_point",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "1df911d7-c79a-4ddd-a2d8-01983a2d7024",
+      "observed_at": "2026-08-11T17:06:09.291052Z",
+      "provider": "keycloak-opa",
+      "provider_event_id": "e1b0a4bb-b9ec-4a4b-806a-eff44378cea8",
+      "raw_evidence_ref": "opa:decision/e1b0a4bb-b9ec-4a4b-806a-eff44378cea8",
+      "requested_scopes": [
+        "payments:execute"
+      ],
+      "resource": "payments",
+      "run_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "keycloak-client:cc0177a0-0b5d-4d2b-9ba0-5b6db44353d3",
+      "correlation_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "credential_id": "sha256:d310ed6b345fbae041f7fdd8d29339f6069de9f97d1d574834e04bd3ccaadbd0",
+      "decision": "observe",
+      "delegation_id": "keycloak-delegation-e001",
+      "effect_count": 0,
+      "event_type": "identity.audit_observed",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "1df911d7-c79a-4ddd-a2d8-01983a2d7024",
+      "observed_at": "2026-08-11T17:06:09.305556Z",
+      "provider": "keycloak-opa",
+      "provider_event_id": "1786467969244",
+      "raw_evidence_ref": "keycloak:events/e001-filtered",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "keycloak-client:cc0177a0-0b5d-4d2b-9ba0-5b6db44353d3",
+      "correlation_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "credential_id": "sha256:d310ed6b345fbae041f7fdd8d29339f6069de9f97d1d574834e04bd3ccaadbd0",
+      "decision": "observe",
+      "delegation_id": "keycloak-delegation-e001",
+      "effect_count": 0,
+      "event_type": "realm.revocation_acknowledged",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "1df911d7-c79a-4ddd-a2d8-01983a2d7024",
+      "observed_at": "2026-08-11T17:06:10.100792Z",
+      "provider": "keycloak-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "keycloak:admin/realm/not-before",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "preview",
+      "agent_id": "keycloak-client:cc0177a0-0b5d-4d2b-9ba0-5b6db44353d3",
+      "correlation_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "credential_id": "sha256:d310ed6b345fbae041f7fdd8d29339f6069de9f97d1d574834e04bd3ccaadbd0",
+      "decision": "deny",
+      "delegation_id": "keycloak-delegation-e001",
+      "effect_count": 0,
+      "event_type": "policy.denied",
+      "evidence_origin": "enforcement_point",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "1df911d7-c79a-4ddd-a2d8-01983a2d7024",
+      "observed_at": "2026-08-11T17:06:10.134621Z",
+      "provider": "keycloak-opa",
+      "provider_event_id": "8223bfb3-3443-42a2-8d6c-2be907ececf2",
+      "raw_evidence_ref": "opa:decision/8223bfb3-3443-42a2-8d6c-2be907ececf2",
+      "requested_scopes": [
+        "payments:preview"
+      ],
+      "resource": "payments",
+      "run_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+      "schema_version": "0.1"
+    }
+  ],
+  "experiment_id": "e001",
+  "limitations": [
+    "Keycloak supplies identity and token evidence; OPA is the benchmark-owned enforcement point.",
+    "The fixture grant is administrator-configured, not an interactive consent record.",
+    "The fixture uses Keycloak Direct Access Grants to bind the human subject and confidential agent client in one token; this is a measurement mechanism, not a production recommendation.",
+    "Revocation uses the realm-wide not-before boundary, so the proven block is broader than revoking only this one delegation."
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "REVOCATION_LATENCY_MS": 768.4902497567236,
+    "TOKEN_LIFETIME_SECONDS": 300
+  },
+  "provider": "keycloak-opa",
+  "run_id": "e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa",
+  "schema_version": "0.1",
+  "started_at": "2026-08-11T17:06:08.737634Z"
+}

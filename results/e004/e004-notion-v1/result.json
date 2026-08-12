@@ -1,0 +1,362 @@
+{
+  "schema": "atb-e004-result/0.1",
+  "experiment": "E004",
+  "classification": "PARTIALLY SOLVED",
+  "tests": [
+    {
+      "test": "VALID_DELEGATION",
+      "outcome": "PASS",
+      "detail": "H -> A -> B create_page reached the mock resource exactly once."
+    },
+    {
+      "test": "FORBIDDEN_READ_PAGE",
+      "outcome": "PASS",
+      "detail": "read_page was denied before the resource."
+    },
+    {
+      "test": "FORBIDDEN_ARCHIVE_PAGE",
+      "outcome": "PASS",
+      "detail": "archive_page was denied before the resource."
+    },
+    {
+      "test": "FORBIDDEN_ADMIN_WORKSPACE",
+      "outcome": "PASS",
+      "detail": "admin_workspace was denied before the resource."
+    },
+    {
+      "test": "PARENT_SCOPE_ESCALATION",
+      "outcome": "PASS",
+      "detail": "A could not delegate authority it lacked."
+    },
+    {
+      "test": "TAMPERED_DELEGATION",
+      "outcome": "PASS",
+      "detail": "A one-byte token mutation was rejected."
+    },
+    {
+      "test": "EXPIRED_DELEGATION",
+      "outcome": "PASS",
+      "detail": "Expired child authority was rejected."
+    },
+    {
+      "test": "WRONG_AUDIENCE",
+      "outcome": "PASS",
+      "detail": "A Notion delegation failed at another audience."
+    },
+    {
+      "test": "WRONG_SUBJECT_POSSESSION",
+      "outcome": "PASS",
+      "detail": "Agent C could not use B's subject-bound token."
+    },
+    {
+      "test": "REDELEGATION_DISABLED",
+      "outcome": "PASS",
+      "detail": "B could not delegate to C when depth was zero."
+    },
+    {
+      "test": "REQUEST_REPLAY",
+      "outcome": "PASS",
+      "detail": "The same request id could not create a second page."
+    },
+    {
+      "test": "CHILD_REVOCATION",
+      "outcome": "PASS",
+      "detail": "Revoked A -> B delegation failed closed."
+    },
+    {
+      "test": "PARENT_REVOCATION_CASCADE",
+      "outcome": "PASS",
+      "detail": "Revoked H -> A authority invalidated B's chain."
+    },
+    {
+      "test": "FOREIGN_AGENT_NO_PROPRIETARY_SDK",
+      "outcome": "PASS",
+      "detail": "Agent B imports only the Python standard library and treats delegation as opaque."
+    },
+    {
+      "test": "LEDGER_LINEAGE_VERIFIES",
+      "outcome": "PASS",
+      "detail": "Every authority receipt signature and previous hash verified."
+    },
+    {
+      "test": "LEDGER_TAMPERING_DETECTED",
+      "outcome": "PASS",
+      "detail": "Changing history broke verification."
+    }
+  ],
+  "passed": 16,
+  "total": 16,
+  "resource_effects": [
+    {
+      "request_id": "request-valid",
+      "action": "create_page",
+      "page_id": "notion:page:created-1"
+    }
+  ],
+  "foreign_agent": {
+    "proprietary_sdk": false,
+    "delegation_parsing": false
+  },
+  "ledger": [
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 1,
+        "previous": null,
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:f1174033ac997e8a1803681b91fd36b4c30ccfb33c43b04f92e2e8f9d06d1ce0",
+        "request_id": "request-valid",
+        "resource": "notion",
+        "action": "create_page",
+        "decision": "allow",
+        "reason": "verified_chain",
+        "effect_count": 1,
+        "resource_result": {
+          "page_id": "notion:page:created-1"
+        },
+        "recorded_at": "2026-08-12T11:41:23.127713Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..l4obeWVCHmprYzFwY2DvRn7COxZed02inWiL-bfEXQXxtfJest7IK5v1lL9a4ZarHTB4x5_ChOV6LLSzfIJFAw"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 2,
+        "previous": "sha256:732877b6251e394f413af7fb0002797684ba0d56029bfb42609322e96fcc3d31",
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:f1174033ac997e8a1803681b91fd36b4c30ccfb33c43b04f92e2e8f9d06d1ce0",
+        "request_id": "request-read_page",
+        "resource": "notion",
+        "action": "read_page",
+        "decision": "deny",
+        "reason": "requested action is outside the child delegation",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:23.247913Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..V8LsH1qeNY7SSwwdYSyvJy5VEMdy1KnXpvPhi_3pcbGl4wT0Fsf6mhmu111tZh5xFl5vDyAFEt-7LWVJxRlhAQ"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 3,
+        "previous": "sha256:72873cd5b38087a2233801f2c96ac824d6c29ceeb5256603bb1652085362f570",
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:f1174033ac997e8a1803681b91fd36b4c30ccfb33c43b04f92e2e8f9d06d1ce0",
+        "request_id": "request-archive_page",
+        "resource": "notion",
+        "action": "archive_page",
+        "decision": "deny",
+        "reason": "parent authority is not verified: REJECTED",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:23.355341Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..ULvK0pMFRPU4f_Zpl6H7rfg79Y4Q6dx_GcDaxlk22H62IWa9Kyo08MlimxoibnBSoHUJ9FqrGo2IqUqKT14ABA"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 4,
+        "previous": "sha256:2217209432880d1a8a7518f300b7f9e8e2bb04f2d33c20ac7dd01c6727c4c55c",
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:f1174033ac997e8a1803681b91fd36b4c30ccfb33c43b04f92e2e8f9d06d1ce0",
+        "request_id": "request-admin_workspace",
+        "resource": "notion",
+        "action": "admin_workspace",
+        "decision": "deny",
+        "reason": "parent authority is not verified: REJECTED",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:23.439348Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..awC97R0As8xSp1kivZ_rHx-udsetniIVTXI-MvFimpBTqwNc3oy6wf5Z6U7x2GM52132KWkFJ6V1UDH3lSDEBA"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 5,
+        "previous": "sha256:af544b3269101328537caf55cf925b035d2c3e7ae27027a85b4a776a0a810407",
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:bff051c74d8361b175100c2da36ad70d360f975007b15235e34975e18fe19511",
+        "request_id": "request-escalation",
+        "resource": "notion",
+        "action": "admin_workspace",
+        "decision": "deny",
+        "reason": "parent authority is not verified: REJECTED",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:23.526927Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..cVwXORE3NO0DsBoLozKsEAgwZKhH_ygDaS10pcpRPLjsKZvDEnT_58ykNo-vnuKw4MKRhTS8tTJaBOjj9qWaAQ"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 6,
+        "previous": "sha256:facb3c06067f6087019ab168e1d9634b63a3ed0eeed1a0197f2aaeb29daa976d",
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:4ba5dd4c3bd8a3e6a153959a4dee85cb38055569b8027c543f1024d619d247f9",
+        "request_id": "request-tampered",
+        "resource": "notion",
+        "action": "create_page",
+        "decision": "deny",
+        "reason": "delegation signature did not verify",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:23.604709Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ.._KGSTHP6WGSQJcUbqS0ElN6Rg1yin9aJqKFhsYKrRf-fiZXbgXpdnUjQz6k7KBE6WhjqWsi8k_8DXaypTQ61Bw"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 7,
+        "previous": "sha256:3963ca896aec510295b194555e3fba7448a01f9f7a6b79bed8b749eb785375fd",
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:e1db489e32992a8c9db30ebadb00dcba5447136a6c6bc1a5055331621c306824",
+        "request_id": "request-expired",
+        "resource": "notion",
+        "action": "create_page",
+        "decision": "deny",
+        "reason": "delegation is not currently valid",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:23.688099Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..KBC3hCiwAOzmJBiuHJY2R9yAH1JI10mZnLXiaPxAICyGSs9B0ElHaL8X-zytnaiOc_tnX-rPEM98TcjNKvg2Cw"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 8,
+        "previous": "sha256:1c0f387fdb4a0923d1f71221001b22098cd327aa64469b9a2c436ff4c482c773",
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:c1ffaa6bb2ba8d103e6b6134548570530b859b87060cd6ff58b5d0f7fe0a5f76",
+        "request_id": "request-wrong-audience",
+        "resource": "notion",
+        "action": "create_page",
+        "decision": "deny",
+        "reason": "delegation audience mismatch",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:23.776042Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..W3oLec3vovU7C9jqJ6nrvWoa0VzGzKm49Jitj6TekPE5lbQkmYRnh3tDCe2TlFF8O3gboF5WzQs-aUjjgbGHDw"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 9,
+        "previous": "sha256:fb68d6eb2d5d30b3ec5166d09f1f46cc653b6308641538dbc85018e8b01cecdf",
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:f1174033ac997e8a1803681b91fd36b4c30ccfb33c43b04f92e2e8f9d06d1ce0",
+        "request_id": "request-stolen",
+        "resource": "notion",
+        "action": "create_page",
+        "decision": "deny",
+        "reason": "Agent B possession proof did not verify",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:23.861800Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..FuOjPvsSHU8wSMvz0EjKJy0XJyc1u5RkdxxGj5cH2eL667y3WLbySkNo1Vivkz7SQMYrJFYWNGNrQq2KLUobCA"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 10,
+        "previous": "sha256:37e16e798aa3383af5595f19976253518c66330b0a8ae397c71795c1e3877e54",
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:f1174033ac997e8a1803681b91fd36b4c30ccfb33c43b04f92e2e8f9d06d1ce0",
+        "request_id": "request-valid",
+        "resource": "notion",
+        "action": "create_page",
+        "decision": "deny",
+        "reason": "request replay detected",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:23.956201Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..Dc8Xdy1Ov7Q8BFc636VgG15Itd-GuN-_jNhEaJHyQeyp6IPzX-5eVKNmFu5flt33DbBIa9yAA1-y8z6vgsrSCg"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 11,
+        "previous": "sha256:2877471e340eb0d7e2cb74af0af64b61bd64d1648c831b9bdbcf3bc828036b95",
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:f1174033ac997e8a1803681b91fd36b4c30ccfb33c43b04f92e2e8f9d06d1ce0",
+        "request_id": "request-child-revoked",
+        "resource": "notion",
+        "action": "create_page",
+        "decision": "deny",
+        "reason": "delegation has been revoked",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:24.042886Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..goX9vTYRDbNhc1OroNsDCFiAIXsVmGJDolNzRngGLvp0z-F7stwcYt54Bo-TQKiryIIk9cunfXbJ3xojG0D_Bg"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.1",
+        "sequence": 12,
+        "previous": "sha256:767768d77484527d0e39b836050c742d7cb4851749f9490a7925925ccb13db91",
+        "human": "human-h",
+        "agent_a": "urn:atb:e004:agent-a",
+        "agent_b": "urn:atb:e004:agent-b",
+        "parent_receipt_digest": "sha256:4f838a9b6425c9b8d94ce7c3510b920873d1c1733b263f809205a6464e70952f",
+        "delegation_digest": "sha256:f1174033ac997e8a1803681b91fd36b4c30ccfb33c43b04f92e2e8f9d06d1ce0",
+        "request_id": "request-parent-revoked",
+        "resource": "notion",
+        "action": "create_page",
+        "decision": "deny",
+        "reason": "parent authority is not verified: REJECTED",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:24.125951Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDQtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..Ymwe3DihU-Tz0t62ojM8QDSr4Yq08-dKfamSP6NmZMhVYRaSkldqSjqqOXS5iXL92xxqsZTdZQVPs7K5Hm05BQ"
+    }
+  ],
+  "limits": [
+    "The authority-lineage ledger and A-to-B token are isolated benchmark extensions, not current Knowledge Ledger behavior.",
+    "The gateway is non-bypassable only because the mock resource credential exists solely inside it.",
+    "This is one-controller exploratory evidence, not external interoperability or production validation.",
+    "The token uses standard Ed25519 compact JWS mechanics but an experimental claim profile, not a registered standard."
+  ]
+}

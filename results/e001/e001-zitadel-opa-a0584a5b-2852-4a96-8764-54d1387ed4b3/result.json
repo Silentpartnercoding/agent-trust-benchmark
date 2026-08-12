@@ -1,0 +1,336 @@
+{
+  "checks": [
+    {
+      "check": "DISTINCT_AGENT_IDENTITY",
+      "detail": "The agent has a distinct identity.",
+      "evidence_refs": [
+        "zitadel:management/users/385828832059326468"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "DELEGATION_PROVABLE",
+      "detail": "The human-to-agent delegation is provable.",
+      "evidence_refs": [
+        "zitadel:management/users/385828832059326468/metadata-and-grant/385828832277430276"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "SCOPE_VISIBLE",
+      "detail": "The granted preview scope is visible.",
+      "evidence_refs": [
+        "zitadel:oauth/introspection/credential-hash"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "detail": "The allowed action succeeded exactly once.",
+      "evidence_refs": [
+        "opa:decision/c833742c-7c01-40ea-b3f4-f3e778b9f67c"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "detail": "The forbidden action was blocked before effect.",
+      "evidence_refs": [
+        "opa:decision/733e5591-675f-4c75-aceb-875eefb93d70"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "HUMAN_ATTRIBUTION_PROVABLE",
+      "detail": "Human attribution was not proven.",
+      "evidence_refs": [
+        "zitadel:changes/users/385828832059326468+projects/385828831941885956"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "check": "AGENT_ATTRIBUTION_PROVABLE",
+      "detail": "The action is attributable to the verified agent key at the exercised enforcement point.",
+      "evidence_refs": [
+        "opa:decision/c833742c-7c01-40ea-b3f4-f3e778b9f67c"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ACTION_AUDITABLE",
+      "detail": "The action can be reconstructed from audit evidence.",
+      "evidence_refs": [
+        "zitadel:changes/users/385828832059326468+projects/385828831941885956"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "detail": "The credential or delegation can be revoked.",
+      "evidence_refs": [
+        "zitadel:management/users/385828832059326468/grants/385828832277430276/deleted"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "detail": "The action was blocked after revocation.",
+      "evidence_refs": [
+        "opa:decision/a14ece7b-277d-44d1-a1c3-aa2e3622cda8"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "completed_at": "2026-08-11T17:05:05.296944Z",
+  "evidence": [
+    {
+      "action": null,
+      "agent_id": null,
+      "correlation_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": null,
+      "effect_count": 0,
+      "event_type": "human.directory_record",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "385828553373712388",
+      "observed_at": "2026-08-11T17:05:04.701594Z",
+      "provider": "zitadel-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "zitadel:management/users/human-e001",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "385828832059326468",
+      "correlation_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": null,
+      "effect_count": 0,
+      "event_type": "agent.service_account_created",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "385828553373712388",
+      "observed_at": "2026-08-11T17:05:04.869476Z",
+      "provider": "zitadel-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "zitadel:management/users/385828832059326468",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "385828832059326468",
+      "correlation_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": "zitadel-delegation-9d76762a-6a32-481f-996a-d05e2d54ea05",
+      "effect_count": 0,
+      "event_type": "delegation.configuration",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "385828553373712388",
+      "observed_at": "2026-08-11T17:05:04.981385Z",
+      "provider": "zitadel-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "zitadel:management/users/385828832059326468/metadata-and-grant/385828832277430276",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "385828832059326468",
+      "correlation_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "credential_id": "sha256:c9153a90f095145dd0817a7207b68af6324141590fa87dd3fb35c4ff13e3ef47",
+      "decision": "observe",
+      "delegation_id": "zitadel-delegation-9d76762a-6a32-481f-996a-d05e2d54ea05",
+      "effect_count": 0,
+      "event_type": "credential.issued",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "385828553373712388",
+      "observed_at": "2026-08-11T17:05:05.018999Z",
+      "provider": "zitadel-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "zitadel:oauth/token/credential-hash",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "385828832059326468",
+      "correlation_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "credential_id": "sha256:c9153a90f095145dd0817a7207b68af6324141590fa87dd3fb35c4ff13e3ef47",
+      "decision": "observe",
+      "delegation_id": "zitadel-delegation-9d76762a-6a32-481f-996a-d05e2d54ea05",
+      "effect_count": 0,
+      "event_type": "credential.introspected",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "385828553373712388",
+      "observed_at": "2026-08-11T17:05:05.058957Z",
+      "provider": "zitadel-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "zitadel:oauth/introspection/credential-hash",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "preview",
+      "agent_id": "385828832059326468",
+      "correlation_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "credential_id": "sha256:c9153a90f095145dd0817a7207b68af6324141590fa87dd3fb35c4ff13e3ef47",
+      "decision": "allow",
+      "delegation_id": "zitadel-delegation-9d76762a-6a32-481f-996a-d05e2d54ea05",
+      "effect_count": 1,
+      "event_type": "policy.allowed",
+      "evidence_origin": "enforcement_point",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "385828553373712388",
+      "observed_at": "2026-08-11T17:05:05.101995Z",
+      "provider": "zitadel-opa",
+      "provider_event_id": "c833742c-7c01-40ea-b3f4-f3e778b9f67c",
+      "raw_evidence_ref": "opa:decision/c833742c-7c01-40ea-b3f4-f3e778b9f67c",
+      "requested_scopes": [
+        "payments:preview"
+      ],
+      "resource": "payments",
+      "run_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "execute",
+      "agent_id": "385828832059326468",
+      "correlation_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "credential_id": "sha256:c9153a90f095145dd0817a7207b68af6324141590fa87dd3fb35c4ff13e3ef47",
+      "decision": "deny",
+      "delegation_id": "zitadel-delegation-9d76762a-6a32-481f-996a-d05e2d54ea05",
+      "effect_count": 0,
+      "event_type": "policy.denied",
+      "evidence_origin": "enforcement_point",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "385828553373712388",
+      "observed_at": "2026-08-11T17:05:05.143022Z",
+      "provider": "zitadel-opa",
+      "provider_event_id": "733e5591-675f-4c75-aceb-875eefb93d70",
+      "raw_evidence_ref": "opa:decision/733e5591-675f-4c75-aceb-875eefb93d70",
+      "requested_scopes": [
+        "payments:execute"
+      ],
+      "resource": "payments",
+      "run_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "385828832059326468",
+      "correlation_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "credential_id": "sha256:c9153a90f095145dd0817a7207b68af6324141590fa87dd3fb35c4ff13e3ef47",
+      "decision": "observe",
+      "delegation_id": "zitadel-delegation-9d76762a-6a32-481f-996a-d05e2d54ea05",
+      "effect_count": 0,
+      "event_type": "identity.audit_observed",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "385828553373712388",
+      "observed_at": "2026-08-11T17:05:05.241443Z",
+      "provider": "zitadel-opa",
+      "provider_event_id": "7",
+      "raw_evidence_ref": "zitadel:changes/users/385828832059326468+projects/385828831941885956",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "385828832059326468",
+      "correlation_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "credential_id": "sha256:c9153a90f095145dd0817a7207b68af6324141590fa87dd3fb35c4ff13e3ef47",
+      "decision": "observe",
+      "delegation_id": "zitadel-delegation-9d76762a-6a32-481f-996a-d05e2d54ea05",
+      "effect_count": 0,
+      "event_type": "delegation.revoked",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "385828553373712388",
+      "observed_at": "2026-08-11T17:05:05.274492Z",
+      "provider": "zitadel-opa",
+      "provider_event_id": null,
+      "raw_evidence_ref": "zitadel:management/users/385828832059326468/grants/385828832277430276/deleted",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "preview",
+      "agent_id": "385828832059326468",
+      "correlation_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "credential_id": "sha256:c9153a90f095145dd0817a7207b68af6324141590fa87dd3fb35c4ff13e3ef47",
+      "decision": "deny",
+      "delegation_id": "zitadel-delegation-9d76762a-6a32-481f-996a-d05e2d54ea05",
+      "effect_count": 0,
+      "event_type": "policy.denied",
+      "evidence_origin": "enforcement_point",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "385828553373712388",
+      "observed_at": "2026-08-11T17:05:05.296817Z",
+      "provider": "zitadel-opa",
+      "provider_event_id": "a14ece7b-277d-44d1-a1c3-aa2e3622cda8",
+      "raw_evidence_ref": "opa:decision/a14ece7b-277d-44d1-a1c3-aa2e3622cda8",
+      "requested_scopes": [
+        "payments:preview"
+      ],
+      "resource": "payments",
+      "run_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+      "schema_version": "0.1"
+    }
+  ],
+  "experiment_id": "e001",
+  "limitations": [
+    "ZITADEL supplies identity, grant, token, introspection, and change-history evidence; OPA is the benchmark-owned enforcement point.",
+    "The human-to-agent link is administrator-authored metadata, not interactive consent or a human claim cryptographically bound into the action token.",
+    "The opaque token is long-lived; the fast post-revocation block depends on online introspection at every exercised action."
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "REVOCATION_LATENCY_MS": 55.36020826548338,
+    "TOKEN_LIFETIME_SECONDS": 43199
+  },
+  "provider": "zitadel-opa",
+  "run_id": "e001-zitadel-opa-a0584a5b-2852-4a96-8764-54d1387ed4b3",
+  "schema_version": "0.1",
+  "started_at": "2026-08-11T17:05:04.614248Z"
+}

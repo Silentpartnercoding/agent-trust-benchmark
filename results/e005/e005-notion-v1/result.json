@@ -1,0 +1,505 @@
+{
+  "schema": "atb-e005-result/0.1",
+  "experiment": "E005",
+  "classification": "THIN SLICE PROVEN",
+  "tests": [
+    {
+      "test": "VALID_MANDATE_DUAL_AUTHORITY",
+      "outcome": "PASS",
+      "detail": "A's request authority and B's independent Notion authority jointly permitted one exact archive."
+    },
+    {
+      "test": "REQUESTER_CANNOT_LAUNDER_EXECUTOR_POWER",
+      "outcome": "PASS",
+      "detail": "B's archive permission did not compensate for A lacking authority to request archival."
+    },
+    {
+      "test": "EXECUTOR_LACKS_INDEPENDENT_PERMISSION",
+      "outcome": "PASS",
+      "detail": "A's valid request could not substitute for missing Notion archive authority at B."
+    },
+    {
+      "test": "TAMPERED_MANDATE",
+      "outcome": "PASS",
+      "detail": "A one-byte mandate mutation was rejected."
+    },
+    {
+      "test": "AMBIGUOUS_RELATIONSHIP_FAILS_CLOSED",
+      "outcome": "PASS",
+      "detail": "A relationship labelled as delegation could not enter the mandate verifier."
+    },
+    {
+      "test": "EXPIRED_MANDATE",
+      "outcome": "PASS",
+      "detail": "An expired request relationship was rejected."
+    },
+    {
+      "test": "WRONG_AUDIENCE",
+      "outcome": "PASS",
+      "detail": "A Notion mandate failed at another audience."
+    },
+    {
+      "test": "WRONG_TARGET",
+      "outcome": "PASS",
+      "detail": "Authority for notion:page:999 could not archive notion:page:123."
+    },
+    {
+      "test": "WRONG_PAYLOAD",
+      "outcome": "PASS",
+      "detail": "A changed archive payload was rejected."
+    },
+    {
+      "test": "WRONG_EXECUTOR_POSSESSION",
+      "outcome": "PASS",
+      "detail": "Agent C could not execute B's mandate."
+    },
+    {
+      "test": "WRONG_EXECUTOR_AUTHORITY_SUBJECT",
+      "outcome": "PASS",
+      "detail": "An independently signed credential for another subject could not authorize B."
+    },
+    {
+      "test": "REQUEST_REPLAY",
+      "outcome": "PASS",
+      "detail": "The exact request could not cause a second archive."
+    },
+    {
+      "test": "MANDATE_REVOCATION",
+      "outcome": "PASS",
+      "detail": "Revoking A's mandate blocked execution."
+    },
+    {
+      "test": "REQUEST_AUTHORITY_REVOCATION",
+      "outcome": "PASS",
+      "detail": "Revoking A's request authority blocked execution."
+    },
+    {
+      "test": "EXECUTOR_AUTHORITY_REVOCATION",
+      "outcome": "PASS",
+      "detail": "Revoking B's Notion authority blocked execution."
+    },
+    {
+      "test": "FOREIGN_AGENT_NO_PROPRIETARY_SDK",
+      "outcome": "PASS",
+      "detail": "Agent B imports only the Python standard library and treats both artifacts as opaque."
+    },
+    {
+      "test": "RECEIPT_BINDS_BOTH_AUTHORITY_PATHS",
+      "outcome": "PASS",
+      "detail": "The ALLOW receipt names MANDATE and binds requester authority, executor authority, and one effect."
+    },
+    {
+      "test": "LEDGER_LINEAGE_VERIFIES",
+      "outcome": "PASS",
+      "detail": "Every authority-lineage receipt and previous hash verified."
+    },
+    {
+      "test": "LEDGER_TAMPERING_DETECTED",
+      "outcome": "PASS",
+      "detail": "Changing either path broke verification."
+    }
+  ],
+  "passed": 19,
+  "total": 19,
+  "resource_effects": [
+    {
+      "request_id": "request-valid",
+      "action": "archive_page",
+      "target": "notion:page:123",
+      "page_id": "notion:page:123",
+      "archived": true
+    }
+  ],
+  "foreign_agent": {
+    "proprietary_sdk": false,
+    "mandate_parsing": false,
+    "executor_credential_parsing": false
+  },
+  "ledger": [
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 1,
+        "previous": null,
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:0b2f30e8fee25250fe0956164632ce25e3856828ea127d9ffaa68588bcd97e22",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-valid",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "allow",
+        "reason": "verified_dual_authority",
+        "effect_count": 1,
+        "resource_result": {
+          "page_id": "notion:page:123",
+          "archived": true
+        },
+        "recorded_at": "2026-08-12T11:41:24.898543Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..oFNM9vNteSzmT1jisQykJIj0JU51Npzvro1fiK7Fz9yGLfx7G779npEDVlx8Cl8Rgkj3W35hiBZVGPNFY_hfAw"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 2,
+        "previous": "sha256:155fb5264ce10583c1ed7ee6b660c3674b8c1a08b6989f6216ed89e726e1ff01",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:9a513d8239f2e51473f067dc33a76d2441e5133ac7a9b1b9a35727245587975e",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:ee5d3303f3201ea7b569fb85feadd4e3d74b4d90f1dce2d35d4e263c4f44a6a0",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-unauthorized-a",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "request authority is not verified: REJECTED",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:24.999665Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..6uAnOJFq_ieGO1evwq4moykXFOfpzsUhmEAxxihCpi0yyLtw4aLKf5VuUcdAi_RAVVV2Cvl76rF7MrsoGgtMDg"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 3,
+        "previous": "sha256:41655bb4b1553f260ab337d3ef015cb0c713dad54909f0d11b5754c035599da8",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:fdc61e476c4811ffaca95bd74d592f4ff9713364c02da8b16dbcb012bf391f5d",
+        "mandate_digest": "sha256:0b2f30e8fee25250fe0956164632ce25e3856828ea127d9ffaa68588bcd97e22",
+        "executor_credential_digest": "sha256:805191b503a96678f362ec889c43f64117252d5e64bd7a0511f3a330c6087a72",
+        "request_id": "request-weak-b",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "executor authority is not verified: REJECTED",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:25.103970Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..iopStm7BHOOyvqoAcA12nxzFKk7m5bDtd0Qmo-9XO6oapnpDTFsaeIg6XAXNJP98OQ3L_EpTuIyqWM9L4xumAQ"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 4,
+        "previous": "sha256:6bf06298682c978169a5c5b19bbbd482a3f8a30c67c0f050d38f6455b293cbe5",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:3452c8a8dd3d9338674104c94f96e5dab142f40ad1154b059a130d46620975d6",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-tampered",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "mandate signature did not verify",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:25.187304Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..MhqbcrYJlKJDD5xbedx5-Z9rH1-AAU1h_Zo8QMeuk6lNln_q-eC0RZJBdTxHyHOWmzdQltvgpSvseC40tamqAA"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 5,
+        "previous": "sha256:dd0fa2afb630a6643821894b2b98f6f4e9408728a1bca267e544eaeb416db7e4",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:200dc4516aeaac9369993e04af884fc51a9aed58838b2abbb6b9e1a72fdabd44",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-ambiguous-relationship",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "relationship is not an authorized invocation",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:25.277381Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..gPbBAtAQdDk30eD6CtbBy6ilyaNIUkIsBZSKH_SxYvPGb0kFGIRQG802KGOeVgDw1gNmOQfFyroDCXsZ-wMmDw"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 6,
+        "previous": "sha256:4282d950d49bcb96a42fc2b1946b77fcc450bd7bb89f3b764df9aa257ae0360e",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:aed414854077e092f9eb2d810149c2295b3a4929364b7ad0cdb0c22a04e420b2",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-expired",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "mandate is not currently valid",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:25.367096Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..8wMpGwEmU5PC10P3-mJZFldkIxX6nIOJX3M_G6gE8qYqp_JOlUfgL5H6sVCQl7fWfAl3SmBExT8nx5VLDBPnBw"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 7,
+        "previous": "sha256:b650e9bd97cf5f1277a22b781fce0954d6cf5892a12006cd91e66ad2a5dd90fc",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:3df8d24c7eba287cff883be0a0ef84aee90da6cfd5787e3739c06ba268b60ddb",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-wrong-audience",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "mandate audience mismatch",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:25.465297Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..ruL30wFAmmLazQ1uk9YJ9Eq_KjEu4l5lms9ary2TRt2DdqBiBfTBCe_Zo9g2yCa4ge4wN2nCNARZN5P3V-TGDw"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 8,
+        "previous": "sha256:1b880dc28259bb68dd079e974b1c7a3d26b51ca15da209cca30ff61055c2d2a8",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:dc944cd0e4bc7446789b9ab190dad3e2f36e6254529f32cc25fa2aa561008f28",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-wrong-target",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "mandate does not bind the exact requested action",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:25.562567Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..Olyw6lTGxTPsJPHJVeb9oWo9PgHfJtJHOjdhW8r-NULqD5Sx7LNiGe6VaO96KHu6Rc857IBJYF89rnEEKCoiAg"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 9,
+        "previous": "sha256:970c6f5eb636d89a4d0a54ef86d709f4883cd00802d6d5344a0665e3cd460a04",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:0b2f30e8fee25250fe0956164632ce25e3856828ea127d9ffaa68588bcd97e22",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-wrong-payload",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:1ab22f3ad799cb3a92513b54ac5dad5d3229371d38f4663f3b8ce4a63284f0bb",
+        "decision": "deny",
+        "reason": "mandate does not bind the exact requested action",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:25.655728Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..dNb5ppQt5GFmF6idE-xe64o2BpHmcuRNcBbm1ESsU1Q3SZ-r2xS8Cx-sf9aYsMx7FyOkPxMiatNoJNoCnHgYAA"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 10,
+        "previous": "sha256:62566ddb31ad3e85f0b7da146931fcd765bf16519476c93525b2f631685f9e14",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:0b2f30e8fee25250fe0956164632ce25e3856828ea127d9ffaa68588bcd97e22",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-stolen",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "executor possession proof did not verify",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:25.749139Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..Ouk8QdaEL2oL4r7rrC2k1m3U0VoUmNAcbjGmvfbq_8ND68lLNO2ZxRdzUM1fJISCQ-8vbqgBeJw9_dEUWEh-DA"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 11,
+        "previous": "sha256:d190546a73bda31c6828221a55e3156d12bcf74a015c708fd4064e22fca487bf",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:0b2f30e8fee25250fe0956164632ce25e3856828ea127d9ffaa68588bcd97e22",
+        "executor_credential_digest": "sha256:c40642a433ef3d396ea630d9ff0768dce244b58e60e6d004debdab56daedc6f1",
+        "request_id": "request-wrong-executor-authority",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "executor authority is not verified: REJECTED",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:25.845853Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..nxSMrDwujiW5cG15NufB3XPgmvE3h2efFfKJSMjWkHlGgDvPIHGgPLNrDaHoSspDQZ8gBXwCwS61z1UB1PsXAw"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 12,
+        "previous": "sha256:88f189a3fd4a9f3c290ba809e243d54c19dc248185694e4a05c1f7004c2f3b67",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:0b2f30e8fee25250fe0956164632ce25e3856828ea127d9ffaa68588bcd97e22",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-valid",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "request replay detected",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:25.955368Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..gLFSJPFitMAprWbHskWlz584qyAjfbbmwXEy5FaxfWWB23YIZ8f7KsQB1XPUWXg9yMiUn0Q1z5qmxAHtAautAQ"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 13,
+        "previous": "sha256:ce93532f53f26e01a171906c161fe27b0fdf39e82480ee4efd485d88cdc648a6",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:0b2f30e8fee25250fe0956164632ce25e3856828ea127d9ffaa68588bcd97e22",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-mandate-revoked",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "mandate has been revoked",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:26.071672Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..Qw6iFb7D6WyOMLIIEpEf2DN4vcJRCd3SGuws8QlqaJbvPOxCYVwTIcrWVdXy6uigBiFASm-FJ89h9k6qNv96Cw"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 14,
+        "previous": "sha256:dacb5d8ec1293fbc58238c73cd837e88e0f7b97ad25bcd4d74376b56cdebc52f",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:0b2f30e8fee25250fe0956164632ce25e3856828ea127d9ffaa68588bcd97e22",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-requester-revoked",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "request authority is not verified: REJECTED",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:26.175307Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..eG1eDkW2fZEQp1z3BDjQOYxi_JCxtwDGy2y9AOVrza81KnXZCseydgqFCiKflhIJm0hPmpCA4PNQ1Iv6COPaDQ"
+    },
+    {
+      "payload": {
+        "schema": "atb-authority-lineage/0.2",
+        "sequence": 15,
+        "previous": "sha256:1ae6168466a3f94eba7f213ce6070050b7e277ab89edddfefd88f8b780b9b9c4",
+        "relationship": "MANDATE",
+        "requester": "urn:atb:e005:agent-a",
+        "executor": "urn:atb:e005:agent-b",
+        "request_authority_receipt_digest": "sha256:15bc3d6bc35f92c19989fabc29f42bda837cf16e4b73ab2d98119fe30fc37c08",
+        "executor_authority_receipt_digest": "sha256:cacac0ed70e074f656e5a48c0ae30a84537fd474bca242a9e2deb14d1d3379ec",
+        "mandate_digest": "sha256:0b2f30e8fee25250fe0956164632ce25e3856828ea127d9ffaa68588bcd97e22",
+        "executor_credential_digest": "sha256:f894a39929adf84eb8d6a62bc771b0caef2a70222cdd9777cee92b27e9fdac5a",
+        "request_id": "request-executor-revoked",
+        "resource": "notion",
+        "action": "archive_page",
+        "target": "notion:page:123",
+        "payload_digest": "sha256:13636043dab2d67eeb3d50d7e8bf83672c7be34794ba3998ac64e80eb07a0849",
+        "decision": "deny",
+        "reason": "executor authority is not verified: REJECTED",
+        "effect_count": 0,
+        "resource_result": null,
+        "recorded_at": "2026-08-12T11:41:26.272507Z"
+      },
+      "proof": "eyJhbGciOiJFZERTQSIsImtpZCI6ImUwMDUtbGVkZ2VyIiwidHlwIjoiYXRiLWxlZGdlcitqd3MifQ..mQfNiwGzlM8ukUCYnAWwwp_ULGP_Y9hx2FL2DA74WXF-5WlTDrUMVOhew2YP7vUiKfB1xCptAmyfTTANP6eqAA"
+    }
+  ],
+  "limits": [
+    "This is an isolated mock-resource proof, not a production Notion integration.",
+    "The authority-lineage schema and mandate profile are experimental and not registered standards.",
+    "The request-authority policy mapping is caller-owned; a receipt cannot decide that its own action label is sufficient.",
+    "The gateway is non-bypassable only because the mock Notion credential exists solely inside it.",
+    "This proves the exercised dual-authority path, not universal enforcement or external interoperability."
+  ]
+}

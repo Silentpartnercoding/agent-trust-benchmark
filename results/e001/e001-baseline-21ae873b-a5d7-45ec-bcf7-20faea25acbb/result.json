@@ -1,0 +1,319 @@
+{
+  "checks": [
+    {
+      "check": "DISTINCT_AGENT_IDENTITY",
+      "detail": "The agent has a distinct identity.",
+      "evidence_refs": [
+        "memory:audit/evt-55655a20-5aa0-448d-8a0c-4e91c37823e4"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "DELEGATION_PROVABLE",
+      "detail": "The human-to-agent delegation is provable.",
+      "evidence_refs": [
+        "memory:audit/evt-f39b17f4-79e4-477e-9246-1aa2b3922f9e"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "SCOPE_VISIBLE",
+      "detail": "The granted preview scope is visible.",
+      "evidence_refs": [
+        "memory:audit/evt-1ce23286-089c-44ab-915b-d3bf0d085a29"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "detail": "The allowed action succeeded exactly once.",
+      "evidence_refs": [
+        "memory:audit/evt-447c50ca-9f48-4793-a978-f2f737c6d8e8"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "detail": "The forbidden action was blocked before effect.",
+      "evidence_refs": [
+        "memory:audit/evt-4a9bfd23-c9da-4471-8aac-a271f1172b16"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "HUMAN_ATTRIBUTION_PROVABLE",
+      "detail": "The action is attributable to the human principal.",
+      "evidence_refs": [
+        "memory:audit/evt-447c50ca-9f48-4793-a978-f2f737c6d8e8",
+        "memory:audit/evt-4a9bfd23-c9da-4471-8aac-a271f1172b16"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "AGENT_ATTRIBUTION_PROVABLE",
+      "detail": "The action is attributable to the verified agent key at the exercised enforcement point.",
+      "evidence_refs": [
+        "memory:audit/evt-447c50ca-9f48-4793-a978-f2f737c6d8e8",
+        "memory:audit/evt-4a9bfd23-c9da-4471-8aac-a271f1172b16"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ACTION_AUDITABLE",
+      "detail": "The action can be reconstructed from audit evidence.",
+      "evidence_refs": [
+        "memory:audit/evt-447c50ca-9f48-4793-a978-f2f737c6d8e8",
+        "memory:audit/evt-4a9bfd23-c9da-4471-8aac-a271f1172b16"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "detail": "The credential or delegation can be revoked.",
+      "evidence_refs": [
+        "memory:audit/evt-9dc15726-608d-49b7-96d1-66aa42619c51"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "detail": "The action was blocked after revocation.",
+      "evidence_refs": [
+        "memory:audit/evt-73bac7f4-aea1-46a7-a868-ee65c58ec937"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "completed_at": "2026-08-11T16:34:04.206428Z",
+  "evidence": [
+    {
+      "action": null,
+      "agent_id": null,
+      "correlation_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": null,
+      "effect_count": 0,
+      "event_type": "human.created",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "human-9967d313-b67a-4284-8c4b-45e8c2aaad2e",
+      "observed_at": "2026-08-11T16:34:04.206244Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-04e9b91c-7b70-4eb0-8453-996ece02a47c",
+      "raw_evidence_ref": "memory:audit/evt-04e9b91c-7b70-4eb0-8453-996ece02a47c",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "agent-05aa85d7-a4fa-441b-bcf5-394706cf7e22",
+      "correlation_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": null,
+      "effect_count": 0,
+      "event_type": "agent.created",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "human-9967d313-b67a-4284-8c4b-45e8c2aaad2e",
+      "observed_at": "2026-08-11T16:34:04.206258Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-55655a20-5aa0-448d-8a0c-4e91c37823e4",
+      "raw_evidence_ref": "memory:audit/evt-55655a20-5aa0-448d-8a0c-4e91c37823e4",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "agent-05aa85d7-a4fa-441b-bcf5-394706cf7e22",
+      "correlation_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": "delegation-bc440625-d88d-46ba-a880-6ea43fb49808",
+      "effect_count": 0,
+      "event_type": "delegation.created",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-9967d313-b67a-4284-8c4b-45e8c2aaad2e",
+      "observed_at": "2026-08-11T16:34:04.206267Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-f39b17f4-79e4-477e-9246-1aa2b3922f9e",
+      "raw_evidence_ref": "memory:audit/evt-f39b17f4-79e4-477e-9246-1aa2b3922f9e",
+      "requested_scopes": [
+        "payments:preview"
+      ],
+      "resource": null,
+      "run_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "agent-05aa85d7-a4fa-441b-bcf5-394706cf7e22",
+      "correlation_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "credential_id": "credential-22e202aa-573b-4b90-aa28-8e1fed655696",
+      "decision": "observe",
+      "delegation_id": "delegation-bc440625-d88d-46ba-a880-6ea43fb49808",
+      "effect_count": 0,
+      "event_type": "credential.issued",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-9967d313-b67a-4284-8c4b-45e8c2aaad2e",
+      "observed_at": "2026-08-11T16:34:04.206323Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-fbc15a4a-07ca-4b15-add6-79fe6c083c4d",
+      "raw_evidence_ref": "memory:audit/evt-fbc15a4a-07ca-4b15-add6-79fe6c083c4d",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "agent-05aa85d7-a4fa-441b-bcf5-394706cf7e22",
+      "correlation_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "credential_id": "credential-22e202aa-573b-4b90-aa28-8e1fed655696",
+      "decision": "observe",
+      "delegation_id": "delegation-bc440625-d88d-46ba-a880-6ea43fb49808",
+      "effect_count": 0,
+      "event_type": "credential.inspected",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-9967d313-b67a-4284-8c4b-45e8c2aaad2e",
+      "observed_at": "2026-08-11T16:34:04.206353Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-1ce23286-089c-44ab-915b-d3bf0d085a29",
+      "raw_evidence_ref": "memory:audit/evt-1ce23286-089c-44ab-915b-d3bf0d085a29",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "preview",
+      "agent_id": "agent-05aa85d7-a4fa-441b-bcf5-394706cf7e22",
+      "correlation_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "credential_id": "credential-22e202aa-573b-4b90-aa28-8e1fed655696",
+      "decision": "allow",
+      "delegation_id": "delegation-bc440625-d88d-46ba-a880-6ea43fb49808",
+      "effect_count": 1,
+      "event_type": "action.allowed",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-9967d313-b67a-4284-8c4b-45e8c2aaad2e",
+      "observed_at": "2026-08-11T16:34:04.206373Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-447c50ca-9f48-4793-a978-f2f737c6d8e8",
+      "raw_evidence_ref": "memory:audit/evt-447c50ca-9f48-4793-a978-f2f737c6d8e8",
+      "requested_scopes": [
+        "payments:preview"
+      ],
+      "resource": "payments",
+      "run_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "execute",
+      "agent_id": "agent-05aa85d7-a4fa-441b-bcf5-394706cf7e22",
+      "correlation_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "credential_id": "credential-22e202aa-573b-4b90-aa28-8e1fed655696",
+      "decision": "deny",
+      "delegation_id": "delegation-bc440625-d88d-46ba-a880-6ea43fb49808",
+      "effect_count": 0,
+      "event_type": "action.denied",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-9967d313-b67a-4284-8c4b-45e8c2aaad2e",
+      "observed_at": "2026-08-11T16:34:04.206388Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-4a9bfd23-c9da-4471-8aac-a271f1172b16",
+      "raw_evidence_ref": "memory:audit/evt-4a9bfd23-c9da-4471-8aac-a271f1172b16",
+      "requested_scopes": [
+        "payments:execute"
+      ],
+      "resource": "payments",
+      "run_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "agent-05aa85d7-a4fa-441b-bcf5-394706cf7e22",
+      "correlation_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "credential_id": "credential-22e202aa-573b-4b90-aa28-8e1fed655696",
+      "decision": "observe",
+      "delegation_id": "delegation-bc440625-d88d-46ba-a880-6ea43fb49808",
+      "effect_count": 0,
+      "event_type": "credential.revoked",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "human-9967d313-b67a-4284-8c4b-45e8c2aaad2e",
+      "observed_at": "2026-08-11T16:34:04.206398Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-9dc15726-608d-49b7-96d1-66aa42619c51",
+      "raw_evidence_ref": "memory:audit/evt-9dc15726-608d-49b7-96d1-66aa42619c51",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "preview",
+      "agent_id": "agent-05aa85d7-a4fa-441b-bcf5-394706cf7e22",
+      "correlation_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "credential_id": "credential-22e202aa-573b-4b90-aa28-8e1fed655696",
+      "decision": "deny",
+      "delegation_id": "delegation-bc440625-d88d-46ba-a880-6ea43fb49808",
+      "effect_count": 0,
+      "event_type": "action.denied",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-9967d313-b67a-4284-8c4b-45e8c2aaad2e",
+      "observed_at": "2026-08-11T16:34:04.206410Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-73bac7f4-aea1-46a7-a868-ee65c58ec937",
+      "raw_evidence_ref": "memory:audit/evt-73bac7f4-aea1-46a7-a868-ee65c58ec937",
+      "requested_scopes": [
+        "payments:preview"
+      ],
+      "resource": "payments",
+      "run_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+      "schema_version": "0.1"
+    }
+  ],
+  "experiment_id": "e001",
+  "limitations": [],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "REVOCATION_LATENCY_MS": 0.016834121197462082,
+    "TOKEN_LIFETIME_SECONDS": 300
+  },
+  "provider": "baseline",
+  "run_id": "e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb",
+  "schema_version": "0.1",
+  "started_at": "2026-08-11T16:34:04.206055Z"
+}
