@@ -2,6 +2,12 @@
 
 Status: **candidate synthetic conformance fixture**
 
+The eight-vector v0.1 corpus is frozen at Git tag
+`authority-relations-v0.1`. Its manifest hash is
+`sha256:ffc2363895a77a62b5673366e334140d2682f436891f570b9bfb321bdfa4ade3`.
+Corrections or semantic changes require a new version; published v0.1 files
+are never rewritten.
+
 ## Invariant
 
 > REQUEST CAUSALITY MUST NOT IMPLY AUTHORITY PROVENANCE.
@@ -87,6 +93,10 @@ PYTHONPATH=src python3 -m agent_trust_benchmark authority-relations \
   --adapter path/to/adapter \
   --output-dir /tmp/authority-relations
 ```
+
+See [the independent adapter guide](docs/AUTHORITY-RELATIONS-ADAPTER.md) for
+the native-engine requirement, frozen-release check, and append-only result
+submission rules.
 
 `delegation_only.py` is intentionally wrong: it treats request causality as
 proof that A delegated to B. `relation_aware.py` derives request and execution

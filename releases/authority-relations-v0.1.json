@@ -1,0 +1,24 @@
+{
+  "schema": "atb-frozen-release/0.1",
+  "suite": "authority-relations-v0.1",
+  "release_tag": "authority-relations-v0.1",
+  "status": "frozen-candidate-conformance",
+  "vector_count": 8,
+  "vector_manifest_hash": "sha256:ffc2363895a77a62b5673366e334140d2682f436891f570b9bfb321bdfa4ade3",
+  "vectors": [
+    {"vector_id": "AR-001-VALID-DELEGATION", "hash": "sha256:355aa82ace9f64d647a2c4d434494724db0174742966b4076741d5614e1c2bef"},
+    {"vector_id": "AR-002-VALID-MANDATE", "hash": "sha256:4e767522aa238431ae5f1caf2766b7a2330d673ecc4bba73a96214e7d11be845"},
+    {"vector_id": "AR-003-UNAUTHORIZED-REQUESTER", "hash": "sha256:97ea4b61f287d85f2b7cdedebb858e6290a03c4620d52a8265dd78892de48cf9"},
+    {"vector_id": "AR-004-UNAUTHORIZED-EXECUTOR", "hash": "sha256:e71a2c13185d8e80df078a47f1322f531833d1804e27a1ef057c00287a1fffb9"},
+    {"vector_id": "AR-005-NO-AUTHORITY", "hash": "sha256:4797248347d7e5d362f4bbdbf067735c86c892613758009e33baf0170ed0b3ef"},
+    {"vector_id": "AR-006-SPOOFED-DELEGATION", "hash": "sha256:5b909e7a81d8ac4788cd2bf6250069fa6626947d519042c0e7c84620b33b0586"},
+    {"vector_id": "AR-007-RELATIONSHIP-MISMATCH", "hash": "sha256:898127ddb7ad75607aca37d838cfe6c6d9dfe7d6733b2d68d50c3d0a8f0d52bd"},
+    {"vector_id": "AR-008-PERMISSIONLESS-REQUEST", "hash": "sha256:ea8543dc68079a24a0fee28695001f68943951b7bb7fd393ef4f800338d2bcbd"}
+  ],
+  "artifacts": {
+    "vector_schema": {"path": "vectors/authority-relations-v0.1/schema.json", "sha256": "sha256:fe122bb781cf9e161abae637c19afd2994f710103161317418f1197d432c261a"},
+    "reference_result": {"path": "results/authority-relations-v0.1/reference/result.json", "sha256": "sha256:13ee78b4b178d9f692f56cf879b7586ff7ff1d5100fd9f30d4a6464fd84e6039"},
+    "reference_summary": {"path": "results/authority-relations-v0.1/reference/SUMMARY.md", "sha256": "sha256:52f820baf3a63bc863b3fc930558e7a08e49f63388c639f91d4a41f9290898ab"}
+  },
+  "change_policy": "Never modify this release or its frozen artifacts. Any semantic, policy, schema, or expected-output change requires a new suite version and tag."
+}
