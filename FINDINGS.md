@@ -17,22 +17,63 @@ Enforcement is solved. **Provenance of human authority is not.**
 
 | Check | Baseline | Keycloak + OPA | ZITADEL + OPA | Okta | Entra |
 |---|---|---|---|---|---|
-| `DISTINCT_AGENT_IDENTITY` | PASS | PASS | PASS | — | — |
-| `DELEGATION_PROVABLE` | PASS | PASS | PASS | — | — |
-| `SCOPE_VISIBLE` | PASS | PASS | PASS | — | — |
-| `ALLOWED_ACTION_SUCCEEDS` | PASS | PASS | PASS | — | — |
-| `FORBIDDEN_ACTION_BLOCKED` | PASS | PASS | PASS | — | — |
-| `HUMAN_ATTRIBUTION_PROVABLE` | PASS | PASS | **FAIL** | — | — |
-| `AGENT_ATTRIBUTION_PROVABLE` | PASS | PASS | PASS | — | — |
-| `ACTION_AUDITABLE` | PASS | PASS | PASS | — | — |
-| `REVOCATION_SUPPORTED` | PASS | PASS | PASS | — | — |
-| `POST_REVOCATION_ACTION_BLOCKED` | PASS | PASS | PASS | — | — |
-| **Revocation latency** | 0.02 ms | **768 ms** | **9 ms** | — | — |
-| Evidence completeness | 100% | 100% | 100% | — | — |
+| `DISTINCT_AGENT_IDENTITY` | PASS | PASS | PASS | PASS | — |
+| `DELEGATION_PROVABLE` | PASS | PASS | PASS | PASS | — |
+| `SCOPE_VISIBLE` | PASS | PASS | PASS | PASS | — |
+| `ALLOWED_ACTION_SUCCEEDS` | PASS | PASS | PASS | PASS | — |
+| `FORBIDDEN_ACTION_BLOCKED` | PASS | PASS | PASS | PASS | — |
+| `HUMAN_ATTRIBUTION_PROVABLE` | PASS | PASS | **FAIL** | PASS* | — |
+| `AGENT_ATTRIBUTION_PROVABLE` | PASS | PASS | PASS | PASS | — |
+| `ACTION_AUDITABLE` | PASS | PASS | PASS | PASS | — |
+| `REVOCATION_SUPPORTED` | PASS | PASS | PASS | PASS | — |
+| `POST_REVOCATION_ACTION_BLOCKED` | PASS | PASS | PASS | PASS | — |
+| **Revocation latency** | 0.02 ms | **768 ms** | **9 ms** | 277 ms† | — |
+| Evidence completeness | 100% | 100% | 100% | 100% | — |
 
 `—` is `BLOCKED_EXTERNAL_ACCESS`: the provider could not be exercised for want of a test
 tenant. It is **not** a failure, and it is deliberately distinct from `NOT_SUPPORTED`.
 Absence is never inferred from an unsearched surface.
+
+### Okta — and what "provable" turns out to mean
+
+Okta passes all ten. Two details matter more than the score.
+
+**Human attribution is reconstructible, not self-contained.** The access token binds both parties —
+`sub`/`uid` name the human, `cid` names the agent client — so the credential the action carries does
+identify who authorized it. But the consent event itself records:
+
+```json
+{ "type": "SystemPrincipal", "alternateId": "system@okta.com", "displayName": "Okta System" }
+```
+
+No user target. The human is recoverable only by correlating `externalSessionId` across the
+session's events, where exactly one `User` actor appears. A relying party holding the consent grant
+alone learns nothing about who approved it. That is marked `PASS*` above.
+
+**The administrator-granted arm could not be constructed at all.** Amendment 1 set out to run the
+same flow twice, differing only in who created the grant, to isolate the variable that separated
+Keycloak from ZITADEL. Okta refused:
+
+```
+POST /api/v1/apps/{id}/grants  →  "scopeId: 'scopeId' is invalid"
+```
+
+That endpoint governs Okta API scopes, not custom authorization server scopes. **There is no
+administrative path to author a user's consent for `payments:preview`.** Okta structurally prevents
+the thing ZITADEL permitted.
+
+This is a stronger result than the amendment predicted, and it also invalidates one of its
+predictions: "every other check will be identical across the arms" is now untestable rather than
+confirmed, because Arm A cannot reach those checks. Recorded rather than dropped.
+
+† Okta's revocation figure measures API acknowledgement, not time-to-proven-block, so it is **not**
+comparable to the Keycloak and ZITADEL latencies above. The post-revocation block was confirmed
+separately: an identical request that redirected straight through before revocation returned the
+consent prompt afterwards.
+
+Okta's forbidden-action refusal is also provider-native — `access_denied`, *"Policy evaluation
+failed"* — rather than produced by a benchmark-owned OPA, so `FORBIDDEN_ACTION_BLOCKED` is not
+strictly comparable across the three either.
 
 ## What the numbers mean
 

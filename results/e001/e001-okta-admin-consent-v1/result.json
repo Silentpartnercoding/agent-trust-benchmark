@@ -1,0 +1,68 @@
+{
+  "schema_version": "e001/v1",
+  "experiment_id": "E001",
+  "provider": "okta-admin-consent",
+  "arm": "A (administrator-granted)",
+  "run_id": "e001-okta-admin-consent-v1",
+  "started_at": "2026-08-18T17:35:00Z",
+  "completed_at": "2026-08-18T17:35:00Z",
+  "checks": [
+    {
+      "check": "DISTINCT_AGENT_IDENTITY",
+      "status": "PASS",
+      "detail": "The agent is a confidential OAuth client with an identity distinct from the human."
+    },
+    {
+      "check": "DELEGATION_PROVABLE",
+      "status": "NOT_SUPPORTED",
+      "detail": "Okta exposes no administrative path to create a user consent grant for a custom authorization server scope. POST /api/v1/apps/{id}/grants governs Okta API scopes and rejected payments:preview with \"scopeId: 'scopeId' is invalid\". An administrator cannot author this human's approval."
+    },
+    {
+      "check": "SCOPE_VISIBLE",
+      "status": "INDETERMINATE",
+      "detail": "Not reached: the arm could not establish a delegation, so no credential was issued and downstream behaviour was not exercised."
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "status": "INDETERMINATE",
+      "detail": "Not reached: the arm could not establish a delegation, so no credential was issued and downstream behaviour was not exercised."
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "status": "INDETERMINATE",
+      "detail": "Not reached: the arm could not establish a delegation, so no credential was issued and downstream behaviour was not exercised."
+    },
+    {
+      "check": "HUMAN_ATTRIBUTION_PROVABLE",
+      "status": "INDETERMINATE",
+      "detail": "Not reached: the arm could not establish a delegation, so no credential was issued and downstream behaviour was not exercised."
+    },
+    {
+      "check": "AGENT_ATTRIBUTION_PROVABLE",
+      "status": "INDETERMINATE",
+      "detail": "Not reached: the arm could not establish a delegation, so no credential was issued and downstream behaviour was not exercised."
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "status": "INDETERMINATE",
+      "detail": "Not reached: the arm could not establish a delegation, so no credential was issued and downstream behaviour was not exercised."
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "status": "INDETERMINATE",
+      "detail": "Not reached: the arm could not establish a delegation, so no credential was issued and downstream behaviour was not exercised."
+    },
+    {
+      "check": "ACTION_AUDITABLE",
+      "status": "PASS",
+      "detail": "The System Log is readable and returned events for the org."
+    }
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 30.0
+  },
+  "limitations": [
+    "This arm did not fail; it could not be constructed. Okta refuses the administrative grant that the arm exists to test.",
+    "Amendment 1 predicted that every check other than HUMAN_ATTRIBUTION_PROVABLE would be identical across the two arms. That prediction is now untestable rather than confirmed, because Arm A cannot reach those checks. It is recorded here rather than dropped."
+  ]
+}
