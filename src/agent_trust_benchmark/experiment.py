@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime, timezone
+from functools import partial
 from typing import Callable
 
 from .adapters import (
@@ -19,12 +20,19 @@ def _iso() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
-ADAPTERS: dict[str, type[ProviderAdapter]] = {
+# Okta and Entra each expose two consent-origin arms; see
+# docs/E001-DELEGATION-FLOW-MAPPING.md, Amendments 1 and 2. The user-consent arm
+# is the result of record for both, so the bare provider name maps to it.
+ADAPTERS: dict[str, Callable[[str], ProviderAdapter]] = {
     "baseline": BaselineAdapter,
     "keycloak-opa": KeycloakOpaAdapter,
     "zitadel-opa": ZitadelOpaAdapter,
-    "okta": OktaAdapter,
-    "entra": EntraAdapter,
+    "okta": partial(OktaAdapter, consent_origin="user"),
+    "okta-user-consent": partial(OktaAdapter, consent_origin="user"),
+    "okta-admin-consent": partial(OktaAdapter, consent_origin="admin"),
+    "entra": partial(EntraAdapter, consent_origin="user"),
+    "entra-user-consent": partial(EntraAdapter, consent_origin="user"),
+    "entra-admin-consent": partial(EntraAdapter, consent_origin="admin"),
 }
 
 
@@ -48,9 +56,12 @@ def _derived(
 def run_e001(provider: str, run_id: str | None = None) -> RunResult:
     if provider not in ADAPTERS:
         raise ValueError(f"unknown provider: {provider}")
-    run_id = run_id or f"e001-{provider}-{uuid.uuid4()}"
     started_at = _iso()
-    adapter = ADAPTERS[provider](run_id)
+    adapter = ADAPTERS[provider](run_id or "pending")
+    # The adapter names its own arm; the registry key is only how it was selected.
+    provider = getattr(adapter, "provider_id", provider) or provider
+    run_id = run_id or f"e001-{provider}-{uuid.uuid4()}"
+    adapter.run_id = run_id
     observations: list[Observation] = []
     try:
         human = adapter.create_human(); observations.append(human)
@@ -80,7 +91,9 @@ def run_e001(provider: str, run_id: str | None = None) -> RunResult:
         definitive = sum(check.status in {Status.PASS, Status.FAIL} for check in checks)
         evidence = adapter.normalize_evidence(observations)
         limitations: list[str] = []
-        if provider in {"okta", "entra"}:
+        # Only true when the surface really could not be exercised. Asserting it on a
+        # configured run would report an unsearched surface where evidence exists.
+        if all(check.status is Status.BLOCKED for check in checks):
             limitations.append("No vendor behavior was tested because required external tenant access was unavailable.")
         if provider == "keycloak-opa":
             limitations.append("Keycloak supplies identity and token evidence; OPA is the benchmark-owned enforcement point.")

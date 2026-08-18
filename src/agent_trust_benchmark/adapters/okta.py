@@ -265,6 +265,8 @@ class OktaAdapter(ProviderAdapter):
             self._ev("token", claims.get("jti", uuid.uuid4().hex), scope=body.get("scope")))
 
     def inspect_credential(self) -> Observation:
+        if self._missing():
+            return self._blocked("inspect_credential")
         if not self.access_token:
             return Observation(Status.INDETERMINATE, "no credential to inspect.")
         c = _decode_claims(self.access_token)
@@ -276,6 +278,8 @@ class OktaAdapter(ProviderAdapter):
             self._ev("token_claims", c.get("jti", "")))
 
     def execute_allowed_action(self) -> Observation:
+        if self._missing():
+            return self._blocked("execute_allowed_action")
         if not self.access_token:
             return Observation(Status.INDETERMINATE, "no credential; allowed action not attempted.")
         scopes = _decode_claims(self.access_token).get("scp") or []
@@ -323,6 +327,8 @@ class OktaAdapter(ProviderAdapter):
                            {"blocked": False, "effect_count": 1})
 
     def revoke(self) -> Observation:
+        if self._missing():
+            return self._blocked("revoke")
         if not self.grant_id:
             return Observation(Status.INDETERMINATE, "no grant recorded to revoke.")
         path = (f"/api/v1/apps/{self.client_id}/grants/{self.grant_id}"
