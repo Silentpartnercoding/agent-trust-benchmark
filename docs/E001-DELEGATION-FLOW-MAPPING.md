@@ -75,3 +75,50 @@ Attribution must come from provider-native audit surfaces — Okta System Log, E
 audit logs — not from the benchmark's own gate observations. Where that surface is unavailable
 under the tenant tier in use, the correct output is `BLOCKED_EXTERNAL_ACCESS` with the tier named,
 not a lower score.
+
+---
+
+## Amendment 1 — the consent-origin arms
+
+**Written before either Okta run exists.**
+
+Configuring the Okta tenant surfaced something the original mapping did not anticipate. Okta's
+consent requirement can be satisfied two ways, and they are not equivalent evidence:
+
+- **Arm A — administrator-granted.** `POST /api/v1/apps/{id}/grants` creates the scope consent
+  grant as an administrator. The flow becomes fully headless.
+- **Arm B — user-consented.** The human authenticates and approves the scope in a browser. Okta
+  records a consent event attributable to that user.
+
+Both produce a token bearing the same scope. They differ only in **who created the grant**.
+
+### Why this is worth running twice
+
+That difference is exactly what separated the two providers already measured. Keycloak passed
+`HUMAN_ATTRIBUTION_PROVABLE`; ZITADEL failed it because the human-to-agent link was
+administrator-authored metadata rather than an interactive consent record. Those were two
+platforms differing in many ways at once, so the mechanism was inferred rather than shown.
+
+Running both arms against **one** platform, holding client, scope, policy, key and enforcement
+point constant, isolates consent origin as the single variable.
+
+### Predicted outcomes, recorded in advance
+
+1. **Arm A fails or is indeterminate on** `HUMAN_ATTRIBUTION_PROVABLE`. The grant names a human
+   as subject, but no evidence attributes the authorization decision to that human — an
+   administrator made it. This is the ZITADEL result reproduced deliberately.
+2. **Arm B passes it**, because Okta records a consent event whose actor is the human.
+3. **Every other check is identical across the arms.** If any other output differs, the arms were
+   not held constant and the comparison is void.
+
+Prediction 3 is the falsifiable one. It is the reason to record both arms rather than assert the
+mechanism.
+
+### Reporting
+
+Arm B is the E001 result of record for Okta, per the original mapping: interactive consent is the
+flow this benchmark treats as a human-to-agent delegation. Arm A is reported alongside it as a
+controlled comparison, not as a second provider score.
+
+Arm B requires a browser step and is therefore not fully headless. That is a reproducibility
+limitation and is recorded in the result, not worked around by substituting Arm A.
