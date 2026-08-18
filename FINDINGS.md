@@ -75,6 +75,41 @@ Okta's forbidden-action refusal is also provider-native — `access_denied`, *"P
 failed"* — rather than produced by a benchmark-owned OPA, so `FORBIDDEN_ACTION_BLOCKED` is not
 strictly comparable across the three either.
 
+### Ory Hydra — and the two axes nobody satisfies
+
+Hydra is not an identity provider. It is a pure OAuth2 server that **delegates login and consent to
+an application the operator writes**, so it was added to answer one question the full IdPs cannot:
+**is the attribution gap a property of OAuth2, or of how the platforms implement it?**
+
+**It is not the protocol.** The token Hydra issued names the human directly — `sub=human-1`, plus
+four custom claims the consent app wrote into `ext`. Putting rich, self-contained human attribution
+into an OAuth2 token was trivial. Okta's decision to record `system@okta.com` as the consent actor
+is a product choice, not a protocol constraint.
+
+**But Hydra's attribution is unverifiable.** Hydra never authenticated anyone. It stored the subject
+string the login app handed it. Nothing in its evidence backs the claim that `human-1` exists, is a
+person, or consented — which is why `HUMAN_ATTRIBUTION_PROVABLE` is `INDETERMINATE` rather than
+PASS or FAIL. The claim is present and unbacked.
+
+That exposes two independent axes that the single check had been conflating:
+
+| Provider | Self-contained? *(is the human in the record the action carries?)* | Verifiable? *(is anything backing it?)* |
+|---|---|---|
+| Keycloak + OPA | yes | partial — Direct Access Grants, recorded as a measurement mechanism |
+| ZITADEL + OPA | **no** — administrator-authored metadata | no |
+| Okta | **no** — consent event names `system@okta.com`; human recoverable only by session correlation | **yes** — MFA-backed interactive sign-in |
+| Ory Hydra | **yes** — `sub` and custom claims in the token | **no** — asserted by the consent app |
+
+**No provider tested satisfies both.** Okta has a real human behind the delegation but does not put
+them in the record. Hydra puts them in the record with nothing behind them.
+
+That is directly relevant to proposals asking for "lineage to a human-signed delegation root": on
+this evidence, none of the exercised systems supply one. The property is not merely unimplemented,
+it is split across two groups of systems that each have half of it.
+
+Hydra was also the only provider to run **fully headless** — no browser, no interactive step. That
+is a consequence of it authenticating nobody, which is the same fact that costs it verifiability.
+
 ## What the numbers mean
 
 **Scope enforcement works.** `FORBIDDEN_ACTION_BLOCKED` passes on every exercised stack: the
