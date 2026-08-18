@@ -122,3 +122,74 @@ controlled comparison, not as a second provider score.
 
 Arm B requires a browser step and is therefore not fully headless. That is a reproducibility
 limitation and is recorded in the result, not worked around by substituting Arm A.
+
+## Amendment 2 — the Entra consent-origin arms
+
+**Written before any Entra E001 run exists.**
+
+Amendment 1 was written while configuring Okta and is specific to it. Entra needs the same
+treatment, and one prediction below is only interesting because Okta already answered it
+differently.
+
+### Prior probe, and why it is not an E001 result
+
+Before this amendment, the Entra tenant was exercised with **client credentials and application
+permissions** to confirm the tenant, app registration, and Graph access worked at all. That probe
+returned a token carrying `roles` and no human claim, and it read the directory audit log
+successfully.
+
+That probe is **not** an E001 delegation run and is not reported as one. The original mapping
+excludes it by name: *"Not exercised as a delegation: app-only tokens and application
+permissions."* It is recorded here so it cannot later be mistaken for a fitted result.
+
+The probe did establish one fact used below: `GET /auditLogs/signIns` returns
+`Authentication_RequestFromNonPremiumTenantOrB2CTenant` on this tenant's licence tier. That is a
+measured access boundary, recorded before the runs rather than discovered during them.
+
+### The two arms
+
+- **Arm A — administrator-granted.** An `OAuth2PermissionGrant` with `consentType: "Principal"`
+  bound to the human principal's object id, created by an administrator through Graph. Fully
+  headless.
+- **Arm B — user-consented.** The human principal authenticates in a browser and approves the
+  delegated scope. Entra records a consent event.
+
+**On the identity of the human principal.** A synthetic fixture user is preferred. The Okta run
+could not use one — the fixture could not satisfy the tenant's MFA policy — and fell back to the
+operator, pseudonymised as `human-1`. The same fallback is anticipated here and is recorded now so
+it is not presented later as a choice made after seeing results. Either way the human is
+pseudonymised in published evidence and the mapping is not published.
+
+As with Okta, both arms hold client, scope, key, and enforcement point constant and differ only in
+who created the grant.
+
+### Predicted outcomes, recorded in advance
+
+1. **Arm A is constructible on Entra, where it was not on Okta.** Okta returned `NOT_SUPPORTED`:
+   its app-grants endpoint governs Okta API scopes only and refused a custom scope, so an
+   administrator could not author a user's approval. Entra's `oauth2PermissionGrants` endpoint is
+   documented to accept exactly that. If this holds, the two dominant enterprise platforms differ
+   on whether administrator-authored consent is expressible at all — a platform-level finding, not
+   a score.
+2. **Arm A fails or is indeterminate on** `HUMAN_ATTRIBUTION_PROVABLE`, reproducing the ZITADEL
+   result deliberately: the grant names a human as principal, but no evidence attributes the
+   authorization decision to that human.
+3. **Arm B passes** `HUMAN_ATTRIBUTION_PROVABLE` if, and only if, the consent event names the
+   human as actor. Okta's did not — it recorded `system@okta.com` and the human was recoverable
+   only by session correlation. Entra is predicted to name the human directly. If it does not,
+   that is the more interesting result.
+4. **`ACTION_AUDITABLE` is predicted `BLOCKED_EXTERNAL_ACCESS` on both arms**, on the measured
+   licence boundary above. Per the status vocabulary this is an access limitation, not
+   `NOT_SUPPORTED`: the interface does not say the capability is absent, it says the tenant may
+   not read it.
+5. **Every other check is identical across the arms.** If any other output differs, the arms were
+   not held constant and the comparison is void.
+
+Predictions 1, 3 and 5 are the falsifiable ones.
+
+### Reporting
+
+Arm B is the E001 result of record for Entra, per the original mapping. Arm A is reported
+alongside it as a controlled comparison, not as a second provider score. Arm B requires a browser
+step and is not fully headless; that is recorded as a reproducibility limitation rather than
+worked around by substituting Arm A.
