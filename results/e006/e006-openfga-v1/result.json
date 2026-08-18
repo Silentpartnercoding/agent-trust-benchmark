@@ -1,0 +1,77 @@
+{
+  "schema_version": "e006/v1",
+  "experiment_id": "E006",
+  "provider": "openfga",
+  "engine_class": "relationship",
+  "model_source": "{\n  \"schema_version\": \"1.1\",\n  \"type_definitions\": [\n    {\n      \"type\": \"user\"\n    },\n    {\n      \"type\": \"organization\",\n      \"relations\": {\n        \"member\": {\n          \"this\": {}\n        }\n      },\n      \"metadata\": {\n        \"relations\": {\n          \"member\": {\n            \"directly_related_user_types\": [\n              {\n                \"type\": \"user\"\n              }\n            ]\n          }\n        }\n      }\n    },\n    {\n      \"type\": \"document\",\n      \"relations\": {\n        \"owner\": {\n          \"this\": {}\n        },\n        \"reader\": {\n          \"tupleToUserset\": {\n            \"tupleset\": {\n              \"relation\": \"owner\"\n            },\n            \"computedUserset\": {\n              \"relation\": \"member\"\n            }\n          }\n        }\n      },\n      \"metadata\": {\n        \"relations\": {\n          \"owner\": {\n            \"directly_related_user_types\": [\n              {\n                \"type\": \"organization\"\n              }\n            ]\n          },\n          \"reader\": {\n            \"directly_related_user_types\": []\n          }\n        }\n      }\n    }\n  ]\n}",
+  "tuples": [
+    {
+      "user": "user:G",
+      "relation": "member",
+      "object": "organization:org-a"
+    },
+    {
+      "user": "organization:org-a",
+      "relation": "owner",
+      "object": "document:doc-a1"
+    },
+    {
+      "user": "organization:org-b",
+      "relation": "owner",
+      "object": "document:doc-b1"
+    }
+  ],
+  "run_id": "e006-openfga-v1",
+  "started_at": "2026-08-18T15:37:53.797219+00:00",
+  "completed_at": "2026-08-18T15:37:53.832021+00:00",
+  "checks": [
+    {
+      "check": "IN_SCOPE_RESOURCE_ALLOWED",
+      "status": "PASS",
+      "detail": "The in-scope resource was permitted via its owning organization."
+    },
+    {
+      "check": "OUT_OF_SCOPE_RESOURCE_BLOCKED",
+      "status": "PASS",
+      "detail": "A document owned by an organization the agent is not a member of was denied."
+    },
+    {
+      "check": "RELATION_PRESENT_IN_DECISION_INPUT",
+      "status": "PASS",
+      "detail": "The object is a required parameter of every check; a decision cannot be requested without naming the resource, so the relation is structurally an input."
+    },
+    {
+      "check": "RELATION_EVALUATED_NOT_ASSUMED",
+      "status": "PASS",
+      "detail": "The denial is attributable to the absent owner->member path, and no decision can bypass the resource."
+    },
+    {
+      "check": "SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION",
+      "status": "PASS",
+      "detail": "Substituting the document identifier changed the owning organization and the decision flipped to deny."
+    }
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "RELATION_DEPTH_EVALUATED": 2
+  },
+  "evidence": [
+    {
+      "raw_evidence_ref": "openfga:check/7ed9c5f4-704c-40f1-8930-795a4be68101",
+      "kind": "engine_decision",
+      "object": "document:doc-a1",
+      "allowed": true
+    },
+    {
+      "raw_evidence_ref": "openfga:check/572406a4-05f4-4c74-b84b-4ea1b1e7cafb",
+      "kind": "engine_decision",
+      "object": "document:doc-b1",
+      "allowed": false
+    }
+  ],
+  "limitations": [
+    "Exercises an authorization model authored for this benchmark against OpenFGA, not a vendor's production deployment.",
+    "In a relationship engine the decision layer cannot omit the resource, so the action-only failure mode E006 was designed to detect does not arise here. The corresponding risk in this engine class is over-broad tuple issuance \u2014 granting a relation more widely than intended \u2014 which E006 does not exercise.",
+    "Single-level organization membership. Nested or inherited ownership is not exercised."
+  ]
+}

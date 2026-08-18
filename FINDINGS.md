@@ -96,6 +96,38 @@ Two checks exist to keep a pass honest:
 Each run records its `policy_source` verbatim, so a weak policy is visible as a finding about
 expressiveness rather than something silently corrected.
 
+### Engine class changes what can go wrong
+
+Adding OpenFGA — a relationship engine rather than a policy engine — produces the more
+interesting result:
+
+| | `opa::action-only` | `opa::relation-aware` | `openfga` |
+|---|---|---|---|
+| Engine class | policy | policy | relationship |
+| `IN_SCOPE_RESOURCE_ALLOWED` | PASS | PASS | PASS |
+| `OUT_OF_SCOPE_RESOURCE_BLOCKED` | **FAIL** | PASS | PASS |
+| `RELATION_PRESENT_IN_DECISION_INPUT` | **FAIL** | PASS | PASS |
+| `RELATION_EVALUATED_NOT_ASSUMED` | **FAIL** | PASS | PASS |
+| `SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION` | **FAIL** | PASS | PASS |
+
+The two OPA rows are the same engine. The difference between them is entirely how the policy was
+written — "check the action and ignore the resource" is a policy a person can author, and nothing
+in the engine objects.
+
+OpenFGA's pass is a different kind of pass. **The object is a required parameter of every check.**
+A decision request naming no resource is rejected as a validation error, so the action-only
+mistake cannot be expressed at the decision layer at all. That is not a well-authored model; it is
+a property of the engine.
+
+So the useful question for a standards body is not *which engine is secure*. It is **which engines
+make the insecure pattern hard to write.** A policy engine can express either and the outcome
+rests on review. A relationship engine cannot express the failure E006 detects.
+
+That is not a clean win for relationship engines, and the result records why: the corresponding
+risk in that class is **over-broad tuple issuance** — granting a relation more widely than intended
+— which moves the failure from the decision layer to grant administration. E006 does not exercise
+that, and the OpenFGA result says so in its limitations.
+
 Preregistration: [`docs/E006.md`](docs/E006.md). Runs: [`results/e006/`](results/e006/).
 
 ## Also measured
