@@ -110,6 +110,43 @@ it is split across two groups of systems that each have half of it.
 Hydra was also the only provider to run **fully headless** — no browser, no interactive step. That
 is a consequence of it authenticating nobody, which is the same fact that costs it verifiability.
 
+### Auth0 — the first hard failure, and a consent dialog that says nothing
+
+*Auth0 is owned by Okta. It is not an independent second vendor and is not counted as one.*
+
+**`POST_REVOCATION_ACTION_BLOCKED` — FAIL.** After the grant was revoked (HTTP 204, grant list
+confirmed empty), the previously issued access token was **still accepted by Auth0's own
+`/userinfo` endpoint**, returning the subject. Revoking a grant prevents new tokens; it does not
+invalidate outstanding ones. This was exercised against a live endpoint, not inferred from the
+token's format.
+
+Every other provider blocked here — Keycloak by a realm-wide not-before, ZITADEL by online
+introspection, Okta by requiring re-consent. Auth0 did not.
+
+**The forbidden-scope path fails differently from Okta's, and the difference is instructive.**
+
+| | Okta | Auth0 |
+|---|---|---|
+| Undelegated scope requested | refused, `access_denied` | token issued |
+| What the human saw | an error page | a consent dialog **listing no scopes at all** |
+| Outcome | nothing issued | scope silently stripped to `openid` |
+
+Auth0 does prevent the capability — `payments:execute` is absent from the token, so no effect is
+possible, and the check passes. But a human was asked to approve a blank scope list, and neither
+the human nor the client was told the request had been downgraded. A caller that trusts its own
+request would believe it holds a scope it does not.
+
+The same run also produced two claims that disagree: `scope` was `openid` while `permissions` was
+`['payments:preview']` — a scope never requested in that flow.
+
+**On attribution, Auth0 is better than Okta.** The tenant log names the human directly on both the
+login and the code-for-token exchange, so no cross-event correlation is needed.
+
+**On auditability, it is worse.** Enumerating every log type in the tenant produced **no
+consent-specific event**. A consent dialog was displayed and approved by a human, the grant object
+exists — and nothing attests that the approval happened or when. The action is auditable; the
+authorization decision is not.
+
 ## What the numbers mean
 
 **Scope enforcement works.** `FORBIDDEN_ACTION_BLOCKED` passes on every exercised stack: the
