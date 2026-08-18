@@ -1,0 +1,8 @@
+[
+  {"uid":{"type":"User","id":"G"},"attrs":{},"parents":[]},
+  {"uid":{"type":"Organization","id":"org-a"},"attrs":{},"parents":[]},
+  {"uid":{"type":"Organization","id":"org-b"},"attrs":{},"parents":[]},
+  {"uid":{"type":"Document","id":"doc-a1"},"attrs":{"owner":{"__entity":{"type":"Organization","id":"org-a"}}},"parents":[]},
+  {"uid":{"type":"Document","id":"doc-b1"},"attrs":{"owner":{"__entity":{"type":"Organization","id":"org-b"}}},"parents":[]},
+  {"uid":{"type":"Action","id":"read"},"attrs":{},"parents":[]}
+]

@@ -1,0 +1,65 @@
+{
+  "schema_version": "e006/v1",
+  "experiment_id": "E006",
+  "provider": "spicedb",
+  "engine_class": "relationship",
+  "schema_source": "definition user {}\n\ndefinition organization {\n\trelation member: user\n}\n\ndefinition document {\n\trelation owner: organization\n\tpermission read = owner->member\n}",
+  "relationships": [
+    "organization:org-a#member@user:G",
+    "document:doc-a1#owner@organization:org-a",
+    "document:doc-b1#owner@organization:org-b"
+  ],
+  "run_id": "e006-spicedb-v1",
+  "started_at": "2026-08-18T15:46:45.683590+00:00",
+  "completed_at": "2026-08-18T15:46:45.712805+00:00",
+  "checks": [
+    {
+      "check": "IN_SCOPE_RESOURCE_ALLOWED",
+      "status": "PASS",
+      "detail": "The in-scope document resolved to HAS_PERMISSION through its owning organization."
+    },
+    {
+      "check": "OUT_OF_SCOPE_RESOURCE_BLOCKED",
+      "status": "PASS",
+      "detail": "A document owned by another organization resolved to NO_PERMISSION."
+    },
+    {
+      "check": "RELATION_PRESENT_IN_DECISION_INPUT",
+      "status": "PASS",
+      "detail": "The resource is a required field; a check omitting it is rejected as a validation error, so the relation is structurally an input to every decision."
+    },
+    {
+      "check": "RELATION_EVALUATED_NOT_ASSUMED",
+      "status": "PASS",
+      "detail": "The denial is attributable to the absent owner->member path, and no check can bypass the resource."
+    },
+    {
+      "check": "SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION",
+      "status": "PASS",
+      "detail": "Substituting the document identifier changed the owning organization and the permission resolved to NO_PERMISSION."
+    }
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "RELATION_DEPTH_EVALUATED": 2
+  },
+  "evidence": [
+    {
+      "raw_evidence_ref": "spicedb:check/1efd1ec6-6aaf-46b0-937b-a3c8a9bc94e8",
+      "kind": "engine_decision",
+      "resource": "document:doc-a1",
+      "permissionship": "PERMISSIONSHIP_HAS_PERMISSION"
+    },
+    {
+      "raw_evidence_ref": "spicedb:check/28406a5b-716b-4de2-9877-c20c918f7a03",
+      "kind": "engine_decision",
+      "resource": "document:doc-b1",
+      "permissionship": "PERMISSIONSHIP_NO_PERMISSION"
+    }
+  ],
+  "limitations": [
+    "Exercises a schema authored for this benchmark against SpiceDB, not a vendor's production deployment.",
+    "As with OpenFGA, the decision layer cannot omit the resource, so the action-only failure mode does not arise. The corresponding risk in this engine class is over-broad relationship issuance, which E006 does not exercise.",
+    "Single-level organization membership. Nested or inherited ownership is not exercised."
+  ]
+}

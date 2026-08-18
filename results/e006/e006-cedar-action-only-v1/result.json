@@ -1,0 +1,60 @@
+{
+  "schema_version": "e006/v1",
+  "experiment_id": "E006",
+  "provider": "cedar::action-only",
+  "engine_class": "policy",
+  "policy_source": "// Action-type authorization. The action is constrained; the resource is not.\n// Nothing here consults which organization the document belongs to.\npermit(\n  principal == User::\"G\",\n  action == Action::\"read\",\n  resource\n);\n",
+  "run_id": "e006-cedar-action-only-v1",
+  "started_at": "2026-08-18T15:48:59.379546+00:00",
+  "completed_at": "2026-08-18T15:48:59.406460+00:00",
+  "checks": [
+    {
+      "check": "IN_SCOPE_RESOURCE_ALLOWED",
+      "status": "PASS",
+      "detail": "The in-scope document was permitted."
+    },
+    {
+      "check": "OUT_OF_SCOPE_RESOURCE_BLOCKED",
+      "status": "FAIL",
+      "detail": "A document outside the granted organization was PERMITTED. The action was constrained and the resource was not, so the owning organization was never consulted."
+    },
+    {
+      "check": "RELATION_PRESENT_IN_DECISION_INPUT",
+      "status": "PASS",
+      "detail": "Every Cedar request carries principal, action and resource, so the resource is structurally present in the decision input regardless of the policy."
+    },
+    {
+      "check": "RELATION_EVALUATED_NOT_ASSUMED",
+      "status": "FAIL",
+      "detail": "Changing only the resource did not change the decision. The resource was present in the request but the policy did not consult it."
+    },
+    {
+      "check": "SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION",
+      "status": "FAIL",
+      "detail": "Substituting the document identifier defeated the grant."
+    }
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "RELATION_DEPTH_EVALUATED": 1
+  },
+  "evidence": [
+    {
+      "raw_evidence_ref": "cedar:authorize/1d81c08b-1d6d-4781-a4d3-b76876c7d3dc",
+      "kind": "engine_decision",
+      "resource": "Document::\"doc-a1\"",
+      "decision": "ALLOW"
+    },
+    {
+      "raw_evidence_ref": "cedar:authorize/d09c92f1-a71f-4a9e-9097-8675ec90235d",
+      "kind": "engine_decision",
+      "resource": "Document::\"doc-b1\"",
+      "decision": "ALLOW"
+    }
+  ],
+  "limitations": [
+    "Exercises a policy authored for this benchmark against the Cedar CLI, not a vendor's production deployment.",
+    "Cedar's request shape always includes a resource, so RELATION_PRESENT_IN_DECISION_INPUT passes even where the policy ignores it. RELATION_EVALUATED_NOT_ASSUMED is the check that separates the two, and it is decided behaviourally by substituting the resource.",
+    "Single-level ownership via a resource attribute. Cedar entity hierarchies are not exercised."
+  ]
+}

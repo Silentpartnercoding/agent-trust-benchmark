@@ -98,35 +98,55 @@ expressiveness rather than something silently corrected.
 
 ### Engine class changes what can go wrong
 
-Adding OpenFGA — a relationship engine rather than a policy engine — produces the more
-interesting result:
+Four engines, two classes. Each row is one check; each column is one policy or model.
 
-| | `opa::action-only` | `opa::relation-aware` | `openfga` |
-|---|---|---|---|
-| Engine class | policy | policy | relationship |
-| `IN_SCOPE_RESOURCE_ALLOWED` | PASS | PASS | PASS |
-| `OUT_OF_SCOPE_RESOURCE_BLOCKED` | **FAIL** | PASS | PASS |
-| `RELATION_PRESENT_IN_DECISION_INPUT` | **FAIL** | PASS | PASS |
-| `RELATION_EVALUATED_NOT_ASSUMED` | **FAIL** | PASS | PASS |
-| `SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION` | **FAIL** | PASS | PASS |
+| | `opa::action-only` | `opa::relation-aware` | `cedar::action-only` | `cedar::relation-aware` | `openfga` | `spicedb` |
+|---|---|---|---|---|---|---|
+| Engine class | policy | policy | policy | policy | relationship | relationship |
+| `IN_SCOPE_RESOURCE_ALLOWED` | PASS | PASS | PASS | PASS | PASS | PASS |
+| `OUT_OF_SCOPE_RESOURCE_BLOCKED` | **FAIL** | PASS | **FAIL** | PASS | PASS | PASS |
+| `RELATION_PRESENT_IN_DECISION_INPUT` | **FAIL** | PASS | PASS | PASS | PASS | PASS |
+| `RELATION_EVALUATED_NOT_ASSUMED` | **FAIL** | PASS | **FAIL** | PASS | PASS | PASS |
+| `SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION` | **FAIL** | PASS | **FAIL** | PASS | PASS | PASS |
 
-The two OPA rows are the same engine. The difference between them is entirely how the policy was
-written — "check the action and ignore the resource" is a policy a person can author, and nothing
-in the engine objects.
+**In both policy engines the insecure version is authorable.** OPA and Cedar each appear twice
+because the engine permits either policy; the difference between the columns is a person, not the
+engine. `permit(principal == User::"G", action == Action::"read", resource)` is four lines of
+ordinary Cedar and it grants read over every document in the system.
 
-OpenFGA's pass is a different kind of pass. **The object is a required parameter of every check.**
-A decision request naming no resource is rejected as a validation error, so the action-only
-mistake cannot be expressed at the decision layer at all. That is not a well-authored model; it is
-a property of the engine.
+**In both relationship engines it is not.** A check omitting the resource is rejected before
+evaluation — OpenFGA returns `invalid CheckRequestTupleKey.Object`, SpiceDB returns
+`validation error: resource: value is required`. The failure E006 detects cannot be expressed at
+the decision layer. Two independent vendors, so this is a property of the class rather than of one
+API.
 
-So the useful question for a standards body is not *which engine is secure*. It is **which engines
-make the insecure pattern hard to write.** A policy engine can express either and the outcome
-rests on review. A relationship engine cannot express the failure E006 detects.
+### The most informative cell
 
-That is not a clean win for relationship engines, and the result records why: the corresponding
-risk in that class is **over-broad tuple issuance** — granting a relation more widely than intended
-— which moves the failure from the decision layer to grant administration. E006 does not exercise
-that, and the OpenFGA result says so in its limitations.
+`cedar::action-only` is the one to read closely: `RELATION_PRESENT_IN_DECISION_INPUT` **passes**
+while `RELATION_EVALUATED_NOT_ASSUMED` **fails**.
+
+Cedar's request shape always carries principal, action and resource, so the resource is present in
+every decision. The policy simply never consults it. That is the precise anatomy of the
+vulnerability — *the data was there and nothing looked at it* — and it is visible only because the
+two checks are kept apart. A benchmark reporting "was the resource in the request?" would score
+this policy as safe.
+
+The contrast with `opa::action-only`, which fails both, is also real: in Rego the decision input is
+whatever the policy author constructs, so an action-only policy need not receive the resource's
+organization at all. Present-and-ignored and never-supplied are different defects with the same
+outcome.
+
+### What this does and does not say
+
+It does **not** say relationship engines are secure. The corresponding risk in that class is
+over-broad relationship issuance — granting a relation more widely than intended — which moves the
+failure from decision logic to grant administration. **E006 does not exercise that**, and both
+relationship results record the gap in their limitations.
+
+What it says is narrower and more useful to a standards body: **the insecure pattern is authorable
+in policy engines and unauthorable in relationship engines.** Where the pattern is authorable, the
+control is policy review, and a conformance requirement should say so rather than assuming the
+engine prevents it.
 
 Preregistration: [`docs/E006.md`](docs/E006.md). Runs: [`results/e006/`](results/e006/).
 
