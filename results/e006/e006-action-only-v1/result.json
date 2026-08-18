@@ -1,0 +1,65 @@
+{
+  "schema_version": "e006/v1",
+  "experiment_id": "E006",
+  "provider": "opa::action-only",
+  "policy_source": "package e006\n\n# Action-type authorization. The grant names an action; the decision checks that\n# the action was granted. The resource's organization is never consulted.\n#\n# This is the shape that produces cross-tenant IDOR: every record reads in-scope\n# because the action WAS granted. The predicate simply never bound the resource.\n\ndefault allow := false\n\nallow if {\n    input.token_active == true\n    input.agent_id != \"\"\n    input.delegation_id != \"\"\n    input.action == \"documents:read\"\n    \"documents_read\" in input.roles\n}\n\ndecision := {\n    \"allow\": allow,\n    \"evaluated\": [\"token_active\", \"agent_id\", \"delegation_id\", \"action\", \"roles\"],\n    \"resource_org_consulted\": false,\n    \"policy_revision\": \"e006-action-only\",\n}\n",
+  "run_id": "e006-action-only-v1",
+  "started_at": "2026-08-18T15:29:03.977097+00:00",
+  "completed_at": "2026-08-18T15:29:04.616627+00:00",
+  "checks": [
+    {
+      "check": "IN_SCOPE_RESOURCE_ALLOWED",
+      "status": "PASS",
+      "detail": "The in-scope resource was permitted."
+    },
+    {
+      "check": "OUT_OF_SCOPE_RESOURCE_BLOCKED",
+      "status": "FAIL",
+      "detail": "A resource outside the granted organization was PERMITTED. The action type was granted and the relation was never bound, so every record reads in-scope."
+    },
+    {
+      "check": "RELATION_PRESENT_IN_DECISION_INPUT",
+      "status": "FAIL",
+      "detail": "resource_org_consulted=False; evaluated inputs: ['token_active', 'agent_id', 'delegation_id', 'action', 'roles']"
+    },
+    {
+      "check": "RELATION_EVALUATED_NOT_ASSUMED",
+      "status": "FAIL",
+      "detail": "The decision did not consult the resource's organization."
+    },
+    {
+      "check": "SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION",
+      "status": "FAIL",
+      "detail": "Substituting the resource identifier defeated the grant."
+    }
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "RELATION_DEPTH_EVALUATED": 0
+  },
+  "evidence": [
+    {
+      "raw_evidence_ref": "opa:eval/fa8db6f3-2d04-42b9-97e1-e7daf0dd959e",
+      "kind": "engine_decision",
+      "policy_revision": "e006-action-only",
+      "allow": true
+    },
+    {
+      "raw_evidence_ref": "opa:eval/2b03f322-c639-432d-a654-0a0dd993ffbb",
+      "kind": "engine_decision",
+      "policy_revision": "e006-action-only",
+      "allow": true
+    },
+    {
+      "raw_evidence_ref": "opa:eval/0c7230a7-1565-45b1-8417-904ae4aa6f9b",
+      "kind": "engine_decision",
+      "policy_revision": "e006-action-only",
+      "allow": true
+    }
+  ],
+  "limitations": [
+    "Exercises a policy authored for this benchmark against the OPA evaluator, not a vendor's production authorization deployment.",
+    "The policy is recorded verbatim; a weaker policy is a finding about expressiveness, not an error to be silently corrected.",
+    "Single-level organization membership. Nested or inherited relations are not exercised."
+  ]
+}

@@ -87,6 +87,16 @@ of production Notion integration or universal enforcement.
 
 ## Candidate authority-relation conformance pack
 
+[E006](docs/E006.md) inverts E001's axis. E001 varies the action and holds the
+resource fixed; E006 holds the action fixed and varies the resource, asking
+whether an enforcement point verifies the *relation* a grant is scoped by
+("documents belonging to org A") or only that the action type was granted. An
+engine that checks only the action type permits an out-of-scope resource while
+every record still reads in-scope — the cross-tenant IDOR class. Two contrasting
+policies are run to show the experiment discriminates: an action-only policy
+fails four of five checks, a relation-aware policy passes all five, and **both
+would pass E001**.
+
 [Authority Relations v0.1](AUTHORITY-RELATIONS-NOTE.md) turns the E005
 distinction into eight provider-neutral black-box vectors. It tests whether an
 implementation derives authority from evidence, keeps request causality

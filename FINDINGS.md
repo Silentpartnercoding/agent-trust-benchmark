@@ -61,6 +61,43 @@ relying party actually wants: proof that a particular human authorized this exac
 Neither is a free lunch: one is coarse, the other requires a live call on every action. A
 system needing fine-grained revocation *and* offline verification is not served by either.
 
+## E006 — Predicate boundary enforcement
+
+E001 varies the **action** and holds the resource fixed. E006 does the reverse: both requests
+are `documents:read` against a document, and only the relation between the resource and the
+granted organization differs. This is the cross-tenant IDOR / BOLA class — the failure that
+after-the-fact lineage verification cannot detect, because the recorded authorization and the
+performed action agree. The predicate was wrong, not the record.
+
+Two policies, one binding the resource's organization to the grant and one checking only that
+the action type was granted:
+
+| Check | `action-only` | `relation-aware` |
+|---|---|---|
+| `IN_SCOPE_RESOURCE_ALLOWED` | PASS | PASS |
+| `OUT_OF_SCOPE_RESOURCE_BLOCKED` | **FAIL** | PASS |
+| `RELATION_PRESENT_IN_DECISION_INPUT` | **FAIL** | PASS |
+| `RELATION_EVALUATED_NOT_ASSUMED` | **FAIL** | PASS |
+| `SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION` | **FAIL** | PASS |
+
+**Both policies would pass E001.** The action-only policy correctly grants `documents:read` and
+correctly denies `documents:write` — action-axis scope is intact. E001 cannot observe this
+failure at all. That is the point of E006, and it is a claim about action-scoped authorization
+testing generally, not about any one engine.
+
+Two checks exist to keep a pass honest:
+
+- `RELATION_EVALUATED_NOT_ASSUMED` — a denial counts as relation enforcement only where the
+  decision surface shows the relation was an input. An engine that denies for an unrelated
+  reason and exposes no decision input is `INDETERMINATE`, not `PASS`.
+- `SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION` — the adversarial form, identical request with only
+  the resource identifier changed. Catches an engine enforcing something other than the relation.
+
+Each run records its `policy_source` verbatim, so a weak policy is visible as a finding about
+expressiveness rather than something silently corrected.
+
+Preregistration: [`docs/E006.md`](docs/E006.md). Runs: [`results/e006/`](results/e006/).
+
 ## Also measured
 
 - **E002** — human-authorization receipt binding (Keycloak, ZITADEL)
@@ -68,6 +105,8 @@ system needing fine-grained revocation *and* offline verification is not served 
 - **Authority Relations v0.1** — eight provider-neutral conformance vectors testing whether an
   implementation distinguishes *request causality* from *authority provenance*
   ([frozen release](results/authority-relations-v0.1/))
+
+Narrative detail for E001 is in [`docs/E001-FINDINGS.md`](docs/E001-FINDINGS.md).
 
 ## Method
 

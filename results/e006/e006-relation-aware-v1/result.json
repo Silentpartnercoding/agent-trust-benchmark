@@ -1,0 +1,65 @@
+{
+  "schema_version": "e006/v1",
+  "experiment_id": "E006",
+  "provider": "opa::relation-aware",
+  "policy_source": "package e006\n\n# Relation-scoped authorization. The grant names an action AND an organization.\n# The decision requires the requested resource to belong to that organization.\n#\n# The identifier is not sufficient on its own: substituting another document's\n# identifier changes input.resource_org and the decision flips to deny.\n\ndefault allow := false\n\nallow if {\n    input.token_active == true\n    input.agent_id != \"\"\n    input.delegation_id != \"\"\n    input.action == \"documents:read\"\n    \"documents_read\" in input.roles\n    input.resource_org != \"\"\n    input.resource_org == input.grant_org\n}\n\ndecision := {\n    \"allow\": allow,\n    \"evaluated\": [\"token_active\", \"agent_id\", \"delegation_id\", \"action\", \"roles\", \"resource_org\", \"grant_org\"],\n    \"resource_org_consulted\": true,\n    \"resource_org\": input.resource_org,\n    \"grant_org\": input.grant_org,\n    \"policy_revision\": \"e006-relation-aware\",\n}\n",
+  "run_id": "e006-relation-aware-v1",
+  "started_at": "2026-08-18T15:29:04.617241+00:00",
+  "completed_at": "2026-08-18T15:29:05.293182+00:00",
+  "checks": [
+    {
+      "check": "IN_SCOPE_RESOURCE_ALLOWED",
+      "status": "PASS",
+      "detail": "The in-scope resource was permitted."
+    },
+    {
+      "check": "OUT_OF_SCOPE_RESOURCE_BLOCKED",
+      "status": "PASS",
+      "detail": "A resource outside the granted organization was blocked before effect."
+    },
+    {
+      "check": "RELATION_PRESENT_IN_DECISION_INPUT",
+      "status": "PASS",
+      "detail": "resource_org_consulted=True; evaluated inputs: ['token_active', 'agent_id', 'delegation_id', 'action', 'roles', 'resource_org', 'grant_org']"
+    },
+    {
+      "check": "RELATION_EVALUATED_NOT_ASSUMED",
+      "status": "PASS",
+      "detail": "The denial is attributable to the resource/grant organization comparison."
+    },
+    {
+      "check": "SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION",
+      "status": "PASS",
+      "detail": "Substituting the resource identifier did not defeat the grant."
+    }
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "RELATION_DEPTH_EVALUATED": 1
+  },
+  "evidence": [
+    {
+      "raw_evidence_ref": "opa:eval/e91eaf41-5119-4eca-b477-1a956fc647d4",
+      "kind": "engine_decision",
+      "policy_revision": "e006-relation-aware",
+      "allow": true
+    },
+    {
+      "raw_evidence_ref": "opa:eval/639cf182-09de-4fb2-b420-f59bf1bff963",
+      "kind": "engine_decision",
+      "policy_revision": "e006-relation-aware",
+      "allow": false
+    },
+    {
+      "raw_evidence_ref": "opa:eval/a8bcaa73-6b0b-42c6-99f0-a93a6d57a224",
+      "kind": "engine_decision",
+      "policy_revision": "e006-relation-aware",
+      "allow": false
+    }
+  ],
+  "limitations": [
+    "Exercises a policy authored for this benchmark against the OPA evaluator, not a vendor's production authorization deployment.",
+    "The policy is recorded verbatim; a weaker policy is a finding about expressiveness, not an error to be silently corrected.",
+    "Single-level organization membership. Nested or inherited relations are not exercised."
+  ]
+}
