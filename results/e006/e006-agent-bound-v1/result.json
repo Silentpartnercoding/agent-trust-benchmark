@@ -1,0 +1,87 @@
+{
+  "schema_version": "e006/v1",
+  "experiment_id": "E006",
+  "provider": "opa::agent-bound",
+  "policy_source": "package e006\n\n# relation-aware, plus the binding it was missing.\n#\n# The organization is taken from the grant, not from the caller, so this inherits\n# the Amendment 1 property. It additionally requires that the agent presenting the\n# delegation is the agent the delegation was issued to.\n#\n# Without that last line, a delegation is a bearer credential: any agent that\n# knows a delegation id inherits its authority, and every other check still reads\n# green because agent_id is present in the input and is evaluated.\n\ndefault allow := false\n\nallow if {\n    input.token_active == true\n    input.agent_id != \"\"\n    input.delegation_id != \"\"\n    input.agent_id == input.delegation_agent\n    input.action == \"documents:read\"\n    \"documents_read\" in input.roles\n    input.resource_org != \"\"\n    input.resource_org == input.grant_org\n}\n\ndecision := {\n    \"allow\": allow,\n    \"evaluated\": [\"token_active\", \"agent_id\", \"delegation_id\", \"delegation_agent\", \"action\", \"roles\", \"resource_org\", \"grant_org\"],\n    \"resource_org_consulted\": true,\n    \"resource_org\": input.resource_org,\n    \"grant_org\": input.grant_org,\n    \"asserted_org\": input.asserted_org,\n    \"delegation_agent\": input.delegation_agent,\n    \"agent_bound\": input.agent_id == input.delegation_agent,\n    \"relation_source\": \"grant\",\n    \"policy_revision\": \"e006-agent-bound\",\n}\n",
+  "run_id": "e006-agent-bound-v1",
+  "started_at": "2026-08-19T13:28:29.413261+00:00",
+  "completed_at": "2026-08-19T13:28:30.475945+00:00",
+  "checks": [
+    {
+      "check": "IN_SCOPE_RESOURCE_ALLOWED",
+      "status": "PASS",
+      "detail": "The in-scope resource was permitted."
+    },
+    {
+      "check": "OUT_OF_SCOPE_RESOURCE_BLOCKED",
+      "status": "PASS",
+      "detail": "A resource outside the granted organization was blocked before effect."
+    },
+    {
+      "check": "RELATION_PRESENT_IN_DECISION_INPUT",
+      "status": "PASS",
+      "detail": "resource_org_consulted=True; evaluated inputs: ['token_active', 'agent_id', 'delegation_id', 'delegation_agent', 'action', 'roles', 'resource_org', 'grant_org']"
+    },
+    {
+      "check": "RELATION_EVALUATED_NOT_ASSUMED",
+      "status": "PASS",
+      "detail": "The denial is attributable to the resource/grant organization comparison."
+    },
+    {
+      "check": "SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION",
+      "status": "PASS",
+      "detail": "Substituting the resource identifier did not defeat the grant."
+    },
+    {
+      "check": "RELATION_INPUT_NOT_CALLER_CONTROLLED",
+      "status": "PASS",
+      "detail": "Asserting the target's organization did not change the decision; the relation input is not caller-controlled."
+    },
+    {
+      "check": "DELEGATION_BOUND_TO_AGENT",
+      "status": "PASS",
+      "detail": "An agent the delegation does not name was refused. The delegation is bound to its agent."
+    }
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "RELATION_DEPTH_EVALUATED": 1
+  },
+  "evidence": [
+    {
+      "raw_evidence_ref": "opa:eval/33f656af-1f1c-4d3c-9f90-7dcd910aa344",
+      "kind": "engine_decision",
+      "policy_revision": "e006-agent-bound",
+      "allow": true
+    },
+    {
+      "raw_evidence_ref": "opa:eval/98cb3a4d-409a-4337-bcfa-65569d6fbb30",
+      "kind": "engine_decision",
+      "policy_revision": "e006-agent-bound",
+      "allow": false
+    },
+    {
+      "raw_evidence_ref": "opa:eval/bdbcd3fe-867f-46ba-ae03-7d2dfb70251e",
+      "kind": "engine_decision",
+      "policy_revision": "e006-agent-bound",
+      "allow": false
+    },
+    {
+      "raw_evidence_ref": "opa:eval/33a20543-27c4-4300-9832-39c870b2dfa9",
+      "kind": "engine_decision",
+      "policy_revision": "e006-agent-bound",
+      "allow": false
+    },
+    {
+      "raw_evidence_ref": "opa:eval/d1e58102-9a61-4085-a857-eab57d3072fd",
+      "kind": "engine_decision",
+      "policy_revision": "e006-agent-bound",
+      "allow": false
+    }
+  ],
+  "limitations": [
+    "Exercises a policy authored for this benchmark against the OPA evaluator, not a vendor's production authorization deployment.",
+    "The policy is recorded verbatim; a weaker policy is a finding about expressiveness, not an error to be silently corrected.",
+    "Single-level organization membership. Nested or inherited relations are not exercised."
+  ]
+}

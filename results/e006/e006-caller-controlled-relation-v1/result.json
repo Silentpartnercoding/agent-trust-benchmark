@@ -4,8 +4,8 @@
   "provider": "opa::caller-controlled-relation",
   "policy_source": "package e006\n\n# Relation-scoped authorization where the organization compared against is taken\n# from the request rather than from the grant.\n#\n# This is identical to relation-aware in every respect that E006's original five\n# checks can observe. The relation is present in the decision input, it is\n# genuinely evaluated, and substituting the resource identifier changes\n# input.resource_org and flips the decision.\n#\n# The difference is input.asserted_org. An honest caller sends the organization\n# they belong to and the decision is indistinguishable from relation-aware. A\n# caller who sends the target's organization is compared against their own\n# assertion, and the boundary is crossed with the relation still evaluated.\n#\n# The grant's own organization, input.grant_org, is never consulted.\n\ndefault allow := false\n\nallow if {\n    input.token_active == true\n    input.agent_id != \"\"\n    input.delegation_id != \"\"\n    input.action == \"documents:read\"\n    \"documents_read\" in input.roles\n    input.resource_org != \"\"\n    input.resource_org == input.asserted_org\n}\n\ndecision := {\n    \"allow\": allow,\n    \"evaluated\": [\"token_active\", \"agent_id\", \"delegation_id\", \"action\", \"roles\", \"resource_org\", \"asserted_org\"],\n    \"resource_org_consulted\": true,\n    \"resource_org\": input.resource_org,\n    \"grant_org\": input.grant_org,\n    \"asserted_org\": input.asserted_org,\n    \"relation_source\": \"request\",\n    \"policy_revision\": \"e006-caller-controlled-relation\",\n}\n",
   "run_id": "e006-caller-controlled-relation-v1",
-  "started_at": "2026-08-19T13:09:12.102725+00:00",
-  "completed_at": "2026-08-19T13:09:13.095077+00:00",
+  "started_at": "2026-08-19T13:28:28.393706+00:00",
+  "completed_at": "2026-08-19T13:28:29.412743+00:00",
   "checks": [
     {
       "check": "IN_SCOPE_RESOURCE_ALLOWED",
@@ -36,6 +36,11 @@
       "check": "RELATION_INPUT_NOT_CALLER_CONTROLLED",
       "status": "FAIL",
       "detail": "A caller asserting the target's organization was PERMITTED. The relation was present in the decision input and evaluated, but over a value the caller supplied rather than one taken from the grant, so the boundary was crossed with every other check green."
+    },
+    {
+      "check": "DELEGATION_BOUND_TO_AGENT",
+      "status": "FAIL",
+      "detail": "An agent the delegation does not name was PERMITTED to act under it. The delegation is a bearer credential: any agent presenting the identifier inherits the authority, and agent_id is present and evaluated throughout."
     }
   ],
   "metrics": {
@@ -44,25 +49,31 @@
   },
   "evidence": [
     {
-      "raw_evidence_ref": "opa:eval/6cb651e8-e861-4c97-a7c4-e1a8ab14fe57",
+      "raw_evidence_ref": "opa:eval/e43e3d26-f557-43ef-a8f2-2d8b862e584c",
       "kind": "engine_decision",
       "policy_revision": "e006-caller-controlled-relation",
       "allow": true
     },
     {
-      "raw_evidence_ref": "opa:eval/5fb92816-faa9-4706-b75f-722620db8469",
+      "raw_evidence_ref": "opa:eval/e68e37bf-04de-42ef-8f59-6f75755a69df",
       "kind": "engine_decision",
       "policy_revision": "e006-caller-controlled-relation",
       "allow": false
     },
     {
-      "raw_evidence_ref": "opa:eval/d6580ec8-1935-4f7d-814f-ec5299353f4d",
+      "raw_evidence_ref": "opa:eval/40406f1d-e95f-4fab-ac69-430a89cd65c4",
       "kind": "engine_decision",
       "policy_revision": "e006-caller-controlled-relation",
       "allow": false
     },
     {
-      "raw_evidence_ref": "opa:eval/a36c443c-b017-40a6-9ddc-603cf4ecb07d",
+      "raw_evidence_ref": "opa:eval/4b033525-9e90-4007-82de-ade43bc94867",
+      "kind": "engine_decision",
+      "policy_revision": "e006-caller-controlled-relation",
+      "allow": true
+    },
+    {
+      "raw_evidence_ref": "opa:eval/e20ecae2-6f79-45d0-b601-2b4e5be20e62",
       "kind": "engine_decision",
       "policy_revision": "e006-caller-controlled-relation",
       "allow": true

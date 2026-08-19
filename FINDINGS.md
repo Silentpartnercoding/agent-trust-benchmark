@@ -289,6 +289,21 @@ the action type was granted:
 | `RELATION_EVALUATED_NOT_ASSUMED` | **FAIL** | PASS | PASS |
 | `SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION` | **FAIL** | PASS | PASS |
 | `RELATION_INPUT_NOT_CALLER_CONTROLLED` | **FAIL** | PASS | **FAIL** |
+| `DELEGATION_BOUND_TO_AGENT` | **FAIL** | **FAIL** | **FAIL** |
+
+A fourth policy, `agent-bound`, passes all seven.
+
+**Amendment 2 was found by applying the same method to the rest of the input surface, and it
+falsifies this experiment's own reference policy.** Four fields were never varied by any decision
+input: `token_active`, `roles`, `agent_id` and `delegation_id`. Probing them showed inactive
+tokens, empty roles and ungranted roles correctly denied — and an agent the delegation does not
+name permitted to act under it. `relation-aware`, the policy this experiment held up as correct,
+treats a delegation as a bearer credential: any agent presenting the identifier inherits the
+authority, while `agent_id` is present in the decision input and evaluated throughout, so every
+relation check reads green.
+
+The exploratory probe preceded the predictions and is disclosed as such in the amendment, so
+prediction 1 is reported as confirming the probe rather than as an independent result.
 
 **The third column is the point.** `caller-controlled-relation` passes every check E006 had
 before Amendment 1, and crosses a tenant boundary. The relation is present in the decision input

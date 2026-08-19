@@ -27,6 +27,9 @@ BASE = {
     # the organization the grant names, so the first three decisions are unchanged
     # for any policy that ignores this field.
     "asserted_org": "org-a",
+    # The agent the delegation was issued to. A policy that does not compare this
+    # against agent_id treats the delegation as a bearer credential.
+    "delegation_agent": "agent-G",
 }
 IN_SCOPE = {**BASE, "resource_id": "doc-a1", "resource_org": "org-a"}
 OUT_OF_SCOPE = {**BASE, "resource_id": "doc-b1", "resource_org": "org-b"}
@@ -39,6 +42,10 @@ SUBSTITUTED = {**BASE, "resource_id": "doc-b1", "resource_org": "org-b"}
 # relation present in the input and genuinely evaluated.
 CALLER_ASSERTED = {**BASE, "resource_id": "doc-b1", "resource_org": "org-b",
                    "asserted_org": "org-b"}
+# Adversarial, Amendment 2: an in-scope request with only the presenting agent
+# changed. The delegation still names agent-G.
+AGENT_SUBSTITUTED = {**BASE, "resource_id": "doc-a1", "resource_org": "org-a",
+                     "agent_id": "agent-INTRUDER"}
 
 
 def _now() -> str:
@@ -77,11 +84,12 @@ def run(policy_path: str, run_id: str | None = None) -> dict:
     run_id = run_id or f"e006-{policy.stem}-{uuid.uuid4()}"
     started = _now()
 
-    inn, out, sub, cal = (_eval(policy, p)
-                          for p in (IN_SCOPE, OUT_OF_SCOPE, SUBSTITUTED, CALLER_ASSERTED))
+    inn, out, sub, cal, agt = (_eval(policy, p) for p in
+                               (IN_SCOPE, OUT_OF_SCOPE, SUBSTITUTED, CALLER_ASSERTED,
+                                AGENT_SUBSTITUTED))
     checks: list[CheckResult] = []
     evidence: list[dict] = []
-    for obs in (inn, out, sub, cal):
+    for obs in (inn, out, sub, cal, agt):
         evidence.extend(obs.evidence)
 
     def add(check: str, status: Status, detail: str) -> None:
@@ -147,6 +155,23 @@ def run(policy_path: str, run_id: str | None = None) -> dict:
             if crossed else
             "Asserting the target's organization did not change the decision; the relation input "
             "is not caller-controlled.")
+
+    # Amendment 2. agent_id is present in the input and evaluated by every policy
+    # here, which satisfies the relation-presence and relation-evaluated checks
+    # without any policy establishing that the presenting agent is the one the
+    # delegation names.
+    if agt.status is not Status.PASS:
+        add("DELEGATION_BOUND_TO_AGENT", agt.status, agt.detail)
+    else:
+        inherited = agt.data.get("allow") is True
+        add("DELEGATION_BOUND_TO_AGENT",
+            Status.FAIL if inherited else Status.PASS,
+            "An agent the delegation does not name was PERMITTED to act under it. The delegation "
+            "is a bearer credential: any agent presenting the identifier inherits the authority, "
+            "and agent_id is present and evaluated throughout."
+            if inherited else
+            "An agent the delegation does not name was refused. The delegation is bound to its "
+            "agent.")
 
     decided = [c for c in checks if c.status in (Status.PASS, Status.FAIL)]
     completeness = round(100.0 * len(decided) / len(checks), 1) if checks else 0.0
