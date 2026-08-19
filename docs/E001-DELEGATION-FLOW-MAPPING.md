@@ -193,3 +193,48 @@ Arm B is the E001 result of record for Entra, per the original mapping. Arm A is
 alongside it as a controlled comparison, not as a second provider score. Arm B requires a browser
 step and is not fully headless; that is recorded as a reproducibility limitation rather than
 worked around by substituting Arm A.
+
+### Correction 1 to Amendment 2 — Arm A is not headless on this tenant
+
+**Written after the tenant was configured and before either Entra arm was run. No Entra E001
+result exists at the time of writing.**
+
+Amendment 2 describes Arm A as "fully headless." That is wrong on this tenant, and the reason is
+a property of the tenant rather than of the arm.
+
+The tenant contains exactly one user principal, and it is an external B2B guest backed by a
+personal Microsoft account rather than a cloud-only member. Creating the `oauth2PermissionGrant`
+as an administrator is headless, as described. Obtaining a *delegated access token* for that
+principal is not: the resource owner password credentials flow is unavailable for a federated
+guest identity, so acquiring the token requires an interactive browser authentication in both
+arms.
+
+Amendment 2 is left as written rather than edited, so the original claim and this correction are
+both visible.
+
+### What this changes
+
+- **Both Entra arms carry the browser limitation**, not only Arm B. This is recorded in both
+  results as a reproducibility limitation, in the same terms as the Okta Arm B limitation.
+- **Prediction 5 is unaffected.** The arms still differ only in who created the grant. The
+  interactive step is common to both and is therefore not a confound between them.
+- **Predictions 1, 2, 3 and 4 are unaffected.** None of them depended on Arm A being headless.
+
+### What was deliberately not done
+
+A cloud-only fixture member with a password could have made Arm A headless. It was rejected for
+two reasons. The tenant runs with security defaults enabled, so multi-factor authentication would
+block the password flow regardless. Disabling security defaults would have obtained headlessness
+by weakening the security posture of the environment under measurement, which would make the
+result less representative of a default Entra deployment, not more.
+
+The limitation is therefore recorded rather than engineered away.
+
+### The limitation is itself an observation
+
+On a Microsoft Entra tenant on the free tier, with security defaults enabled and a federated
+guest as the human principal, there is no non-interactive path to a delegated access token. Any
+continuously operating agent acting under a human's delegated authority on such a tenant must
+either hold a refresh token obtained interactively at some earlier point, or fall back to an
+app-only identity that carries no human at all. That is stated here as an observation about the
+exercised surface, not scored as a check.
