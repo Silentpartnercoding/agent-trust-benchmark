@@ -141,7 +141,8 @@ class OktaAdapter(ProviderAdapter):
             Status.PASS,
             "Agent is a confidential OAuth client with an identity distinct from the human, "
             f"authenticating by {auth}.",
-            {"client_id": body.get("id"), "auth_method": auth},
+            {"client_id": body.get("id"), "auth_method": auth,
+             "distinct": body.get("id") != self.human_id},
             self._ev("app", body.get("id", ""), auth_method=auth))
 
     def delegate(self) -> Observation:
@@ -157,7 +158,7 @@ class OktaAdapter(ProviderAdapter):
                     Status.PASS,
                     "Scope consent grant created by an administrator; no human approval event is "
                     "associated with it.",
-                    {"grant_id": self.grant_id, "created_by": "administrator"},
+                    {"grant_id": self.grant_id, "created_by": "administrator", "provable": True},
                     self._ev("app_grant", self.grant_id or "", created_by="administrator"))
             causes = [c.get("errorSummary", "") for c in (body or {}).get("errorCauses", [])] \
                 if isinstance(body, dict) else []
@@ -184,7 +185,8 @@ class OktaAdapter(ProviderAdapter):
         return Observation(
             Status.PASS,
             "Scope consent grant created by the human, recorded against their user identity.",
-            {"grant_id": self.grant_id, "scope": "payments:preview", "created_by": "user"},
+            {"grant_id": self.grant_id, "scope": "payments:preview", "created_by": "user",
+             "provable": True},
             self._ev("user_grant", self.grant_id or "", created_by="user"))
 
     def issue_credential(self) -> Observation:
@@ -288,7 +290,7 @@ class OktaAdapter(ProviderAdapter):
             Status.PASS if ok else Status.FAIL,
             "The allowed action is authorized exactly once by the issued token."
             if ok else "The token does not carry the delegated scope.",
-            {"granted": ok, "effect_count": 1 if ok else 0})
+            {"granted": ok, "allowed": ok, "effect_count": 1 if ok else 0})
 
     def execute_forbidden_action(self) -> Observation:
         """Request the undelegated scope. The authorization server should refuse."""
@@ -340,7 +342,7 @@ class OktaAdapter(ProviderAdapter):
             Status.PASS if code in (200, 204) else Status.FAIL,
             "The scope consent grant was revoked." if code in (200, 204)
             else f"Revocation refused (HTTP {code}).",
-            {"revoked": code in (200, 204), "http": code},
+            {"revoked": code in (200, 204), "supported": code in (200, 204), "http": code},
             self._ev("revocation", self.grant_id))
 
     def execute_after_revocation(self) -> Observation:
@@ -373,10 +375,10 @@ class OktaAdapter(ProviderAdapter):
                     {"blocked": None, "reason": detail})
             return Observation(Status.PASS,
                                f"The previously delegated scope was refused after revocation ({detail}).",
-                               {"blocked": True, "revocation_latency_ms": latency})
+                               {"blocked": True, "effect_count": 0, "revocation_latency_ms": latency})
         return Observation(Status.FAIL,
                            "A code was still issued after revocation.",
-                           {"blocked": False, "revocation_latency_ms": latency})
+                           {"blocked": False, "effect_count": 1, "revocation_latency_ms": latency})
 
     def get_audit_events(self) -> Observation:
         if self._missing():
@@ -391,5 +393,7 @@ class OktaAdapter(ProviderAdapter):
             Status.PASS if body else Status.INDETERMINATE,
             f"System Log returned {len(body)} events: {len(oauth)} OAuth2, {len(consent)} consent-related.",
             {"total": len(body), "oauth_events": len(oauth), "consent_events": len(consent),
-             "consent_actors": sorted(a for a in actors if a)},
+             "consent_actors": sorted(a for a in actors if a),
+             "auditable": bool(body), "agent_attribution": bool(oauth),
+             "human_attribution": any(a and "system@" not in a for a in actors)},
             self._ev("system_log", str(len(body))))

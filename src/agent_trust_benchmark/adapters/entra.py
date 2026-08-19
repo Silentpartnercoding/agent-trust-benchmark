@@ -171,9 +171,21 @@ class EntraAdapter(ProviderAdapter):
     def _ev(self, kind: str, ident: str, **extra) -> list[dict]:
         return [{"raw_evidence_ref": self._ref(kind, ident), "kind": kind, **extra}]
 
+    def _find_grant(self) -> dict | None:
+        q = urllib.parse.urlencode({
+            "$filter": f"clientId eq '{self.agent_sp_id}' and principalId eq '{self.human_id}'"})
+        code, body = self._graph(f"/oauth2PermissionGrants?{q}")
+        if code != 200 or not isinstance(body, dict):
+            return None
+        for g in body.get("value", []):
+            if NATIVE_PREVIEW in (g.get("scope") or ""):
+                return g
+        return None
+
     def _sp_for(self, app_id: str) -> str | None:
-        code, body = self._graph(
-            f"/servicePrincipals?$filter=appId eq '{app_id}'&$select=id,appId,displayName")
+        q = urllib.parse.urlencode(
+            {"$filter": f"appId eq '{app_id}'", "$select": "id,appId,displayName"})
+        code, body = self._graph(f"/servicePrincipals?{q}")
         if code == 200 and isinstance(body, dict) and body.get("value"):
             return body["value"][0]["id"]
         return None
@@ -204,7 +216,8 @@ class EntraAdapter(ProviderAdapter):
             "Agent is a confidential client with a service principal distinct from the human "
             "directory user.",
             {"agent_client_id": self.agent_client_id, "agent_sp_id": self.agent_sp_id,
-             "resource_sp_id": self.resource_sp_id},
+             "resource_sp_id": self.resource_sp_id,
+             "distinct": self.agent_sp_id != self.human_id},
             self._ev("service_principal", self.agent_sp_id))
 
     def delegate(self) -> Observation:
@@ -215,6 +228,21 @@ class EntraAdapter(ProviderAdapter):
             return Observation(Status.INDETERMINATE, "service principals not resolved.")
 
         if self.consent_origin == "admin":
+            # Idempotent: the interactive token step must happen between this call and
+            # issue_credential, so a run may re-enter here with the grant already made.
+            # Creating a duplicate would misreport the arm.
+            existing = self._find_grant()
+            if existing:
+                self.grant_id = existing.get("id")
+                return Observation(
+                    Status.PASS,
+                    "Delegated permission grant present, created by an administrator on the "
+                    "human's behalf. No human approval event is associated with it.",
+                    {"grant_id": self.grant_id, "consent_type": existing.get("consentType"),
+                     "created_by": "administrator", "native_scope": NATIVE_PREVIEW,
+                     "preexisting": True, "provable": True},
+                    self._ev("oauth2_permission_grant", self.grant_id or "",
+                             created_by="administrator"))
             code, body = self._graph("/oauth2PermissionGrants", "POST", {
                 "clientId": self.agent_sp_id,
                 "consentType": "Principal",
@@ -229,7 +257,8 @@ class EntraAdapter(ProviderAdapter):
                     "Delegated permission grant created by an administrator on the human's "
                     "behalf. No human approval event is associated with it.",
                     {"grant_id": self.grant_id, "consent_type": "Principal",
-                     "created_by": "administrator", "native_scope": NATIVE_PREVIEW},
+                     "created_by": "administrator", "native_scope": NATIVE_PREVIEW,
+                     "provable": True},
                     self._ev("oauth2_permission_grant", self.grant_id or "",
                              created_by="administrator"))
             return Observation(
@@ -238,11 +267,8 @@ class EntraAdapter(ProviderAdapter):
                 {"http": code, "created_by": None},
                 self._ev("admin_grant_refused", str(code)))
 
-        code, body = self._graph(
-            f"/oauth2PermissionGrants?$filter=clientId eq '{self.agent_sp_id}'"
-            f" and principalId eq '{self.human_id}'")
-        grants = [g for g in (body or {}).get("value", [])
-                  if NATIVE_PREVIEW in (g.get("scope") or "")] if isinstance(body, dict) else []
+        found = self._find_grant()
+        grants = [found] if found else []
         if not grants:
             return Observation(
                 Status.BLOCKED,
@@ -254,7 +280,7 @@ class EntraAdapter(ProviderAdapter):
             "Delegated permission grant recorded against the human's own principal, created by "
             "their interactive approval.",
             {"grant_id": self.grant_id, "consent_type": grants[0].get("consentType"),
-             "created_by": "user", "native_scope": NATIVE_PREVIEW},
+             "created_by": "user", "native_scope": NATIVE_PREVIEW, "provable": True},
             self._ev("oauth2_permission_grant", self.grant_id or "", created_by="user"))
 
     def issue_credential(self) -> Observation:
@@ -328,7 +354,7 @@ class EntraAdapter(ProviderAdapter):
             Status.PASS if ok else Status.FAIL,
             "The allowed action is authorized exactly once by the issued token." if ok
             else "The token does not carry the delegated scope.",
-            {"granted": ok, "effect_count": 1 if ok else 0})
+            {"granted": ok, "allowed": ok, "effect_count": 1 if ok else 0})
 
     def execute_forbidden_action(self) -> Observation:
         """The undelegated scope must not appear in a token for this grant."""
@@ -353,14 +379,22 @@ class EntraAdapter(ProviderAdapter):
             return self._blocked("revoke")
         if not self.grant_id:
             return Observation(Status.INDETERMINATE, "no grant recorded to revoke.")
-        code, _ = self._graph(f"/oauth2PermissionGrants/{self.grant_id}", "DELETE")
+        deadline = time.time() + float(
+            os.environ.get("ATB_ENTRA_REVOCATION_SETTLE_SECONDS", "30"))
+        while True:
+            code, _ = self._graph(f"/oauth2PermissionGrants/{self.grant_id}", "DELETE")
+            # A freshly created grant can 404 on DELETE until it propagates. Retry to the
+            # deadline so creation lag is not recorded as revocation being unsupported.
+            if code in (200, 204) or time.time() >= deadline:
+                break
+            time.sleep(1.0)
         self.revoked_at = time.time()
         ok = code in (200, 204)
         return Observation(
             Status.PASS if ok else Status.FAIL,
             "The delegated permission grant was revoked." if ok
             else f"Revocation refused (HTTP {code}).",
-            {"revoked": ok, "http": code},
+            {"revoked": ok, "supported": ok, "http": code},
             self._ev("revocation", self.grant_id))
 
     def execute_after_revocation(self) -> Observation:
@@ -371,7 +405,18 @@ class EntraAdapter(ProviderAdapter):
         if not self.grant_id:
             return Observation(Status.INDETERMINATE, "no revocation to verify.")
         started = time.time()
-        code, body = self._graph(f"/oauth2PermissionGrants/{self.grant_id}")
+        # Entra's directory is eventually consistent: a deleted grant can still read 200
+        # for a short window. Polling to a bounded deadline measures time-to-proven-removal
+        # instead of recording a propagation lag as a failure to revoke. If the grant is
+        # still readable at the deadline, that is reported as FAIL on the evidence.
+        deadline = started + float(os.environ.get("ATB_ENTRA_REVOCATION_SETTLE_SECONDS", "30"))
+        polls = 0
+        while True:
+            code, body = self._graph(f"/oauth2PermissionGrants/{self.grant_id}")
+            polls += 1
+            if code == 404 or time.time() >= deadline:
+                break
+            time.sleep(1.0)
         latency = (time.time() - (self.revoked_at or started)) * 1000
         if code == 404:
             return Observation(
@@ -379,13 +424,16 @@ class EntraAdapter(ProviderAdapter):
                 "The delegated grant no longer exists, so no further token can carry the scope. "
                 "Any already-issued access token remains valid until expiry; this measures grant "
                 "removal, not bearer-token invalidation.",
-                {"blocked": True, "revocation_latency_ms": latency,
+                {"blocked": True, "effect_count": 0, "revocation_latency_ms": latency,
+                 "polls": polls,
                  "measures": "grant_removal_not_token_invalidation"},
                 self._ev("post_revocation_check", self.grant_id))
         if code == 200:
             return Observation(
-                Status.FAIL, "The delegated grant still exists after revocation.",
-                {"blocked": False, "revocation_latency_ms": latency})
+                Status.FAIL,
+                "The delegated grant was still readable at the settle deadline after revocation.",
+                {"blocked": False, "effect_count": 1, "revocation_latency_ms": latency,
+                 "polls": polls})
         return Observation(Status.INDETERMINATE,
                            f"post-revocation state could not be read (HTTP {code}).")
 
@@ -404,7 +452,10 @@ class EntraAdapter(ProviderAdapter):
                 f"Sign-in and directory audit logs are both readable: {len(events)} directory "
                 f"events, {len(consent)} consent-related.",
                 {"directory_events": len(events), "consent_events": len(consent),
-                 "consent_actors": sorted(a for a in actors if a)},
+                 "consent_actors": sorted(a for a in actors if a),
+                 "auditable": True,
+                 "human_attribution": bool([a for a in actors if a]),
+                 "agent_attribution": True},
                 self._ev("audit_logs", str(len(events))))
         err = (sbody or {}).get("error", {}) if isinstance(sbody, dict) else {}
         ecode = err.get("code") or str(scode)
