@@ -42,6 +42,7 @@ elapsed time.
 - `e001-auth0-replay-v1`
 - `e001-okta-admin-consent-replay-v1`
 - `e001-ory-hydra-replay-v1`
+- `e001-okta-user-consent-replay-v1`
 
 **Hand-authored records of live sessions.** The provider was genuinely exercised — through its
 API, its admin console, or an interactive browser flow — and the result file was written
@@ -110,6 +111,33 @@ surface as an explicit boundary rather than as undecidable evidence.
 
 A claim that Hydra returns `NOT_SUPPORTED` on both revocation outputs was published externally
 before this replay existed. It does not hold for the operation the adapter exercises.
+
+### Okta user arm: the emitted replay does not reproduce ten passes
+
+`e001-okta-user-consent-replay-v1` returns seven passes, one failure and two blocked, at 80%
+evidence completeness. The hand-authored record reports all ten passing, with human attribution
+marked `PASS*`.
+
+Two differences account for it, and neither is a defect in the provider.
+
+**`HUMAN_ATTRIBUTION_PROVABLE` is `FAIL` rather than `PASS*`.** Both agree on the underlying
+fact: Okta's consent event records the actor as `system@okta.com`, and the human is recoverable
+only by correlating `externalSessionId` across the session's events. The record credits that
+correlation and passes with an asterisk. The adapter does not perform it and fails the check.
+The asterisked pass and the failure are two readings of the same evidence, and the difference is
+whether a claim reconstructible by cross-event correlation counts as provable. That question
+belongs to the experiment, not to Okta, and it is not settled here.
+
+**Two checks are `BLOCKED_EXTERNAL_ACCESS`.** The forbidden-action and post-revocation steps
+re-authenticate the human with a password. This tenant's human principal is the operator and
+carries MFA, so those steps cannot run. This is the non-headless limitation already recorded for
+this arm; the replay surfaces it as blocked rather than passing it silently.
+
+A defect in the adapter was found while producing this run and is fixed. Okta records a grant's
+scope by internal id, not by name, and the adapter compared `scopeId` against the literal string
+`payments:preview`. It never matched, so this arm's delegation check would have been blocked for
+any user, on any tenant. That is further evidence the published ten-pass record was not produced
+by this code.
 
 ## Superseded by a later measurement
 

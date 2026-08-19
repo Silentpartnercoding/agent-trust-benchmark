@@ -1,0 +1,123 @@
+{
+  "checks": [
+    {
+      "check": "DISTINCT_AGENT_IDENTITY",
+      "detail": "The agent has a distinct identity.",
+      "evidence_refs": [
+        "okta:app/0oa16k2n20aSYYPb4698"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "DELEGATION_PROVABLE",
+      "detail": "The human-to-agent delegation is provable.",
+      "evidence_refs": [
+        "okta:user_grant/oag4eom9djKqwhDh2697"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "SCOPE_VISIBLE",
+      "detail": "The granted preview scope is visible.",
+      "evidence_refs": [
+        "okta:token_claims/AT.29II24v-1viwnyz6vdwcpDvvgtLuFG7nlYkqc9WQ_S0"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "detail": "The allowed action succeeded exactly once.",
+      "evidence_refs": [],
+      "status": "PASS"
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "detail": "forbidden action not attempted.",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "HUMAN_ATTRIBUTION_PROVABLE",
+      "detail": "Human attribution was not proven.",
+      "evidence_refs": [
+        "okta:system_log/50"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "check": "AGENT_ATTRIBUTION_PROVABLE",
+      "detail": "The action is attributable to the authenticated agent identity at the exercised enforcement point.",
+      "evidence_refs": [
+        "okta:system_log/50"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ACTION_AUDITABLE",
+      "detail": "The action can be reconstructed from audit evidence.",
+      "evidence_refs": [
+        "okta:system_log/50"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "detail": "The credential or delegation can be revoked.",
+      "evidence_refs": [
+        "okta:revocation/oag4eom9djKqwhDh2697"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "detail": "post-revocation attempt not run.",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    }
+  ],
+  "completed_at": "2026-08-19T05:53:56.393369Z",
+  "evidence": [
+    {
+      "kind": "user",
+      "raw_evidence_ref": "okta:user/00u16k12qivNiXJMq698"
+    },
+    {
+      "auth_method": "private_key_jwt",
+      "kind": "app",
+      "raw_evidence_ref": "okta:app/0oa16k2n20aSYYPb4698"
+    },
+    {
+      "created_by": "user",
+      "kind": "user_grant",
+      "raw_evidence_ref": "okta:user_grant/oag4eom9djKqwhDh2697"
+    },
+    {
+      "kind": "token",
+      "raw_evidence_ref": "okta:token/AT.29II24v-1viwnyz6vdwcpDvvgtLuFG7nlYkqc9WQ_S0",
+      "scope": "openid payments:preview"
+    },
+    {
+      "kind": "token_claims",
+      "raw_evidence_ref": "okta:token_claims/AT.29II24v-1viwnyz6vdwcpDvvgtLuFG7nlYkqc9WQ_S0"
+    },
+    {
+      "kind": "system_log",
+      "raw_evidence_ref": "okta:system_log/50"
+    },
+    {
+      "kind": "revocation",
+      "raw_evidence_ref": "okta:revocation/oag4eom9djKqwhDh2697"
+    }
+  ],
+  "experiment_id": "e001",
+  "limitations": [],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 80.0,
+    "REVOCATION_LATENCY_MS": null,
+    "TOKEN_LIFETIME_SECONDS": null
+  },
+  "provider": "okta-user-consent",
+  "run_id": "e001-okta-user-consent-replay-v1",
+  "schema_version": "0.1",
+  "started_at": "2026-08-19T05:53:54.386370Z"
+}

@@ -175,7 +175,16 @@ class OktaAdapter(ProviderAdapter):
                     self._ev("admin_grant_refused", str(code), causes=causes))
             return Observation(Status.FAIL, f"administrator grant refused (HTTP {code}): {causes or body}")
         code, body = self._api(f"/api/v1/users/{self.human_id}/grants")
-        grants = [g for g in (body or []) if g.get("scopeId") == "payments:preview"] if isinstance(body, list) else []
+        # Okta records the scope by its internal id, not by name. Resolve ids to names
+        # against the authorization server rather than comparing against a literal, which
+        # never matches and silently blocks this arm.
+        wanted = {"payments:preview"}
+        as_id = os.environ.get("ATB_OKTA_AUTH_SERVER_ID", "default")
+        scode, sbody = self._api(f"/api/v1/authorizationServers/{as_id}/scopes")
+        id_to_name = {s.get("id"): s.get("name") for s in sbody} if isinstance(sbody, list) else {}
+        grants = [g for g in (body or [])
+                  if id_to_name.get(g.get("scopeId"), g.get("scopeId")) in wanted] \
+            if isinstance(body, list) else []
         if not grants:
             return Observation(
                 Status.BLOCKED,
@@ -192,6 +201,11 @@ class OktaAdapter(ProviderAdapter):
     def issue_credential(self) -> Observation:
         if self._missing():
             return self._blocked("issue_credential")
+        # Arm B is not headless when the human principal carries MFA. An authorization code
+        # obtained interactively may be supplied out of band; the exchange is unchanged.
+        injected = os.environ.get("ATB_OKTA_AUTH_CODE")
+        if injected:
+            return self._exchange(injected)
         pw_file = os.environ.get("ATB_OKTA_HUMAN_PASSWORD_FILE")
         if not (pw_file and Path(pw_file).exists()):
             return Observation(Status.BLOCKED, "human fixture password unavailable.")
