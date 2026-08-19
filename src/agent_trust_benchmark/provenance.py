@@ -48,9 +48,11 @@ KNOWN_SCHEMAS = {
         "schema_version", "experiment_id", "provider", "run_id", "started_at",
         "completed_at", "checks", "evidence", "metrics", "limitations", "provenance",
     },
-    "0.1": {  # E001 RunResult, written before the provenance field existed
+    "0.1": {  # E001 RunResult, written before the provenance field existed.
+              # E002 also emits under 0.1 with its own evidence carrier.
         "schema_version", "experiment_id", "provider", "run_id", "started_at",
-        "completed_at", "checks", "evidence", "metrics", "limitations",
+        "completed_at", "checks", "evidence", "evidence_refs", "metrics",
+        "limitations", "authorization_mode_observed",
     },
     "e006/v1": {
         "schema_version", "experiment_id", "provider", "policy_source", "run_id",
@@ -61,12 +63,25 @@ KNOWN_SCHEMAS = {
 
 def _signals(doc: dict, expected: set[str]) -> dict:
     started, completed = doc.get("started_at", ""), doc.get("completed_at", "")
-    extra = sorted(set(doc) - expected)
+    statuses = {c.get("status") for c in doc.get("checks") or []}
+    # A run in which every check was blocked has nothing to reference, so an empty
+    # evidence list is the correct output rather than a sign of authorship.
+    fully_blocked = bool(statuses) and statuses <= {"BLOCKED_EXTERNAL_ACCESS"}
+    # Experiments carry evidence under different keys: E001 and E006 use a list of
+    # objects under "evidence", E002 a list of provider-native reference strings
+    # under "evidence_refs". Counting only one of them reports the other as having
+    # no evidence at all.
+    carried = (doc.get("evidence") or []) or (doc.get("evidence_refs") or [])
     return {
-        "evidence_refs": len(doc.get("evidence") or []),
+        "evidence_refs": len(carried),
+        "evidence_expected": not fully_blocked,
         "sub_second_timestamps": "." in started and "." in completed,
         "elapsed_nonzero": bool(started) and started != completed,
-        "unexpected_fields": extra,
+        # Fields beyond the modelled set are recorded but do not vote. An
+        # experiment adding its own keys is schema evolution, not authorship; the
+        # signal that actually distinguishes a written record is the schema
+        # version string, handled separately and dispositively above.
+        "extension_fields": sorted(set(doc) - expected),
     }
 
 
@@ -112,19 +127,19 @@ def classify(result_path: Path) -> dict:
                 "signals": {}}
 
     s = _signals(doc, expected)
-    emitted_votes = [s["evidence_refs"] > 0, s["sub_second_timestamps"],
-                     s["elapsed_nonzero"], not s["unexpected_fields"]]
+    emitted_votes = [s["evidence_refs"] > 0 or not s["evidence_expected"],
+                     s["sub_second_timestamps"], s["elapsed_nonzero"]]
     n = sum(emitted_votes)
 
-    if n == 4:
-        verdict, detail = "EMITTED", "All four signals agree: harness-emitted."
+    if n == 3:
+        verdict, detail = "EMITTED", "All signals agree: harness-emitted."
     elif n == 0:
         verdict, detail = "HAND_AUTHORED", (
             "No evidence references, whole-second timestamps, zero elapsed time, and fields the "
             "harness does not emit. This is a written record, not a run.")
     else:
         verdict, detail = "AMBIGUOUS", (
-            f"{n} of 4 signals indicate emission. Inspect before relying on it; do not assume "
+            f"{n} of 3 signals indicate emission. Inspect before relying on it; do not assume "
             "either way.")
 
     return {"run_id": doc.get("run_id", result_path.parent.name),
