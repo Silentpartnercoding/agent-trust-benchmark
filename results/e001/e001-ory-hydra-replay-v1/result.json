@@ -1,0 +1,121 @@
+{
+  "checks": [
+    {
+      "check": "DISTINCT_AGENT_IDENTITY",
+      "detail": "The agent has a distinct identity.",
+      "evidence_refs": [
+        "ory-hydra:client/atb-e001-agent"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "DELEGATION_PROVABLE",
+      "detail": "The human-to-agent delegation is provable.",
+      "evidence_refs": [
+        "ory-hydra:consent_app_record/human-1"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "SCOPE_VISIBLE",
+      "detail": "The granted preview scope is visible.",
+      "evidence_refs": [
+        "ory-hydra:introspection/human-1"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "detail": "The allowed action succeeded exactly once.",
+      "evidence_refs": [],
+      "status": "PASS"
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "detail": "The forbidden action was blocked before effect.",
+      "evidence_refs": [],
+      "status": "PASS"
+    },
+    {
+      "check": "HUMAN_ATTRIBUTION_PROVABLE",
+      "detail": "Hydra exposes no audit or event log for actions taken under an issued token. The only action record available is the benchmark consent application's own log, which is a benchmark-generated observation and is not a provider-native receipt.",
+      "evidence_refs": [
+        "ory-hydra:no_audit_surface/ory-hydra"
+      ],
+      "status": "NOT_SUPPORTED"
+    },
+    {
+      "check": "AGENT_ATTRIBUTION_PROVABLE",
+      "detail": "Hydra exposes no audit or event log for actions taken under an issued token. The only action record available is the benchmark consent application's own log, which is a benchmark-generated observation and is not a provider-native receipt.",
+      "evidence_refs": [
+        "ory-hydra:no_audit_surface/ory-hydra"
+      ],
+      "status": "NOT_SUPPORTED"
+    },
+    {
+      "check": "ACTION_AUDITABLE",
+      "detail": "Hydra exposes no audit or event log for actions taken under an issued token. The only action record available is the benchmark consent application's own log, which is a benchmark-generated observation and is not a provider-native receipt.",
+      "evidence_refs": [
+        "ory-hydra:no_audit_surface/ory-hydra"
+      ],
+      "status": "NOT_SUPPORTED"
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "detail": "The credential or delegation can be revoked.",
+      "evidence_refs": [
+        "ory-hydra:revocation/human-1"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "detail": "The action was blocked after revocation.",
+      "evidence_refs": [],
+      "status": "PASS"
+    }
+  ],
+  "completed_at": "2026-08-19T05:36:13.553230Z",
+  "evidence": [
+    {
+      "kind": "asserted_subject",
+      "raw_evidence_ref": "ory-hydra:asserted_subject/human-1"
+    },
+    {
+      "kind": "client",
+      "raw_evidence_ref": "ory-hydra:client/atb-e001-agent"
+    },
+    {
+      "count": 4,
+      "kind": "consent_app_record",
+      "raw_evidence_ref": "ory-hydra:consent_app_record/human-1"
+    },
+    {
+      "kind": "token",
+      "raw_evidence_ref": "ory-hydra:token/506d3bdf-493c-44cf-b6af-a3c6b86d5a0d"
+    },
+    {
+      "kind": "introspection",
+      "raw_evidence_ref": "ory-hydra:introspection/human-1"
+    },
+    {
+      "kind": "no_audit_surface",
+      "raw_evidence_ref": "ory-hydra:no_audit_surface/ory-hydra"
+    },
+    {
+      "kind": "revocation",
+      "raw_evidence_ref": "ory-hydra:revocation/human-1"
+    }
+  ],
+  "experiment_id": "e001",
+  "limitations": [],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 70.0,
+    "REVOCATION_LATENCY_MS": 1.1129379272460938,
+    "TOKEN_LIFETIME_SECONDS": null
+  },
+  "provider": "ory-hydra",
+  "run_id": "e001-ory-hydra-replay-v1",
+  "schema_version": "0.1",
+  "started_at": "2026-08-19T05:36:13.453780Z"
+}

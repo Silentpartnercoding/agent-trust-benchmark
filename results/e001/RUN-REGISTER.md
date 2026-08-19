@@ -40,6 +40,8 @@ elapsed time.
 - `e001-entra-user-consent-v1`
 - `e001-entra-admin-consent-v1`
 - `e001-auth0-replay-v1`
+- `e001-okta-admin-consent-replay-v1`
+- `e001-ory-hydra-replay-v1`
 
 **Hand-authored records of live sessions.** The provider was genuinely exercised — through its
 API, its admin console, or an interactive browser flow — and the result file was written
@@ -80,6 +82,34 @@ results: that the consent dialog listed no scopes, and that the requested scope 
 `openid`. Replaying the original request produces a dialog that lists the scope, and a grant that
 records `payments:preview`. Those sentences have been corrected. The distinction matters — the
 recorded checks were substantially accurate; the prose around them was not.
+
+### Okta administrator arm and Ory Hydra: replays and where they diverge
+
+**Okta, administrator arm.** `e001-okta-admin-consent-replay-v1` reproduces the finding that
+matters: `DELEGATION_PROVABLE` is `NOT_SUPPORTED`, because Okta's app-grants endpoint governs
+Okta API scopes only and refuses a custom authorization server scope. Where the hand-authored
+record reported `INDETERMINATE` across the downstream checks, the replay distinguishes them:
+`HUMAN_ATTRIBUTION_PROVABLE` is `FAIL`, `AGENT_ATTRIBUTION_PROVABLE` and `ACTION_AUDITABLE` are
+`PASS` from the System Log, and the two action checks are `BLOCKED_EXTERNAL_ACCESS` because no
+credential could be issued in this arm at all.
+
+**Ory Hydra diverges on revocation, and the divergence is a design choice, not a contradiction.**
+The hand-authored record reports `NOT_SUPPORTED` on both revocation outputs. The replay reports
+`PASS` on both: the adapter revokes by deleting the subject's consent sessions through Hydra's
+admin API, after which the previously issued token introspects as inactive.
+
+Both can be true of Hydra. The earlier run concluded that Hydra offers no revocation of the
+delegation; the adapter chose an operation that does have that effect. Which of the two is the
+right reading of "revocation supported" for a server that holds no delegation record of its own
+is a question about the experiment, not about Hydra, and it is recorded here rather than settled
+by preferring whichever result was produced later.
+
+The replay also reports `NOT_SUPPORTED` on all three attribution checks where the record had
+`INDETERMINATE` and `PASS`, because the adapter treats Hydra's absence of any action audit
+surface as an explicit boundary rather than as undecidable evidence.
+
+A claim that Hydra returns `NOT_SUPPORTED` on both revocation outputs was published externally
+before this replay existed. It does not hold for the operation the adapter exercises.
 
 ## Superseded by a later measurement
 

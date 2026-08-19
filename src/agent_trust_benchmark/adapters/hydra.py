@@ -164,7 +164,8 @@ class OryHydraAdapter(ProviderAdapter):
                     rows.append(json.loads(line))
                 except Exception:
                     pass
-        grants = [r for r in rows if r.get("event") == "consent" and r.get("subject") == self.subject]
+        grants = [r for r in rows if str(r.get("event", "")).startswith("consent")
+                  and r.get("subject") == self.subject]
         if not grants:
             return Observation(
                 Status.BLOCKED,
@@ -257,7 +258,7 @@ class OryHydraAdapter(ProviderAdapter):
     def revoke(self) -> Observation:
         if self._missing():
             return self._blocked("revoke")
-        q = urllib.parse.urlencode({"subject": self.subject})
+        q = urllib.parse.urlencode({"subject": self.subject, "all": "true"})
         code, body = self._admin_call(f"/admin/oauth2/auth/sessions/consent?{q}", "DELETE")
         self.revoked_at = time.time()
         ok = code in (200, 204)

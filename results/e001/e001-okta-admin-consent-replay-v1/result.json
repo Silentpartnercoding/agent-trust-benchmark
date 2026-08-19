@@ -1,0 +1,108 @@
+{
+  "checks": [
+    {
+      "check": "DISTINCT_AGENT_IDENTITY",
+      "detail": "The agent has a distinct identity.",
+      "evidence_refs": [
+        "okta:app/0oa16k2n20aSYYPb4698"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "DELEGATION_PROVABLE",
+      "detail": "Okta exposes no administrative path to create a user consent grant for a custom authorization server scope. The app grants endpoint governs Okta API scopes only, and rejected payments:preview as an invalid scopeId. An administrator cannot author this human's approval.",
+      "evidence_refs": [
+        "okta:admin_grant_refused/400"
+      ],
+      "status": "NOT_SUPPORTED"
+    },
+    {
+      "check": "SCOPE_VISIBLE",
+      "detail": "no credential to inspect.",
+      "evidence_refs": [],
+      "status": "INDETERMINATE"
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "detail": "no credential; allowed action not attempted.",
+      "evidence_refs": [],
+      "status": "INDETERMINATE"
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "detail": "forbidden action not attempted.",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "HUMAN_ATTRIBUTION_PROVABLE",
+      "detail": "Human attribution was not proven.",
+      "evidence_refs": [
+        "okta:system_log/50"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "check": "AGENT_ATTRIBUTION_PROVABLE",
+      "detail": "The action is attributable to the authenticated agent identity at the exercised enforcement point.",
+      "evidence_refs": [
+        "okta:system_log/50"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ACTION_AUDITABLE",
+      "detail": "The action can be reconstructed from audit evidence.",
+      "evidence_refs": [
+        "okta:system_log/50"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "detail": "no grant recorded to revoke.",
+      "evidence_refs": [],
+      "status": "INDETERMINATE"
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "detail": "post-revocation attempt not run.",
+      "evidence_refs": [],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    }
+  ],
+  "completed_at": "2026-08-19T05:31:43.071761Z",
+  "evidence": [
+    {
+      "kind": "user",
+      "raw_evidence_ref": "okta:user/00u16k12qivNiXJMq698"
+    },
+    {
+      "auth_method": "private_key_jwt",
+      "kind": "app",
+      "raw_evidence_ref": "okta:app/0oa16k2n20aSYYPb4698"
+    },
+    {
+      "causes": [
+        "scopeId: 'scopeId' is invalid."
+      ],
+      "kind": "admin_grant_refused",
+      "raw_evidence_ref": "okta:admin_grant_refused/400"
+    },
+    {
+      "kind": "system_log",
+      "raw_evidence_ref": "okta:system_log/50"
+    }
+  ],
+  "experiment_id": "e001",
+  "limitations": [],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 40.0,
+    "REVOCATION_LATENCY_MS": null,
+    "TOKEN_LIFETIME_SECONDS": null
+  },
+  "provider": "okta-admin-consent",
+  "run_id": "e001-okta-admin-consent-replay-v1",
+  "schema_version": "0.1",
+  "started_at": "2026-08-19T05:31:41.846496Z"
+}
