@@ -204,10 +204,17 @@ class Auth0Adapter(ProviderAdapter):
                 {"flow": "authorization_code", "headless": False})
         if not self.agent_secret:
             return Observation(Status.BLOCKED, "agent client secret unavailable.")
-        body = json.dumps({
+        payload_out = {
             "grant_type": "authorization_code", "client_id": self.agent_id,
             "client_secret": self.agent_secret, "code": code_val,
-            "redirect_uri": self.redirect_uri}).encode()
+            "redirect_uri": self.redirect_uri}
+        # The authorize leg may have used PKCE. If it did, the verifier is required here;
+        # omitting it fails the exchange silently and every token-dependent check then reads
+        # INDETERMINATE for a harness reason rather than a provider one.
+        verifier = os.environ.get("ATB_AUTH0_CODE_VERIFIER")
+        if verifier:
+            payload_out["code_verifier"] = verifier
+        body = json.dumps(payload_out).encode()
         try:
             req = urllib.request.Request(
                 f"https://{self.domain}/oauth/token", data=body, method="POST",
