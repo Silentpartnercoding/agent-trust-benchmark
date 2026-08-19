@@ -281,13 +281,29 @@ performed action agree. The predicate was wrong, not the record.
 Two policies, one binding the resource's organization to the grant and one checking only that
 the action type was granted:
 
-| Check | `action-only` | `relation-aware` |
-|---|---|---|
-| `IN_SCOPE_RESOURCE_ALLOWED` | PASS | PASS |
-| `OUT_OF_SCOPE_RESOURCE_BLOCKED` | **FAIL** | PASS |
-| `RELATION_PRESENT_IN_DECISION_INPUT` | **FAIL** | PASS |
-| `RELATION_EVALUATED_NOT_ASSUMED` | **FAIL** | PASS |
-| `SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION` | **FAIL** | PASS |
+| Check | `action-only` | `relation-aware` | `caller-controlled` |
+|---|---|---|---|
+| `IN_SCOPE_RESOURCE_ALLOWED` | PASS | PASS | PASS |
+| `OUT_OF_SCOPE_RESOURCE_BLOCKED` | **FAIL** | PASS | PASS |
+| `RELATION_PRESENT_IN_DECISION_INPUT` | **FAIL** | PASS | PASS |
+| `RELATION_EVALUATED_NOT_ASSUMED` | **FAIL** | PASS | PASS |
+| `SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION` | **FAIL** | PASS | PASS |
+| `RELATION_INPUT_NOT_CALLER_CONTROLLED` | **FAIL** | PASS | **FAIL** |
+
+**The third column is the point.** `caller-controlled-relation` passes every check E006 had
+before Amendment 1, and crosses a tenant boundary. The relation is present in the decision input
+and genuinely evaluated — over a value the caller supplied rather than one taken from the grant.
+The hypothesis came from @Santoshkumarpuppala on the OWASP MCP Top 10 thread, from a labelled
+corpus of web-application authorization findings, offered explicitly as a hypothesis rather than
+a result. All four predictions recorded in Amendment 1 before the fixture existed were confirmed.
+
+Two further shapes reported in the same place are **not** covered and are named in the amendment
+rather than implied to be: one verb of an endpoint family guarded and another not, and
+enforcement at a middleware layer that a second route bypasses. Both are properties of how a
+policy is wired into an application rather than of its decision surface.
+
+The four engine-comparison runs (Cedar, OpenFGA, SpiceDB) predate Amendment 1 and carry five
+checks rather than six. They have not been re-run against the caller-controlled input.
 
 **Both policies would pass E001.** The action-only policy correctly grants `documents:read` and
 correctly denies `documents:write` — action-axis scope is intact. E001 cannot observe this

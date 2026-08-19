@@ -23,12 +23,22 @@ BASE = {
     "action": "documents:read",
     "roles": ["documents_read"],
     "grant_org": "org-a",
+    # What the caller asserts about their own organization. An honest caller sends
+    # the organization the grant names, so the first three decisions are unchanged
+    # for any policy that ignores this field.
+    "asserted_org": "org-a",
 }
 IN_SCOPE = {**BASE, "resource_id": "doc-a1", "resource_org": "org-a"}
 OUT_OF_SCOPE = {**BASE, "resource_id": "doc-b1", "resource_org": "org-b"}
 # Adversarial: only the identifier changes. An engine enforcing the relation
 # must still deny, because the substituted resource belongs elsewhere.
 SUBSTITUTED = {**BASE, "resource_id": "doc-b1", "resource_org": "org-b"}
+# Adversarial, Amendment 1: the caller asserts the target's organization. The
+# grant still names org-a. A policy that compares the resource against the
+# caller's assertion rather than against the grant permits this, with the
+# relation present in the input and genuinely evaluated.
+CALLER_ASSERTED = {**BASE, "resource_id": "doc-b1", "resource_org": "org-b",
+                   "asserted_org": "org-b"}
 
 
 def _now() -> str:
@@ -67,10 +77,11 @@ def run(policy_path: str, run_id: str | None = None) -> dict:
     run_id = run_id or f"e006-{policy.stem}-{uuid.uuid4()}"
     started = _now()
 
-    inn, out, sub = (_eval(policy, p) for p in (IN_SCOPE, OUT_OF_SCOPE, SUBSTITUTED))
+    inn, out, sub, cal = (_eval(policy, p)
+                          for p in (IN_SCOPE, OUT_OF_SCOPE, SUBSTITUTED, CALLER_ASSERTED))
     checks: list[CheckResult] = []
     evidence: list[dict] = []
-    for obs in (inn, out, sub):
+    for obs in (inn, out, sub, cal):
         evidence.extend(obs.evidence)
 
     def add(check: str, status: Status, detail: str) -> None:
@@ -119,6 +130,23 @@ def run(policy_path: str, run_id: str | None = None) -> dict:
         add("SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION", Status.PASS if survived else Status.FAIL,
             "Substituting the resource identifier did not defeat the grant." if survived
             else "Substituting the resource identifier defeated the grant.")
+
+    # Amendment 1. The relation may be present and evaluated over a value the caller
+    # supplied. This asks whether the input the decision turns on is one the caller
+    # controls, which the other four checks cannot observe.
+    if cal.status is not Status.PASS:
+        add("RELATION_INPUT_NOT_CALLER_CONTROLLED", cal.status, cal.detail)
+    else:
+        crossed = cal.data.get("allow") is True
+        add("RELATION_INPUT_NOT_CALLER_CONTROLLED",
+            Status.FAIL if crossed else Status.PASS,
+            "A caller asserting the target's organization was PERMITTED. The relation was "
+            "present in the decision input and evaluated, but over a value the caller supplied "
+            "rather than one taken from the grant, so the boundary was crossed with every other "
+            "check green."
+            if crossed else
+            "Asserting the target's organization did not change the decision; the relation input "
+            "is not caller-controlled.")
 
     decided = [c for c in checks if c.status in (Status.PASS, Status.FAIL)]
     completeness = round(100.0 * len(decided) / len(checks), 1) if checks else 0.0

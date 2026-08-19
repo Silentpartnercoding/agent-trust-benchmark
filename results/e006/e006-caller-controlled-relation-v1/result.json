@@ -1,0 +1,76 @@
+{
+  "schema_version": "e006/v1",
+  "experiment_id": "E006",
+  "provider": "opa::caller-controlled-relation",
+  "policy_source": "package e006\n\n# Relation-scoped authorization where the organization compared against is taken\n# from the request rather than from the grant.\n#\n# This is identical to relation-aware in every respect that E006's original five\n# checks can observe. The relation is present in the decision input, it is\n# genuinely evaluated, and substituting the resource identifier changes\n# input.resource_org and flips the decision.\n#\n# The difference is input.asserted_org. An honest caller sends the organization\n# they belong to and the decision is indistinguishable from relation-aware. A\n# caller who sends the target's organization is compared against their own\n# assertion, and the boundary is crossed with the relation still evaluated.\n#\n# The grant's own organization, input.grant_org, is never consulted.\n\ndefault allow := false\n\nallow if {\n    input.token_active == true\n    input.agent_id != \"\"\n    input.delegation_id != \"\"\n    input.action == \"documents:read\"\n    \"documents_read\" in input.roles\n    input.resource_org != \"\"\n    input.resource_org == input.asserted_org\n}\n\ndecision := {\n    \"allow\": allow,\n    \"evaluated\": [\"token_active\", \"agent_id\", \"delegation_id\", \"action\", \"roles\", \"resource_org\", \"asserted_org\"],\n    \"resource_org_consulted\": true,\n    \"resource_org\": input.resource_org,\n    \"grant_org\": input.grant_org,\n    \"asserted_org\": input.asserted_org,\n    \"relation_source\": \"request\",\n    \"policy_revision\": \"e006-caller-controlled-relation\",\n}\n",
+  "run_id": "e006-caller-controlled-relation-v1",
+  "started_at": "2026-08-19T13:09:12.102725+00:00",
+  "completed_at": "2026-08-19T13:09:13.095077+00:00",
+  "checks": [
+    {
+      "check": "IN_SCOPE_RESOURCE_ALLOWED",
+      "status": "PASS",
+      "detail": "The in-scope resource was permitted."
+    },
+    {
+      "check": "OUT_OF_SCOPE_RESOURCE_BLOCKED",
+      "status": "PASS",
+      "detail": "A resource outside the granted organization was blocked before effect."
+    },
+    {
+      "check": "RELATION_PRESENT_IN_DECISION_INPUT",
+      "status": "PASS",
+      "detail": "resource_org_consulted=True; evaluated inputs: ['token_active', 'agent_id', 'delegation_id', 'action', 'roles', 'resource_org', 'asserted_org']"
+    },
+    {
+      "check": "RELATION_EVALUATED_NOT_ASSUMED",
+      "status": "PASS",
+      "detail": "The denial is attributable to the resource/grant organization comparison."
+    },
+    {
+      "check": "SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION",
+      "status": "PASS",
+      "detail": "Substituting the resource identifier did not defeat the grant."
+    },
+    {
+      "check": "RELATION_INPUT_NOT_CALLER_CONTROLLED",
+      "status": "FAIL",
+      "detail": "A caller asserting the target's organization was PERMITTED. The relation was present in the decision input and evaluated, but over a value the caller supplied rather than one taken from the grant, so the boundary was crossed with every other check green."
+    }
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "RELATION_DEPTH_EVALUATED": 1
+  },
+  "evidence": [
+    {
+      "raw_evidence_ref": "opa:eval/6cb651e8-e861-4c97-a7c4-e1a8ab14fe57",
+      "kind": "engine_decision",
+      "policy_revision": "e006-caller-controlled-relation",
+      "allow": true
+    },
+    {
+      "raw_evidence_ref": "opa:eval/5fb92816-faa9-4706-b75f-722620db8469",
+      "kind": "engine_decision",
+      "policy_revision": "e006-caller-controlled-relation",
+      "allow": false
+    },
+    {
+      "raw_evidence_ref": "opa:eval/d6580ec8-1935-4f7d-814f-ec5299353f4d",
+      "kind": "engine_decision",
+      "policy_revision": "e006-caller-controlled-relation",
+      "allow": false
+    },
+    {
+      "raw_evidence_ref": "opa:eval/a36c443c-b017-40a6-9ddc-603cf4ecb07d",
+      "kind": "engine_decision",
+      "policy_revision": "e006-caller-controlled-relation",
+      "allow": true
+    }
+  ],
+  "limitations": [
+    "Exercises a policy authored for this benchmark against the OPA evaluator, not a vendor's production authorization deployment.",
+    "The policy is recorded verbatim; a weaker policy is a finding about expressiveness, not an error to be silently corrected.",
+    "Single-level organization membership. Nested or inherited relations are not exercised."
+  ]
+}

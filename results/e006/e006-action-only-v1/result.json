@@ -4,8 +4,8 @@
   "provider": "opa::action-only",
   "policy_source": "package e006\n\n# Action-type authorization. The grant names an action; the decision checks that\n# the action was granted. The resource's organization is never consulted.\n#\n# This is the shape that produces cross-tenant IDOR: every record reads in-scope\n# because the action WAS granted. The predicate simply never bound the resource.\n\ndefault allow := false\n\nallow if {\n    input.token_active == true\n    input.agent_id != \"\"\n    input.delegation_id != \"\"\n    input.action == \"documents:read\"\n    \"documents_read\" in input.roles\n}\n\ndecision := {\n    \"allow\": allow,\n    \"evaluated\": [\"token_active\", \"agent_id\", \"delegation_id\", \"action\", \"roles\"],\n    \"resource_org_consulted\": false,\n    \"policy_revision\": \"e006-action-only\",\n}\n",
   "run_id": "e006-action-only-v1",
-  "started_at": "2026-08-18T15:29:03.977097+00:00",
-  "completed_at": "2026-08-18T15:29:04.616627+00:00",
+  "started_at": "2026-08-19T13:09:09.971931+00:00",
+  "completed_at": "2026-08-19T13:09:11.049264+00:00",
   "checks": [
     {
       "check": "IN_SCOPE_RESOURCE_ALLOWED",
@@ -31,6 +31,11 @@
       "check": "SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION",
       "status": "FAIL",
       "detail": "Substituting the resource identifier defeated the grant."
+    },
+    {
+      "check": "RELATION_INPUT_NOT_CALLER_CONTROLLED",
+      "status": "FAIL",
+      "detail": "A caller asserting the target's organization was PERMITTED. The relation was present in the decision input and evaluated, but over a value the caller supplied rather than one taken from the grant, so the boundary was crossed with every other check green."
     }
   ],
   "metrics": {
@@ -39,19 +44,25 @@
   },
   "evidence": [
     {
-      "raw_evidence_ref": "opa:eval/fa8db6f3-2d04-42b9-97e1-e7daf0dd959e",
+      "raw_evidence_ref": "opa:eval/4a6b2db3-3453-41fa-9dfc-67b176ec129e",
       "kind": "engine_decision",
       "policy_revision": "e006-action-only",
       "allow": true
     },
     {
-      "raw_evidence_ref": "opa:eval/2b03f322-c639-432d-a654-0a0dd993ffbb",
+      "raw_evidence_ref": "opa:eval/5049491f-ded9-4b73-bb15-4a2312b74a92",
       "kind": "engine_decision",
       "policy_revision": "e006-action-only",
       "allow": true
     },
     {
-      "raw_evidence_ref": "opa:eval/0c7230a7-1565-45b1-8417-904ae4aa6f9b",
+      "raw_evidence_ref": "opa:eval/947aa5ee-d18b-4926-a938-3c5d86d495f6",
+      "kind": "engine_decision",
+      "policy_revision": "e006-action-only",
+      "allow": true
+    },
+    {
+      "raw_evidence_ref": "opa:eval/56e79fca-44c6-4370-9133-865b6263e85d",
       "kind": "engine_decision",
       "policy_revision": "e006-action-only",
       "allow": true
