@@ -6,12 +6,14 @@ experiment: Hydra itself records nothing about who the human is, so whatever
 attribution evidence exists is whatever this app chooses to write. Every
 decision it makes is logged to consent-evidence.jsonl.
 """
-import json, time, urllib.request, urllib.parse
+import json, os, time, urllib.request, urllib.parse
+from pathlib import Path
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 ADMIN = "http://127.0.0.1:4445"
 HUMAN = "human-1"                      # pseudonymous subject
-EVIDENCE = "/private/tmp/claude-501/-Users-james/c4f8fe13-5e50-4d2e-8ea2-435ddbcad35c/scratchpad/consent-evidence.jsonl"
+EVIDENCE = os.environ.get("ATB_HYDRA_CONSENT_EVIDENCE",
+                          str(Path(__file__).resolve().parent / "consent-evidence.jsonl"))
 
 
 def api(path, payload):

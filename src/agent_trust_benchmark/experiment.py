@@ -6,10 +6,12 @@ from functools import partial
 from typing import Callable
 
 from .adapters import (
+    Auth0Adapter,
     BaselineAdapter,
     EntraAdapter,
     KeycloakOpaAdapter,
     OktaAdapter,
+    OryHydraAdapter,
     ZitadelOpaAdapter,
 )
 from .adapters.base import ProviderAdapter
@@ -25,6 +27,8 @@ def _iso() -> str:
 # is the result of record for both, so the bare provider name maps to it.
 ADAPTERS: dict[str, Callable[[str], ProviderAdapter]] = {
     "baseline": BaselineAdapter,
+    "auth0": Auth0Adapter,
+    "ory-hydra": OryHydraAdapter,
     "keycloak-opa": KeycloakOpaAdapter,
     "zitadel-opa": ZitadelOpaAdapter,
     "okta": partial(OktaAdapter, consent_origin="user"),
