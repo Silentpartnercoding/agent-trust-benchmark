@@ -118,7 +118,7 @@ def run_e001(provider: str, run_id: str | None = None) -> RunResult:
             limitations.append("The opaque token is long-lived; the fast post-revocation block depends on online introspection at every exercised action.")
 
         return RunResult(
-            schema_version="0.1",
+            schema_version="0.2",
             experiment_id="e001",
             provider=provider,
             run_id=run_id,

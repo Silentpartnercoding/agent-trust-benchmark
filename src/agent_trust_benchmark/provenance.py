@@ -44,7 +44,11 @@ NEVER_EMITTED_SCHEMAS = {
 }
 
 KNOWN_SCHEMAS = {
-    "0.1": {  # E001 RunResult
+    "0.2": {  # E001 RunResult, declares its own provenance
+        "schema_version", "experiment_id", "provider", "run_id", "started_at",
+        "completed_at", "checks", "evidence", "metrics", "limitations", "provenance",
+    },
+    "0.1": {  # E001 RunResult, written before the provenance field existed
         "schema_version", "experiment_id", "provider", "run_id", "started_at",
         "completed_at", "checks", "evidence", "metrics", "limitations",
     },
@@ -80,6 +84,22 @@ def classify(result_path: Path) -> dict:
                 "detail": NEVER_EMITTED_SCHEMAS[schema] + (
                     " The file records what someone concluded, not what a run produced."),
                 "signals": {"schema_version": schema}}
+
+    # A file that declares its own provenance is not inferred about. The whole
+    # point of the schema change is that this check should not have to guess.
+    declared = doc.get("provenance")
+    if isinstance(declared, dict) and "root_authentication" in declared:
+        status = (declared.get("root_authentication") or {}).get("status")
+        derived = declared.get("derived_from") or []
+        return {"run_id": doc.get("run_id", result_path.parent.name),
+                "provider": doc.get("provider"),
+                "verdict": "DECLARED_ROOT" if (status == "machine-emitted" and not derived)
+                           else "DECLARED_DERIVED",
+                "detail": (
+                    f"The file states its own provenance: root_authentication.status={status!r}, "
+                    f"{len(derived)} derived_from entr{'y' if len(derived)==1 else 'ies'}. "
+                    "Not inferred."),
+                "signals": {"declared": True}}
 
     expected = KNOWN_SCHEMAS.get(schema)
     if expected is None:

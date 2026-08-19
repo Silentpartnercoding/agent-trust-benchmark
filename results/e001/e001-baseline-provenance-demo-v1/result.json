@@ -1,0 +1,326 @@
+{
+  "checks": [
+    {
+      "check": "DISTINCT_AGENT_IDENTITY",
+      "detail": "The agent has a distinct identity.",
+      "evidence_refs": [
+        "memory:audit/evt-1442e329-1349-420f-8c36-771618216b7f"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "DELEGATION_PROVABLE",
+      "detail": "The human-to-agent delegation is provable.",
+      "evidence_refs": [
+        "memory:audit/evt-53f8874f-5824-4e03-9986-bd0c86101660"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "SCOPE_VISIBLE",
+      "detail": "The granted preview scope is visible.",
+      "evidence_refs": [
+        "memory:audit/evt-825198a9-b38a-4ebb-95dc-747a0091d777"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "detail": "The allowed action succeeded exactly once.",
+      "evidence_refs": [
+        "memory:audit/evt-fb104aaf-46ec-47e8-a9cc-f68358acb12d"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "detail": "The forbidden action was blocked before effect.",
+      "evidence_refs": [
+        "memory:audit/evt-310a0268-7b4a-4934-90d0-a58c4c9e9173"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "HUMAN_ATTRIBUTION_PROVABLE",
+      "detail": "The action is attributable to the human principal.",
+      "evidence_refs": [
+        "memory:audit/evt-fb104aaf-46ec-47e8-a9cc-f68358acb12d",
+        "memory:audit/evt-310a0268-7b4a-4934-90d0-a58c4c9e9173"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "AGENT_ATTRIBUTION_PROVABLE",
+      "detail": "The action is attributable to the authenticated agent identity at the exercised enforcement point.",
+      "evidence_refs": [
+        "memory:audit/evt-fb104aaf-46ec-47e8-a9cc-f68358acb12d",
+        "memory:audit/evt-310a0268-7b4a-4934-90d0-a58c4c9e9173"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ACTION_AUDITABLE",
+      "detail": "The action can be reconstructed from audit evidence.",
+      "evidence_refs": [
+        "memory:audit/evt-fb104aaf-46ec-47e8-a9cc-f68358acb12d",
+        "memory:audit/evt-310a0268-7b4a-4934-90d0-a58c4c9e9173"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "detail": "The credential or delegation can be revoked.",
+      "evidence_refs": [
+        "memory:audit/evt-3147255a-bd50-407b-bc64-7ad46419d0af"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "detail": "The action was blocked after revocation.",
+      "evidence_refs": [
+        "memory:audit/evt-c3145c21-f8c1-4ac5-b645-281b52b98450"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "completed_at": "2026-08-19T14:39:07.562984Z",
+  "evidence": [
+    {
+      "action": null,
+      "agent_id": null,
+      "correlation_id": "e001-baseline-provenance-demo-v1",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": null,
+      "effect_count": 0,
+      "event_type": "human.created",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "human-58d2bd51-163f-4aca-bdc2-9006309bcc40",
+      "observed_at": "2026-08-19T14:39:07.562823Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-e52a2710-a0f7-4980-9177-0f89bd3f3f38",
+      "raw_evidence_ref": "memory:audit/evt-e52a2710-a0f7-4980-9177-0f89bd3f3f38",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-baseline-provenance-demo-v1",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "agent-7fbf31b4-ec53-4b71-b242-fa1c53991e34",
+      "correlation_id": "e001-baseline-provenance-demo-v1",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": null,
+      "effect_count": 0,
+      "event_type": "agent.created",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "human-58d2bd51-163f-4aca-bdc2-9006309bcc40",
+      "observed_at": "2026-08-19T14:39:07.562833Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-1442e329-1349-420f-8c36-771618216b7f",
+      "raw_evidence_ref": "memory:audit/evt-1442e329-1349-420f-8c36-771618216b7f",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-baseline-provenance-demo-v1",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "agent-7fbf31b4-ec53-4b71-b242-fa1c53991e34",
+      "correlation_id": "e001-baseline-provenance-demo-v1",
+      "credential_id": null,
+      "decision": "observe",
+      "delegation_id": "delegation-68a5c99a-4994-4f2a-aa44-a68aed18fb64",
+      "effect_count": 0,
+      "event_type": "delegation.created",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-58d2bd51-163f-4aca-bdc2-9006309bcc40",
+      "observed_at": "2026-08-19T14:39:07.562841Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-53f8874f-5824-4e03-9986-bd0c86101660",
+      "raw_evidence_ref": "memory:audit/evt-53f8874f-5824-4e03-9986-bd0c86101660",
+      "requested_scopes": [
+        "payments:preview"
+      ],
+      "resource": null,
+      "run_id": "e001-baseline-provenance-demo-v1",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "agent-7fbf31b4-ec53-4b71-b242-fa1c53991e34",
+      "correlation_id": "e001-baseline-provenance-demo-v1",
+      "credential_id": "credential-0a1e466f-0b3c-46a8-a93a-569eb79e2f90",
+      "decision": "observe",
+      "delegation_id": "delegation-68a5c99a-4994-4f2a-aa44-a68aed18fb64",
+      "effect_count": 0,
+      "event_type": "credential.issued",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-58d2bd51-163f-4aca-bdc2-9006309bcc40",
+      "observed_at": "2026-08-19T14:39:07.562887Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-c12338a1-b231-4465-acf2-de8287014083",
+      "raw_evidence_ref": "memory:audit/evt-c12338a1-b231-4465-acf2-de8287014083",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-baseline-provenance-demo-v1",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "agent-7fbf31b4-ec53-4b71-b242-fa1c53991e34",
+      "correlation_id": "e001-baseline-provenance-demo-v1",
+      "credential_id": "credential-0a1e466f-0b3c-46a8-a93a-569eb79e2f90",
+      "decision": "observe",
+      "delegation_id": "delegation-68a5c99a-4994-4f2a-aa44-a68aed18fb64",
+      "effect_count": 0,
+      "event_type": "credential.inspected",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-58d2bd51-163f-4aca-bdc2-9006309bcc40",
+      "observed_at": "2026-08-19T14:39:07.562914Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-825198a9-b38a-4ebb-95dc-747a0091d777",
+      "raw_evidence_ref": "memory:audit/evt-825198a9-b38a-4ebb-95dc-747a0091d777",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-baseline-provenance-demo-v1",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "preview",
+      "agent_id": "agent-7fbf31b4-ec53-4b71-b242-fa1c53991e34",
+      "correlation_id": "e001-baseline-provenance-demo-v1",
+      "credential_id": "credential-0a1e466f-0b3c-46a8-a93a-569eb79e2f90",
+      "decision": "allow",
+      "delegation_id": "delegation-68a5c99a-4994-4f2a-aa44-a68aed18fb64",
+      "effect_count": 1,
+      "event_type": "action.allowed",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-58d2bd51-163f-4aca-bdc2-9006309bcc40",
+      "observed_at": "2026-08-19T14:39:07.562931Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-fb104aaf-46ec-47e8-a9cc-f68358acb12d",
+      "raw_evidence_ref": "memory:audit/evt-fb104aaf-46ec-47e8-a9cc-f68358acb12d",
+      "requested_scopes": [
+        "payments:preview"
+      ],
+      "resource": "payments",
+      "run_id": "e001-baseline-provenance-demo-v1",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "execute",
+      "agent_id": "agent-7fbf31b4-ec53-4b71-b242-fa1c53991e34",
+      "correlation_id": "e001-baseline-provenance-demo-v1",
+      "credential_id": "credential-0a1e466f-0b3c-46a8-a93a-569eb79e2f90",
+      "decision": "deny",
+      "delegation_id": "delegation-68a5c99a-4994-4f2a-aa44-a68aed18fb64",
+      "effect_count": 0,
+      "event_type": "action.denied",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-58d2bd51-163f-4aca-bdc2-9006309bcc40",
+      "observed_at": "2026-08-19T14:39:07.562944Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-310a0268-7b4a-4934-90d0-a58c4c9e9173",
+      "raw_evidence_ref": "memory:audit/evt-310a0268-7b4a-4934-90d0-a58c4c9e9173",
+      "requested_scopes": [
+        "payments:execute"
+      ],
+      "resource": "payments",
+      "run_id": "e001-baseline-provenance-demo-v1",
+      "schema_version": "0.1"
+    },
+    {
+      "action": null,
+      "agent_id": "agent-7fbf31b4-ec53-4b71-b242-fa1c53991e34",
+      "correlation_id": "e001-baseline-provenance-demo-v1",
+      "credential_id": "credential-0a1e466f-0b3c-46a8-a93a-569eb79e2f90",
+      "decision": "observe",
+      "delegation_id": "delegation-68a5c99a-4994-4f2a-aa44-a68aed18fb64",
+      "effect_count": 0,
+      "event_type": "credential.revoked",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [],
+      "human_id": "human-58d2bd51-163f-4aca-bdc2-9006309bcc40",
+      "observed_at": "2026-08-19T14:39:07.562953Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-3147255a-bd50-407b-bc64-7ad46419d0af",
+      "raw_evidence_ref": "memory:audit/evt-3147255a-bd50-407b-bc64-7ad46419d0af",
+      "requested_scopes": [],
+      "resource": null,
+      "run_id": "e001-baseline-provenance-demo-v1",
+      "schema_version": "0.1"
+    },
+    {
+      "action": "preview",
+      "agent_id": "agent-7fbf31b4-ec53-4b71-b242-fa1c53991e34",
+      "correlation_id": "e001-baseline-provenance-demo-v1",
+      "credential_id": "credential-0a1e466f-0b3c-46a8-a93a-569eb79e2f90",
+      "decision": "deny",
+      "delegation_id": "delegation-68a5c99a-4994-4f2a-aa44-a68aed18fb64",
+      "effect_count": 0,
+      "event_type": "action.denied",
+      "evidence_origin": "provider_native",
+      "experiment_id": "e001",
+      "granted_scopes": [
+        "payments:preview"
+      ],
+      "human_id": "human-58d2bd51-163f-4aca-bdc2-9006309bcc40",
+      "observed_at": "2026-08-19T14:39:07.562965Z",
+      "provider": "baseline",
+      "provider_event_id": "evt-c3145c21-f8c1-4ac5-b645-281b52b98450",
+      "raw_evidence_ref": "memory:audit/evt-c3145c21-f8c1-4ac5-b645-281b52b98450",
+      "requested_scopes": [
+        "payments:preview"
+      ],
+      "resource": "payments",
+      "run_id": "e001-baseline-provenance-demo-v1",
+      "schema_version": "0.1"
+    }
+  ],
+  "experiment_id": "e001",
+  "limitations": [],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "REVOCATION_LATENCY_MS": 0.016666948795318604,
+    "TOKEN_LIFETIME_SECONDS": 300
+  },
+  "provenance": {
+    "derived_from": [],
+    "root_authentication": {
+      "method": "agent_trust_benchmark.report.write_result",
+      "status": "machine-emitted"
+    }
+  },
+  "provider": "baseline",
+  "run_id": "e001-baseline-provenance-demo-v1",
+  "schema_version": "0.2",
+  "started_at": "2026-08-19T14:39:07.562692Z"
+}
