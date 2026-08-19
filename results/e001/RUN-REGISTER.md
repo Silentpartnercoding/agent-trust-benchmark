@@ -39,6 +39,7 @@ elapsed time.
 - `e001-zitadel-opa-c7ce5a22-17ac-480c-ba26-a242219fbc13`
 - `e001-entra-user-consent-v1`
 - `e001-entra-admin-consent-v1`
+- `e001-auth0-replay-v1`
 
 **Hand-authored records of live sessions.** The provider was genuinely exercised — through its
 API, its admin console, or an interactive browser flow — and the result file was written
@@ -48,16 +49,37 @@ references, use fields the harness does not produce, and have whole-minute times
 
 - `e001-okta-user-consent-v1`
 - `e001-okta-admin-consent-v1`
-- `e001-auth0-v1`
+- `e001-auth0-v1` — since replayed. See below.
 - `e001-ory-hydra-v1`
 
-No adapter in this repository reproduces the four above, and neither `auth0` nor `ory-hydra` is
-selectable from the command line. **They are reported observations, not independently checkable
-ones.** That is a weaker standard than this benchmark sets for itself, and it is disclosed rather
-than corrected silently.
+When these were written, no adapter in this repository reproduced any of them. **They were
+reported observations, not independently checkable ones** — a weaker standard than this benchmark
+sets for itself, disclosed rather than corrected silently.
 
-Adapters are being written so these can be re-run and replaced with emitted results. Until then
-the distinction above is the honest description of what the evidence supports.
+Adapters now exist for all four providers and all are selectable from the command line. Auth0 has
+since been replayed and the emitted result agrees on nine of ten checks; see below. Okta and Ory
+Hydra have not yet been replayed, so for those two the paragraph above still describes what the
+evidence supports.
+
+### Auth0: the hand-authored record checked against an emitted replay
+
+`e001-auth0-replay-v1` re-ran Auth0 through the committed adapter, using the original
+authorization request recovered verbatim from the session that produced `e001-auth0-v1`: same
+first-party client, `scope=openid payments:preview`, same audience, same PKCE.
+
+**Nine of the ten checks agree, including the failure.** `POST_REVOCATION_ACTION_BLOCKED` fails
+in both: the grant is deleted, the grant list is confirmed empty, and the previously issued
+access token is still accepted by Auth0's `/userinfo`, returning the subject. The emitted run
+measures 447.5 ms and reaches 100% evidence completeness with eight raw evidence references.
+
+One check differs. `ACTION_AUDITABLE` was `INDETERMINATE` in the hand-authored record and `PASS`
+in the replay, where the adapter reads the tenant log and finds the action reconstructible.
+
+Two narrative claims in `FINDINGS.md` did **not** survive the replay, and they were never check
+results: that the consent dialog listed no scopes, and that the requested scope was stripped to
+`openid`. Replaying the original request produces a dialog that lists the scope, and a grant that
+records `payments:preview`. Those sentences have been corrected. The distinction matters — the
+recorded checks were substantially accurate; the prose around them was not.
 
 ## Superseded by a later measurement
 

@@ -148,16 +148,24 @@ introspection, Okta by requiring re-consent. Auth0 did not.
 | | Okta | Auth0 |
 |---|---|---|
 | Undelegated scope requested | refused, `access_denied` | token issued |
-| What the human saw | an error page | a consent dialog **listing no scopes at all** |
-| Outcome | nothing issued | scope silently stripped to `openid` |
+| What the human saw | an error page | a consent dialog whose contents I originally recorded as empty (**since retracted** — replaying the original request lists the scope) |
+| Outcome | nothing issued | token issued (see retraction below) |
 
 Auth0 does prevent the capability — `payments:execute` is absent from the token, so no effect is
-possible, and the check passes. But a human was asked to approve a blank scope list, and neither
-the human nor the client was told the request had been downgraded. A caller that trusts its own
-request would believe it holds a scope it does not.
+possible, and the check passes.
 
-The same run also produced two claims that disagree: `scope` was `openid` while `permissions` was
-`['payments:preview']` — a scope never requested in that flow.
+**Retraction.** Two statements previously in this section did not survive replay and are
+withdrawn: that the consent dialog listed no scopes, and that the requested scope was silently
+stripped to `openid`. Replaying the original authorization request verbatim
+(`e001-auth0-replay-v1`) produces a dialog that lists the scope, a grant recording
+`payments:preview`, and a token whose `scope` claim contains it. Both statements came from a
+written record of a live session rather than from a run, and were published before that
+distinction was visible in this repository.
+
+What does survive: the `scope` and `permissions` claims are not identical — `scope` carries
+`openid profile email payments:preview` while `permissions` carries `payments:preview` alone. A
+consumer reading one and not the other sees a different grant. That is a real observation, and a
+much weaker one than what it replaced.
 
 **On attribution, Auth0 is better than Okta.** The tenant log names the human directly on both the
 login and the code-for-token exchange, so no cross-event correlation is needed.

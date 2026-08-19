@@ -1,0 +1,130 @@
+{
+  "checks": [
+    {
+      "check": "DISTINCT_AGENT_IDENTITY",
+      "detail": "The agent has a distinct identity.",
+      "evidence_refs": [
+        "auth0:client/PbIMilPtPw4zlzItKuEs4x3Lp8FmH1yO"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "DELEGATION_PROVABLE",
+      "detail": "The human-to-agent delegation is provable.",
+      "evidence_refs": [
+        "auth0:grant/6a853ea90df9cffec4b01bd7"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "SCOPE_VISIBLE",
+      "detail": "The granted preview scope is visible.",
+      "evidence_refs": [
+        "auth0:token_claims/"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "detail": "The allowed action succeeded exactly once.",
+      "evidence_refs": [],
+      "status": "PASS"
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "detail": "The forbidden action was blocked before effect.",
+      "evidence_refs": [],
+      "status": "PASS"
+    },
+    {
+      "check": "HUMAN_ATTRIBUTION_PROVABLE",
+      "detail": "The action is attributable to the human principal.",
+      "evidence_refs": [
+        "auth0:tenant_log/64"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "AGENT_ATTRIBUTION_PROVABLE",
+      "detail": "The action is attributable to the authenticated agent identity at the exercised enforcement point.",
+      "evidence_refs": [
+        "auth0:tenant_log/64"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ACTION_AUDITABLE",
+      "detail": "The action can be reconstructed from audit evidence.",
+      "evidence_refs": [
+        "auth0:tenant_log/64"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "detail": "The credential or delegation can be revoked.",
+      "evidence_refs": [
+        "auth0:revocation/6a853ea90df9cffec4b01bd7"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "detail": "The action was not proven blocked after revocation.",
+      "evidence_refs": [
+        "auth0:post_revocation_userinfo/200"
+      ],
+      "status": "FAIL"
+    }
+  ],
+  "completed_at": "2026-08-19T05:27:35.583101Z",
+  "evidence": [
+    {
+      "kind": "user",
+      "raw_evidence_ref": "auth0:user/auth0|6a84a0a2a7839456edb481f9"
+    },
+    {
+      "kind": "client",
+      "raw_evidence_ref": "auth0:client/PbIMilPtPw4zlzItKuEs4x3Lp8FmH1yO"
+    },
+    {
+      "kind": "grant",
+      "raw_evidence_ref": "auth0:grant/6a853ea90df9cffec4b01bd7",
+      "scope": [
+        "openid",
+        "payments:preview"
+      ]
+    },
+    {
+      "kind": "token",
+      "raw_evidence_ref": "auth0:token/ea31f2ffd7f244318c615d82eca88e8a"
+    },
+    {
+      "kind": "token_claims",
+      "raw_evidence_ref": "auth0:token_claims/"
+    },
+    {
+      "kind": "tenant_log",
+      "raw_evidence_ref": "auth0:tenant_log/64"
+    },
+    {
+      "kind": "revocation",
+      "raw_evidence_ref": "auth0:revocation/6a853ea90df9cffec4b01bd7"
+    },
+    {
+      "kind": "post_revocation_userinfo",
+      "raw_evidence_ref": "auth0:post_revocation_userinfo/200"
+    }
+  ],
+  "experiment_id": "e001",
+  "limitations": [],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 100.0,
+    "REVOCATION_LATENCY_MS": 447.53003120422363,
+    "TOKEN_LIFETIME_SECONDS": null
+  },
+  "provider": "auth0",
+  "run_id": "e001-auth0-replay-v1",
+  "schema_version": "0.1",
+  "started_at": "2026-08-19T05:27:33.157757Z"
+}
