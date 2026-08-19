@@ -1,7 +1,15 @@
 # Findings
 
 What has actually been measured, and what it shows. Every claim links to a run under
-[`results/`](results/); nothing here is asserted without a run id.
+[`results/`](results/).
+
+**Two kinds of run appear there, and they are not equally checkable.** Most were emitted by the
+harness and carry raw evidence references and machine timestamps. Four — both Okta arms, Auth0
+and Ory Hydra — are **hand-authored records of live sessions**: the provider was genuinely
+exercised, but the result file was written afterwards rather than emitted by a runner, and no
+adapter in this repository reproduces it. They are marked as such in
+[`RUN-REGISTER.md`](results/e001/RUN-REGISTER.md). Treat them as reported observations, not as
+independently checkable ones, until the adapters land.
 
 ## Headline
 

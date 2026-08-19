@@ -25,6 +25,40 @@ above it, holding client, scope and enforcement point constant. See
   authorization server scope.
 - Microsoft Entra, administrator consent: `e001-entra-admin-consent-v1`
 
+## Provenance: emitted runs versus hand-authored records
+
+A run id alone does not say how a result file came to exist, and in this experiment two kinds
+exist. The distinction is recorded here because it is not visible from the file itself.
+
+**Emitted by the harness.** Written by `write_result` at the end of a run. They carry raw
+evidence references and machine-generated timestamps with microsecond precision and a non-zero
+elapsed time.
+
+- `e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb`
+- `e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa`
+- `e001-zitadel-opa-c7ce5a22-17ac-480c-ba26-a242219fbc13`
+- `e001-entra-user-consent-v1`
+- `e001-entra-admin-consent-v1`
+
+**Hand-authored records of live sessions.** The provider was genuinely exercised — through its
+API, its admin console, or an interactive browser flow — and the result file was written
+afterwards to record what was observed. It was not emitted by a runner. These carry no evidence
+references, use fields the harness does not produce, and have whole-minute timestamps where
+`started_at` equals `completed_at`.
+
+- `e001-okta-user-consent-v1`
+- `e001-okta-admin-consent-v1`
+- `e001-auth0-v1`
+- `e001-ory-hydra-v1`
+
+No adapter in this repository reproduces the four above, and neither `auth0` nor `ory-hydra` is
+selectable from the command line. **They are reported observations, not independently checkable
+ones.** That is a weaker standard than this benchmark sets for itself, and it is disclosed rather
+than corrected silently.
+
+Adapters are being written so these can be re-run and replaced with emitted results. Until then
+the distinction above is the honest description of what the evidence supports.
+
 ## Superseded by a later measurement
 
 These recorded `BLOCKED_EXTERNAL_ACCESS` on all ten outputs because no test tenant was
