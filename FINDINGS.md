@@ -5,11 +5,19 @@ What has actually been measured, and what it shows. Every claim links to a run u
 
 ## Headline
 
-**No exercised provider produces an offline-verifiable, cryptographically human-bound
-delegation.** Both stacks that ran to completion enforce scope correctly — but in both,
-the link from a *specific human* to a *specific agent authority* is administrator-authored
-configuration, not an interactive consent record and not a human claim bound into the token
-the action carries.
+**No exercised provider lets an independent observer establish that a specific human
+authorized a specific agent authority** — and the two dominant enterprise platforms fail in
+opposite directions.
+
+Okta does not name the human who consented: the consent event records `system@okta.com`, and
+the human is recoverable only by correlating session events. Entra names a human who did not
+consent: an administrator-authored grant produces a token identical to one from a genuine
+interactive approval. ZITADEL and Ory Hydra cannot bind a human to the action credential at
+all.
+
+The Entra shape is the worse one for a verifier. An absent claim is visibly absent. **A
+present claim that carries no information about consent origin reads as evidence and is
+not.**
 
 Enforcement is solved. **Provenance of human authority is not.**
 
@@ -17,22 +25,26 @@ Enforcement is solved. **Provenance of human authority is not.**
 
 | Check | Baseline | Keycloak + OPA | ZITADEL + OPA | Okta | Entra |
 |---|---|---|---|---|---|
-| `DISTINCT_AGENT_IDENTITY` | PASS | PASS | PASS | PASS | — |
-| `DELEGATION_PROVABLE` | PASS | PASS | PASS | PASS | — |
-| `SCOPE_VISIBLE` | PASS | PASS | PASS | PASS | — |
-| `ALLOWED_ACTION_SUCCEEDS` | PASS | PASS | PASS | PASS | — |
-| `FORBIDDEN_ACTION_BLOCKED` | PASS | PASS | PASS | PASS | — |
+| `DISTINCT_AGENT_IDENTITY` | PASS | PASS | PASS | PASS | PASS |
+| `DELEGATION_PROVABLE` | PASS | PASS | PASS | PASS | PASS |
+| `SCOPE_VISIBLE` | PASS | PASS | PASS | PASS | PASS |
+| `ALLOWED_ACTION_SUCCEEDS` | PASS | PASS | PASS | PASS | PASS |
+| `FORBIDDEN_ACTION_BLOCKED` | PASS | PASS | PASS | PASS | PASS |
 | `HUMAN_ATTRIBUTION_PROVABLE` | PASS | PASS | **FAIL** | PASS* | — |
 | `AGENT_ATTRIBUTION_PROVABLE` | PASS | PASS | PASS | PASS | — |
 | `ACTION_AUDITABLE` | PASS | PASS | PASS | PASS | — |
-| `REVOCATION_SUPPORTED` | PASS | PASS | PASS | PASS | — |
-| `POST_REVOCATION_ACTION_BLOCKED` | PASS | PASS | PASS | PASS | — |
-| **Revocation latency** | 0.02 ms | **768 ms** | **9 ms** | 277 ms† | — |
-| Evidence completeness | 100% | 100% | 100% | 100% | — |
+| `REVOCATION_SUPPORTED` | PASS | PASS | PASS | PASS | PASS |
+| `POST_REVOCATION_ACTION_BLOCKED` | PASS | PASS | PASS | PASS | PASS |
+| **Revocation latency** | 0.02 ms | **768 ms** | **9 ms** | 277 ms† | 180 ms – 7.4 s ‡ |
+| Evidence completeness | 100% | 100% | 100% | 100% | 70% |
 
-`—` is `BLOCKED_EXTERNAL_ACCESS`: the provider could not be exercised for want of a test
-tenant. It is **not** a failure, and it is deliberately distinct from `NOT_SUPPORTED`.
-Absence is never inferred from an unsearched surface.
+`—` is `BLOCKED_EXTERNAL_ACCESS`. It is **not** a failure, and it is deliberately distinct
+from `NOT_SUPPORTED`. Absence is never inferred from an unsearched surface. Two different
+causes appear under it: earlier rows were blocked for want of a test tenant, and Entra's three
+cells are blocked by licence tier — sign-in logs return
+`Authentication_RequestFromNonPremiumTenantOrB2CTenant` on a free-tier tenant. Directory
+audits remain readable there; the interface says this tenant may not read the logs, not that
+the capability is absent.
 
 ### Okta — and what "provable" turns out to mean
 
@@ -146,6 +158,74 @@ login and the code-for-token exchange, so no cross-event correlation is needed.
 consent-specific event**. A consent dialog was displayed and approved by a human, the grant object
 exists — and nothing attests that the approval happened or when. The action is auditable; the
 authorization decision is not.
+
+### Entra — the same token, whoever authorized it
+
+Entra ran twice, differing only in who created the delegated permission grant, per
+[Amendment 2](docs/E001-DELEGATION-FLOW-MAPPING.md). Both arms returned seven passes and
+three blocked, at 70% evidence completeness.
+
+**Arm A could be constructed, and on Okta it could not.** An administrator created an
+`oauth2PermissionGrant` with `consentType: Principal` bound to the human's object id, through
+Graph, with no consent prompt shown and no approval event recorded.
+
+```
+Okta:   POST /api/v1/apps/{id}/grants   ->  NOT_SUPPORTED  ("scopeId is invalid")
+Entra:  POST /oauth2PermissionGrants    ->  created
+```
+
+The two dominant enterprise platforms differ on whether administrator-authored consent is
+expressible at all. That is a platform-level difference, not a score.
+
+**The two arms are indistinguishable in the credential.** Arm B's human authenticated, passed
+multi-factor, and approved interactively. Arm A's human did none of those things. The tokens
+carry the same twenty-six claim names and the same values for `oid`, `sub`, `email`, `name`,
+`appid` and `scp`. All ten E001 outputs are identical across the arms.
+
+Amendment 2 predicted Arm B would differ. It does not. That prediction was falsifiable and it
+was falsified.
+
+**A third shape appeared that the amendment did not anticipate.** Consenting through the
+interactive screen with *"Consent on behalf of your organization"* ticked produces
+`consentType: AllPrincipals` with `principalId: null` — a grant recording no human at all,
+from a genuine human approval.
+
+| How the grant was created | What the grant records | What the token shows |
+|---|---|---|
+| Administrator, via Graph | `Principal` + object id | human + agent |
+| Human, org checkbox ticked | `AllPrincipals`, no principal | human + agent |
+| Human, org checkbox unticked | `Principal` + object id | human + agent |
+
+Rows one and three are identical in the token. Row two records no human despite a real one
+having clicked Accept. So **whether the record names a human is independent of whether a human
+approved.** It is determined by which API path or checkbox was used, and the distinction
+survives only in the directory grant record — reachable solely through an authenticated live
+Graph call.
+
+**The consent screen is not the problem; the record is.** The dialog names the human, the
+agent, and the scope in the words the tenant configured. What it does not disclose is that the
+org-wide checkbox — which appears on the second screen, listing only profile read and
+refresh-token access — silently broadens the *payments* grant shown on the first screen, and
+erases the consenting human from it.
+
+**Why this matters more than a failed check.** Nothing here is forged. No signature fails. No
+scope is exceeded. A verifier re-deriving this chain offline confirms every property it can
+check and concludes that a named human authorized a named agent for a named scope. That
+conclusion is not supported by the evidence, and nothing in the evidence says so.
+
+Runs: [`e001-entra-user-consent-v1`](results/e001/e001-entra-user-consent-v1/) (result of
+record) and [`e001-entra-admin-consent-v1`](results/e001/e001-entra-admin-consent-v1/)
+(controlled comparison).
+
+**Boundaries.** Neither arm is headless: the tenant's only human principal is an external B2B
+guest backed by a personal Microsoft account, so no non-interactive path to a delegated token
+exists. Three checks are blocked by licence tier, so `HUMAN_ATTRIBUTION_PROVABLE` is neither
+confirmed nor falsified here — the finding above rests on comparing the two arms' credentials,
+not on that check. Single tenant, single client, single scope pair.
+
+‡ Entra's revocation figure is dominated by directory propagation and is unstable: the same
+operation measured 180 ms and 7.4 s across the two arms. It measures removal of the grant, not
+invalidation of an issued token, and is not comparable to the Keycloak or ZITADEL figures.
 
 ## What the numbers mean
 

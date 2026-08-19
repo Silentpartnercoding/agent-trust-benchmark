@@ -1,4 +1,10 @@
-# E001 current comparison
+# E001 comparison — 2026-08-11 snapshot
+
+> **Superseded.** This is the comparison as it stood on 2026-08-11, retained as an audit trail
+> rather than deleted, on the same principle as `RUN-REGISTER.md`. Okta and Entra were
+> genuinely unmeasured at this date; both have since reached verdicts, and Auth0 and Ory Hydra
+> were added. For current results see [`FINDINGS.md`](../../FINDINGS.md).
+
 
 Run date: 2026-08-11
 

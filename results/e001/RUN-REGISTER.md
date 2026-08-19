@@ -6,9 +6,33 @@ best.
 
 ## Accepted comparison runs
 
+- Neutral baseline: `e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb`
 - Keycloak + OPA: `e001-keycloak-opa-c96221c2-229c-4cb6-8514-8d6068c2faaa`
 - ZITADEL + OPA: `e001-zitadel-opa-c7ce5a22-17ac-480c-ba26-a242219fbc13`
-- Neutral baseline: `e001-baseline-21ae873b-a5d7-45ec-bcf7-20faea25acbb`
+- Okta, user consent: `e001-okta-user-consent-v1`
+- Auth0: `e001-auth0-v1`
+- Ory Hydra: `e001-ory-hydra-v1`
+- Microsoft Entra, user consent: `e001-entra-user-consent-v1`
+
+## Controlled comparison arms
+
+These are not second provider scores. Each isolates consent origin against the accepted run
+above it, holding client, scope and enforcement point constant. See
+`docs/E001-DELEGATION-FLOW-MAPPING.md`, Amendments 1 and 2.
+
+- Okta, administrator consent: `e001-okta-admin-consent-v1` — the arm could not be
+  constructed; Okta exposes no administrative path to author a user's consent for a custom
+  authorization server scope.
+- Microsoft Entra, administrator consent: `e001-entra-admin-consent-v1`
+
+## Superseded by a later measurement
+
+These recorded `BLOCKED_EXTERNAL_ACCESS` on all ten outputs because no test tenant was
+configured at the time. That was an accurate statement of what had been measured on
+2026-08-11, not a security result. Both providers have since been exercised. The runs are
+retained so the earlier published comparison remains checkable against the evidence that
+existed when it was written.
+
 - Okta access-boundary run: `e001-okta-8704dc94-a5f7-4ccf-a720-01c3b89bf77d`
 - Entra access-boundary run: `e001-entra-9b9f8846-5aaf-4466-9cfb-ecae4fc0e6cd`
 
