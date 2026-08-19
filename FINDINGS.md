@@ -305,6 +305,25 @@ relation check reads green.
 The exploratory probe preceded the predictions and is disclosed as such in the amendment, so
 prediction 1 is reported as confirming the probe rather than as an independent result.
 
+**Amendment 3 measures the suite rather than any provider, and its headline number must not be
+read alone.** Removing each condition from the reference policy in turn and re-running the suite
+gives 25% condition coverage: of eight conditions, only the relation comparison and the agent
+binding are detected when deleted. That number overstates the problem on its own, so every
+undetected condition is classified.
+
+Two are **substantive** — token validity and role possession. The suite would certify a policy
+omitting either, and does not claim to. One is **by design**: the action axis belongs to E001 and
+is deliberately fixed here. Three are **defensive** non-emptiness guards over values no decision
+input malforms, where whether to test them is a judgement call rather than an omission.
+
+So the honest figure is **two gaps**, not six.
+
+This is internal quality control on the benchmark's own fixtures. It says nothing about how often
+these conditions are omitted in deployed systems, and no result from it is evidence about the
+world. It also cannot find a property absent from the reference policy altogether — mutation
+coverage sees only the removal of conditions someone wrote. Amendments 1 and 2 were both that
+case, and neither would have been caught here.
+
 **The third column is the point.** `caller-controlled-relation` passes every check E006 had
 before Amendment 1, and crosses a tenant boundary. The relation is present in the decision input
 and genuinely evaluated — over a value the caller supplied rather than one taken from the grant.

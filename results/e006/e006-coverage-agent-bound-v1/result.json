@@ -1,0 +1,101 @@
+{
+  "schema_version": "e006-coverage/v1",
+  "experiment_id": "E006",
+  "amendment": 3,
+  "reference_policy": "agent-bound.rego",
+  "policy_source": "package e006\n\n# relation-aware, plus the binding it was missing.\n#\n# The organization is taken from the grant, not from the caller, so this inherits\n# the Amendment 1 property. It additionally requires that the agent presenting the\n# delegation is the agent the delegation was issued to.\n#\n# Without that last line, a delegation is a bearer credential: any agent that\n# knows a delegation id inherits its authority, and every other check still reads\n# green because agent_id is present in the input and is evaluated.\n\ndefault allow := false\n\nallow if {\n    input.token_active == true\n    input.agent_id != \"\"\n    input.delegation_id != \"\"\n    input.agent_id == input.delegation_agent\n    input.action == \"documents:read\"\n    \"documents_read\" in input.roles\n    input.resource_org != \"\"\n    input.resource_org == input.grant_org\n}\n\ndecision := {\n    \"allow\": allow,\n    \"evaluated\": [\"token_active\", \"agent_id\", \"delegation_id\", \"delegation_agent\", \"action\", \"roles\", \"resource_org\", \"grant_org\"],\n    \"resource_org_consulted\": true,\n    \"resource_org\": input.resource_org,\n    \"grant_org\": input.grant_org,\n    \"asserted_org\": input.asserted_org,\n    \"delegation_agent\": input.delegation_agent,\n    \"agent_bound\": input.agent_id == input.delegation_agent,\n    \"relation_source\": \"grant\",\n    \"policy_revision\": \"e006-agent-bound\",\n}\n",
+  "run_id": "e006-coverage-agent-bound-v1",
+  "started_at": "2026-08-19T13:35:08.661078+00:00",
+  "completed_at": "2026-08-19T13:35:18.738810+00:00",
+  "baseline_failing_checks": [],
+  "conditions": [
+    {
+      "condition": "input.token_active == true",
+      "line": 16,
+      "detected_by": [],
+      "covered": false,
+      "classification": "substantive",
+      "blocked_checks": []
+    },
+    {
+      "condition": "input.agent_id != \"\"",
+      "line": 17,
+      "detected_by": [],
+      "covered": false,
+      "classification": "defensive",
+      "blocked_checks": []
+    },
+    {
+      "condition": "input.delegation_id != \"\"",
+      "line": 18,
+      "detected_by": [],
+      "covered": false,
+      "classification": "defensive",
+      "blocked_checks": []
+    },
+    {
+      "condition": "input.agent_id == input.delegation_agent",
+      "line": 19,
+      "detected_by": [
+        "DELEGATION_BOUND_TO_AGENT"
+      ],
+      "covered": true,
+      "classification": null,
+      "blocked_checks": []
+    },
+    {
+      "condition": "input.action == \"documents:read\"",
+      "line": 20,
+      "detected_by": [],
+      "covered": false,
+      "classification": "by-design",
+      "blocked_checks": []
+    },
+    {
+      "condition": "\"documents_read\" in input.roles",
+      "line": 21,
+      "detected_by": [],
+      "covered": false,
+      "classification": "substantive",
+      "blocked_checks": []
+    },
+    {
+      "condition": "input.resource_org != \"\"",
+      "line": 22,
+      "detected_by": [],
+      "covered": false,
+      "classification": "defensive",
+      "blocked_checks": []
+    },
+    {
+      "condition": "input.resource_org == input.grant_org",
+      "line": 23,
+      "detected_by": [
+        "OUT_OF_SCOPE_RESOURCE_BLOCKED",
+        "RELATION_EVALUATED_NOT_ASSUMED",
+        "RELATION_INPUT_NOT_CALLER_CONTROLLED",
+        "SCOPE_SURVIVES_IDENTIFIER_SUBSTITUTION"
+      ],
+      "covered": true,
+      "classification": null,
+      "blocked_checks": []
+    }
+  ],
+  "metrics": {
+    "CONDITIONS_TOTAL": 8,
+    "CONDITIONS_COVERED": 2,
+    "CONDITION_COVERAGE_PERCENT": 25.0,
+    "SUBSTANTIVE_GAPS": 2,
+    "UNCLASSIFIED_CONDITIONS": 0
+  },
+  "substantive_gaps": [
+    "input.token_active == true",
+    "\"documents_read\" in input.roles"
+  ],
+  "limitations": [
+    "Mutation coverage reports which conditions present in the reference policy the suite detects the removal of. A property nobody wrote into the policy is invisible to it; both earlier amendments were that case.",
+    "One condition is removed at a time. Interactions between two simultaneously absent conditions are not exercised.",
+    "An undetected condition is not necessarily a defect, so CONDITION_COVERAGE_PERCENT must not be read alone. Each undetected condition is classified as substantive, by-design or defensive, and SUBSTANTIVE_GAPS is the number that represents a property this suite claims to verify and does not.",
+    "This measures the benchmark's own fixtures. It is internal quality control and says nothing about how often any of these conditions are omitted in deployed systems. No result here is evidence about the world."
+  ]
+}
