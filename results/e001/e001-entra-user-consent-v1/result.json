@@ -1,0 +1,133 @@
+{
+  "checks": [
+    {
+      "check": "DISTINCT_AGENT_IDENTITY",
+      "detail": "The agent has a distinct identity.",
+      "evidence_refs": [
+        "entra:service_principal/becb7463-810d-4687-bf57-48364f73a456"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "DELEGATION_PROVABLE",
+      "detail": "The human-to-agent delegation is provable.",
+      "evidence_refs": [
+        "entra:oauth2_permission_grant/Y3TLvg2Bh0a_V0g2T3OkVs8T8ZaUsb9PhnhI4HWK7vMwxOSVOa5MSaRsOoVtoabW"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "SCOPE_VISIBLE",
+      "detail": "The granted preview scope is visible.",
+      "evidence_refs": [
+        "entra:token_claims/qsqmCD-Ot0urnCFWn7HOAA"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ALLOWED_ACTION_SUCCEEDS",
+      "detail": "The allowed action succeeded exactly once.",
+      "evidence_refs": [],
+      "status": "PASS"
+    },
+    {
+      "check": "FORBIDDEN_ACTION_BLOCKED",
+      "detail": "The forbidden action was blocked before effect.",
+      "evidence_refs": [],
+      "status": "PASS"
+    },
+    {
+      "check": "HUMAN_ATTRIBUTION_PROVABLE",
+      "detail": "Sign-in logs are withheld by licence tier (Authentication_RequestFromNonPremiumTenantOrB2CTenant). Directory audits remain readable, but the agent's own action cannot be reconstructed from provider evidence on this tenant. This is an access limitation, not an absent capability, so it is not NOT_SUPPORTED.",
+      "evidence_refs": [
+        "entra:signin_logs_licence_gated/Authentication_RequestFromNonPremiumTenantOrB2CTenant"
+      ],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "AGENT_ATTRIBUTION_PROVABLE",
+      "detail": "Sign-in logs are withheld by licence tier (Authentication_RequestFromNonPremiumTenantOrB2CTenant). Directory audits remain readable, but the agent's own action cannot be reconstructed from provider evidence on this tenant. This is an access limitation, not an absent capability, so it is not NOT_SUPPORTED.",
+      "evidence_refs": [
+        "entra:signin_logs_licence_gated/Authentication_RequestFromNonPremiumTenantOrB2CTenant"
+      ],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "ACTION_AUDITABLE",
+      "detail": "Sign-in logs are withheld by licence tier (Authentication_RequestFromNonPremiumTenantOrB2CTenant). Directory audits remain readable, but the agent's own action cannot be reconstructed from provider evidence on this tenant. This is an access limitation, not an absent capability, so it is not NOT_SUPPORTED.",
+      "evidence_refs": [
+        "entra:signin_logs_licence_gated/Authentication_RequestFromNonPremiumTenantOrB2CTenant"
+      ],
+      "status": "BLOCKED_EXTERNAL_ACCESS"
+    },
+    {
+      "check": "REVOCATION_SUPPORTED",
+      "detail": "The credential or delegation can be revoked.",
+      "evidence_refs": [
+        "entra:revocation/Y3TLvg2Bh0a_V0g2T3OkVs8T8ZaUsb9PhnhI4HWK7vMwxOSVOa5MSaRsOoVtoabW"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "POST_REVOCATION_ACTION_BLOCKED",
+      "detail": "The action was blocked after revocation.",
+      "evidence_refs": [
+        "entra:post_revocation_check/Y3TLvg2Bh0a_V0g2T3OkVs8T8ZaUsb9PhnhI4HWK7vMwxOSVOa5MSaRsOoVtoabW"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "completed_at": "2026-08-19T02:48:49.440146Z",
+  "evidence": [
+    {
+      "kind": "user",
+      "raw_evidence_ref": "entra:user/95e4c430-ae39-494c-a46c-3a856da1a6d6"
+    },
+    {
+      "kind": "service_principal",
+      "raw_evidence_ref": "entra:service_principal/becb7463-810d-4687-bf57-48364f73a456"
+    },
+    {
+      "created_by": "user",
+      "kind": "oauth2_permission_grant",
+      "raw_evidence_ref": "entra:oauth2_permission_grant/Y3TLvg2Bh0a_V0g2T3OkVs8T8ZaUsb9PhnhI4HWK7vMwxOSVOa5MSaRsOoVtoabW"
+    },
+    {
+      "kind": "token",
+      "raw_evidence_ref": "entra:token/qsqmCD-Ot0urnCFWn7HOAA"
+    },
+    {
+      "kind": "token_claims",
+      "raw_evidence_ref": "entra:token_claims/qsqmCD-Ot0urnCFWn7HOAA"
+    },
+    {
+      "kind": "signin_logs_licence_gated",
+      "raw_evidence_ref": "entra:signin_logs_licence_gated/Authentication_RequestFromNonPremiumTenantOrB2CTenant"
+    },
+    {
+      "kind": "revocation",
+      "raw_evidence_ref": "entra:revocation/Y3TLvg2Bh0a_V0g2T3OkVs8T8ZaUsb9PhnhI4HWK7vMwxOSVOa5MSaRsOoVtoabW"
+    },
+    {
+      "kind": "post_revocation_check",
+      "raw_evidence_ref": "entra:post_revocation_check/Y3TLvg2Bh0a_V0g2T3OkVs8T8ZaUsb9PhnhI4HWK7vMwxOSVOa5MSaRsOoVtoabW"
+    }
+  ],
+  "experiment_id": "e001",
+  "limitations": [
+    "Neither arm is headless. The tenant's only human principal is an external B2B guest backed by a personal Microsoft account, so no non-interactive path to a delegated token exists and the authorization code was obtained in a browser. See docs/E001-DELEGATION-FLOW-MAPPING.md, Correction 1 to Amendment 2.",
+    "Sign-in logs are withheld by licence tier on this tenant, so HUMAN_ATTRIBUTION_PROVABLE, AGENT_ATTRIBUTION_PROVABLE and ACTION_AUDITABLE all derive from an observation that could not be read. They are BLOCKED_EXTERNAL_ACCESS rather than failures.",
+    "Directory audits are readable on this tenant and do name the human on consent events. That evidence is not scored here because all three attribution checks derive from the single audit observation that the licence gate blocked. Recorded as a limitation rather than resolved by changing shared harness code under already-published results.",
+    "REVOCATION_LATENCY_MS measures time from the revocation call to the first proven removal of the grant, including Entra directory propagation. It does not measure invalidation of an already-issued access token, which remains valid until expiry.",
+    "Entra's directory is eventually consistent in both directions: a newly created grant can reject an immediate delete, and a deleted grant can still read as present. Both operations poll to a bounded deadline so propagation is measured rather than reported as a failure."
+  ],
+  "metrics": {
+    "EVIDENCE_COMPLETENESS_PERCENT": 70.0,
+    "REVOCATION_LATENCY_MS": 179.58879470825195,
+    "TOKEN_LIFETIME_SECONDS": null
+  },
+  "provider": "entra-user-consent",
+  "run_id": "e001-entra-user-consent-v1",
+  "schema_version": "0.1",
+  "started_at": "2026-08-19T02:48:45.927176Z"
+}
