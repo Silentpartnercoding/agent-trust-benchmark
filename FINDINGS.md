@@ -419,6 +419,17 @@ Preregistration: [`docs/E006.md`](docs/E006.md). Runs: [`results/e006/`](results
 
 Narrative detail for E001 is in [`docs/E001-FINDINGS.md`](docs/E001-FINDINGS.md).
 
+## Observations
+
+Field studies of systems outside this repository. **Hand-authored, not harness-emitted** — no
+adapter here reproduces them, and they should not be cited as measurements without saying so.
+
+- **[Observation 001 — An abstention rate is not a safety metric](docs/OBSERVATION-001-ABSTENTION-IS-NOT-SAFETY.md)**
+  — a model invoked 1,452 times as an adversarial critic abstained 95.4% of the time and fabricated
+  zero citations, but 77% of those invocations supplied an empty evidence set. The clean number is an
+  artefact of a starved harness, not a property of the model: a fabrication screen over that corpus
+  is structurally incapable of detecting fabrication. Effect Reachability, one level over.
+
 ## Method
 
 Preregistered — the question is frozen before the run ([`docs/E001.md`](docs/E001.md)). Every
