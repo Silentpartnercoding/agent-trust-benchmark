@@ -81,15 +81,18 @@ and are reported as approximate.
 | Both empty set *and* unrelated sources | 499 | 36.0% |
 | Neither of the two main reasons | 161 | 11.6% |
 
-A representative abstention, quoted from one invocation:
+A representative abstention, quoted from one invocation. `[…]` marks a redaction: the observed
+system's research objectives are withheld, since they are its output rather than part of this
+finding. The mismatched sources are quoted unaltered, and they carry the point.
 
 > the retrieved source candidates (muscle synergy postural control study; SINS/DVL navigation Kalman
-> filtering study) are unrelated to the stated topological phononic waveguide objective and cannot
-> serve as evidence for or against any claim in that domain... this is marked as an unresolved
-> evidentiary gap rather than a fabricated critique or independent root claim.
+> filtering study) are unrelated to the stated […] objective and cannot serve as evidence for or
+> against any claim in that domain... this is marked as an unresolved evidentiary gap rather than a
+> fabricated critique or independent root claim.
 
-That invocation is the whole finding in miniature. The model was asked about phononic waveguides and
-handed a posture study and a submarine navigation paper. It said so and stopped.
+That invocation is the whole finding in miniature. The model was asked about a materials-physics
+objective and handed a postural-control study and a submarine navigation paper. It said so and
+stopped.
 
 ### Fabricated citations: zero
 
@@ -130,10 +133,10 @@ exhaustive**.
 
 Three sampled critiques, read in full:
 
-1. A mechanism card describing a "multi-component functional composite" was built from a paper about
-   **silicon-carbon battery anodes**. The critic noted the source contains zero mentions of
-   phase-change materials, microencapsulation, polymer matrices or interlayer adhesion, and that the
-   card's system and domain fields were *"generalized beyond what the source abstract supports."*
+1. A proposal describing a composite material was built from a paper about **silicon-carbon battery
+   anodes**. The critic noted that the source contains zero mentions of any of the four material
+   classes the proposal claimed, and that its system and domain fields were *"generalized beyond what
+   the source abstract supports."*
 2. A sentence from a **review article aggregating 121 references** was treated as an unmet-need root.
    The critic flagged that it is not primary experimental data, that `independence_status` was
    `unknown`, and that it should not be treated as an independent root.
