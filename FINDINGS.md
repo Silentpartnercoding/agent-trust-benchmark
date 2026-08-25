@@ -430,6 +430,18 @@ adapter here reproduces them, and they should not be cited as measurements witho
   artefact of a starved harness, not a property of the model: a fabrication screen over that corpus
   is structurally incapable of detecting fabrication. Effect Reachability, one level over.
 
+- **[Observation 002 — A preregistered test that could not run, twice](docs/OBSERVATION-002-A-TEST-THAT-COULD-NOT-RUN.md)**
+  — a machine-generated hypothesis, preregistered by hand and tested against a public NASA dataset,
+  terminated both times at a validity precondition frozen in advance: the labels survive in two
+  loading histories where three are needed. No detector was fitted. The hypothesis is released
+  untested for anyone to pick up, and the reportable content is what the preregistration caught —
+  including two defects of mine that produced a *false* null, and three rescues that would each have
+  turned it into a result.
+
+Read together: the first returns a clean number that could never have been dirty; the second returns
+nothing and could never have returned anything. Nobody is tempted to publish a null. Everybody is
+tempted to publish 95.4%.
+
 ## Method
 
 Preregistered — the question is frozen before the run ([`docs/E001.md`](docs/E001.md)). Every
