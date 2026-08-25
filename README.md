@@ -85,6 +85,24 @@ The checked-in Notion-style reference runs passed 16/16 delegation checks and
 19/19 Mandate checks. They are exploratory mock-resource results, not a claim
 of production Notion integration or universal enforcement.
 
+[E007](docs/E007.md) moves from the policy decision surface to the application
+reachability surface. It holds one correct relation-aware policy constant and
+varies where the guard is wired: router, middleware, decorator, or handler. The
+fixture distinguishes complete coverage from a read/write asymmetry and from a
+late route that reaches the same handler outside the configured guard.
+
+```bash
+PYTHONPATH=src python3 -m agent_trust_benchmark e007 \
+  --output-dir results/e007/latest
+```
+
+E007 is a synthetic routing fixture. It shows that the failure shapes are
+expressible and detectable; it does not claim they occur at any measured rate
+in MCP deployments. All seven preregistered arrangements matched their frozen
+predictions: four complete controls covered every path, the verb-asymmetric
+fixture exposed both reads, and the router- and middleware-scoped fixtures
+exposed only the separately registered alias.
+
 ## Candidate authority-relation conformance pack
 
 [E006](docs/E006.md) inverts E001's axis. E001 varies the action and holds the

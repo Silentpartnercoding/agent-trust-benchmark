@@ -409,6 +409,48 @@ engine prevents it.
 
 Preregistration: [`docs/E006.md`](docs/E006.md). Runs: [`results/e006/`](results/e006/).
 
+## E007 — Enforcement-path coverage
+
+E006 can prove that a policy evaluates the correct relation when called. E007 asks the next
+question: **does every path to the protected object call it?** One correct relation-aware policy
+is held constant while the guard is placed at the router, middleware, decorator, or handler.
+
+The protocol was committed before the fixture existed at
+`717653f53e9b964026512bd3be5dc9ed5279c0f8`. All seven arrangements matched the frozen
+predictions.
+
+| Arrangement | Direct policy | Out-of-scope read | Out-of-scope write | Late alias |
+|---|---|---|---|---|
+| `router-complete` | DENY | BLOCK | BLOCK | BLOCK |
+| `middleware-complete` | DENY | BLOCK | BLOCK | BLOCK |
+| `decorator-complete` | DENY | BLOCK | BLOCK | BLOCK |
+| `handler-complete` | DENY | BLOCK | BLOCK | BLOCK |
+| `verb-asymmetric` | DENY | **EFFECT** | BLOCK | **EFFECT** |
+| `router-late-bypass` | DENY | BLOCK | BLOCK | **EFFECT** |
+| `middleware-late-bypass` | DENY | BLOCK | BLOCK | **EFFECT** |
+
+The direct policy result is DENY in every row. The unauthorized effects occur only because the
+guard is absent from the exercised path. That is the distinction E007 exists to preserve: a
+policy-level conformance test can be completely green while the application remains bypassable.
+
+The late alias is registered after guard configuration from a different source module and reaches
+the same read-handler object as the canonical route. This is not merely a second condition in one
+test function. The result records route source, registration order, stable handler slot, guard
+invocation, and effect delta for each request.
+
+Every entitled control succeeds through every route. The complete controls therefore pass because
+they enforce the relation, not because the fixture default-denies. Every denial has zero effect,
+and every unauthorized success has a matching effect-ledger entry.
+
+The route/verb and middleware-bypass hypotheses, the placement matrix, and the requirement to keep
+registrations apart came from @Santoshkumarpuppala on OWASP MCP Top 10 issue #44. They were offered
+from labelled web-application findings, not as MCP measurements. E007 supports expressibility and
+detectability only. It does not establish prevalence in MCP deployments, measure a production
+framework, or estimate false-positive rate against the contributor's external labelled corpus.
+
+Preregistration: [`docs/E007.md`](docs/E007.md). Run:
+[`results/e007/e007-routing-matrix-v1/`](results/e007/e007-routing-matrix-v1/).
+
 ## Also measured
 
 - **E002** — human-authorization receipt binding (Keycloak, ZITADEL)

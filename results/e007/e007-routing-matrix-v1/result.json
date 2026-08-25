@@ -1,0 +1,2057 @@
+{
+  "schema": "atb-e007-result/0.1",
+  "experiment": "E007",
+  "classification": "SUPPORTED",
+  "preregistration": {
+    "path": "docs/E007.md",
+    "commit": "717653f53e9b964026512bd3be5dc9ed5279c0f8",
+    "sha256": "c1f6b5b1b776c205fae30bb3aa4043a57ea54b188d35262186fe8e17e70b4d73"
+  },
+  "instrument": {
+    "arrangement_count": 7,
+    "predictions_matched": true,
+    "complete_controls_passed": true
+  },
+  "arrangements": [
+    {
+      "arrangement": "router-complete",
+      "guard_placement": "router",
+      "guard_scope": "all_registered_routes",
+      "policy_source": "allow if action in roles and resource_org == grant_org; resource_org is loaded from the object store",
+      "policy_sha256": "4341be4fd44131f2252965997ae3a2f826bf19bd929256a7d08aa4928a9cf7e3",
+      "direct_policy_decision": {
+        "allow": false,
+        "action_granted": true,
+        "relation_matches": false,
+        "evaluated": [
+          "action",
+          "roles",
+          "resource_org",
+          "grant_org"
+        ],
+        "resource_org_source": "object_store"
+      },
+      "checks": [
+        {
+          "check": "POLICY_DENIES_OUT_OF_SCOPE_WHEN_CALLED",
+          "outcome": "PASS",
+          "detail": "The shared policy directly denied org-a authority over the org-b object."
+        },
+        {
+          "check": "OUT_OF_SCOPE_READ_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical read status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_WRITE_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical write status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "late alias status=403 effect_delta=0"
+        },
+        {
+          "check": "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+          "outcome": "PASS",
+          "detail": "guarded=['org-a-alias', 'org-a-read', 'org-a-write'] missing=[]"
+        },
+        {
+          "check": "ZERO_UNAUTHORIZED_EFFECTS",
+          "outcome": "PASS",
+          "detail": "unauthorized_effect_count=0"
+        },
+        {
+          "check": "ENTITLED_READ_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled read status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_WRITE_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled write status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_ALIAS_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled alias status=200 effect_delta=1"
+        },
+        {
+          "check": "ROUTE_INVENTORY_COMPLETE",
+          "outcome": "PASS",
+          "detail": "Three paths recorded; the later alias is in a separate module and reaches the canonical read handler."
+        },
+        {
+          "check": "LATE_REGISTRATION_COVERED",
+          "outcome": "PASS",
+          "detail": "alias guard_invoked=True status=403"
+        }
+      ],
+      "predicted_failures": [],
+      "actual_failures": [],
+      "prediction_matched": true,
+      "requests": {
+        "out_of_scope": [
+          {
+            "label": "read",
+            "request_id": "org-a-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "write",
+            "request_id": "org-a-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "alias",
+            "request_id": "org-a-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          }
+        ],
+        "entitled": [
+          {
+            "label": "read",
+            "request_id": "org-b-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "write",
+            "request_id": "org-b-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "alias",
+            "request_id": "org-b-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          }
+        ]
+      },
+      "route_inventory": [
+        {
+          "method": "GET",
+          "path": "/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 1,
+          "router_guarded": true
+        },
+        {
+          "method": "POST",
+          "path": "/documents/doc-b1",
+          "action": "documents:write",
+          "handler": "write_document",
+          "handler_slot": 2,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 2,
+          "router_guarded": true
+        },
+        {
+          "method": "GET",
+          "path": "/legacy/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_late_routes",
+          "registration_order": 3,
+          "router_guarded": true
+        }
+      ],
+      "guard_invocations": [
+        {
+          "request_id": "org-a-read",
+          "placement": "router",
+          "action": "documents:read",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-a-write",
+          "placement": "router",
+          "action": "documents:write",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-a-alias",
+          "placement": "router",
+          "action": "documents:read",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-read",
+          "placement": "router",
+          "action": "documents:read",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-write",
+          "placement": "router",
+          "action": "documents:write",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-alias",
+          "placement": "router",
+          "action": "documents:read",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "request_id": "org-b-read",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-write",
+          "action": "documents:write",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-alias",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        }
+      ]
+    },
+    {
+      "arrangement": "middleware-complete",
+      "guard_placement": "middleware",
+      "guard_scope": "application_wide",
+      "policy_source": "allow if action in roles and resource_org == grant_org; resource_org is loaded from the object store",
+      "policy_sha256": "4341be4fd44131f2252965997ae3a2f826bf19bd929256a7d08aa4928a9cf7e3",
+      "direct_policy_decision": {
+        "allow": false,
+        "action_granted": true,
+        "relation_matches": false,
+        "evaluated": [
+          "action",
+          "roles",
+          "resource_org",
+          "grant_org"
+        ],
+        "resource_org_source": "object_store"
+      },
+      "checks": [
+        {
+          "check": "POLICY_DENIES_OUT_OF_SCOPE_WHEN_CALLED",
+          "outcome": "PASS",
+          "detail": "The shared policy directly denied org-a authority over the org-b object."
+        },
+        {
+          "check": "OUT_OF_SCOPE_READ_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical read status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_WRITE_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical write status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "late alias status=403 effect_delta=0"
+        },
+        {
+          "check": "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+          "outcome": "PASS",
+          "detail": "guarded=['org-a-alias', 'org-a-read', 'org-a-write'] missing=[]"
+        },
+        {
+          "check": "ZERO_UNAUTHORIZED_EFFECTS",
+          "outcome": "PASS",
+          "detail": "unauthorized_effect_count=0"
+        },
+        {
+          "check": "ENTITLED_READ_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled read status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_WRITE_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled write status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_ALIAS_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled alias status=200 effect_delta=1"
+        },
+        {
+          "check": "ROUTE_INVENTORY_COMPLETE",
+          "outcome": "PASS",
+          "detail": "Three paths recorded; the later alias is in a separate module and reaches the canonical read handler."
+        },
+        {
+          "check": "LATE_REGISTRATION_COVERED",
+          "outcome": "PASS",
+          "detail": "alias guard_invoked=True status=403"
+        }
+      ],
+      "predicted_failures": [],
+      "actual_failures": [],
+      "prediction_matched": true,
+      "requests": {
+        "out_of_scope": [
+          {
+            "label": "read",
+            "request_id": "org-a-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "write",
+            "request_id": "org-a-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "alias",
+            "request_id": "org-a-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          }
+        ],
+        "entitled": [
+          {
+            "label": "read",
+            "request_id": "org-b-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "write",
+            "request_id": "org-b-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "alias",
+            "request_id": "org-b-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          }
+        ]
+      },
+      "route_inventory": [
+        {
+          "method": "GET",
+          "path": "/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 1,
+          "router_guarded": false
+        },
+        {
+          "method": "POST",
+          "path": "/documents/doc-b1",
+          "action": "documents:write",
+          "handler": "write_document",
+          "handler_slot": 2,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 2,
+          "router_guarded": false
+        },
+        {
+          "method": "GET",
+          "path": "/legacy/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_late_routes",
+          "registration_order": 3,
+          "router_guarded": false
+        }
+      ],
+      "guard_invocations": [
+        {
+          "request_id": "org-a-read",
+          "placement": "middleware",
+          "action": "documents:read",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-a-write",
+          "placement": "middleware",
+          "action": "documents:write",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-a-alias",
+          "placement": "middleware",
+          "action": "documents:read",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-read",
+          "placement": "middleware",
+          "action": "documents:read",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-write",
+          "placement": "middleware",
+          "action": "documents:write",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-alias",
+          "placement": "middleware",
+          "action": "documents:read",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "request_id": "org-b-read",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-write",
+          "action": "documents:write",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-alias",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        }
+      ]
+    },
+    {
+      "arrangement": "decorator-complete",
+      "guard_placement": "decorator",
+      "guard_scope": "read_and_write_handlers",
+      "policy_source": "allow if action in roles and resource_org == grant_org; resource_org is loaded from the object store",
+      "policy_sha256": "4341be4fd44131f2252965997ae3a2f826bf19bd929256a7d08aa4928a9cf7e3",
+      "direct_policy_decision": {
+        "allow": false,
+        "action_granted": true,
+        "relation_matches": false,
+        "evaluated": [
+          "action",
+          "roles",
+          "resource_org",
+          "grant_org"
+        ],
+        "resource_org_source": "object_store"
+      },
+      "checks": [
+        {
+          "check": "POLICY_DENIES_OUT_OF_SCOPE_WHEN_CALLED",
+          "outcome": "PASS",
+          "detail": "The shared policy directly denied org-a authority over the org-b object."
+        },
+        {
+          "check": "OUT_OF_SCOPE_READ_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical read status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_WRITE_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical write status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "late alias status=403 effect_delta=0"
+        },
+        {
+          "check": "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+          "outcome": "PASS",
+          "detail": "guarded=['org-a-alias', 'org-a-read', 'org-a-write'] missing=[]"
+        },
+        {
+          "check": "ZERO_UNAUTHORIZED_EFFECTS",
+          "outcome": "PASS",
+          "detail": "unauthorized_effect_count=0"
+        },
+        {
+          "check": "ENTITLED_READ_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled read status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_WRITE_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled write status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_ALIAS_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled alias status=200 effect_delta=1"
+        },
+        {
+          "check": "ROUTE_INVENTORY_COMPLETE",
+          "outcome": "PASS",
+          "detail": "Three paths recorded; the later alias is in a separate module and reaches the canonical read handler."
+        },
+        {
+          "check": "LATE_REGISTRATION_COVERED",
+          "outcome": "PASS",
+          "detail": "alias guard_invoked=True status=403"
+        }
+      ],
+      "predicted_failures": [],
+      "actual_failures": [],
+      "prediction_matched": true,
+      "requests": {
+        "out_of_scope": [
+          {
+            "label": "read",
+            "request_id": "org-a-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "write",
+            "request_id": "org-a-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "alias",
+            "request_id": "org-a-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          }
+        ],
+        "entitled": [
+          {
+            "label": "read",
+            "request_id": "org-b-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "write",
+            "request_id": "org-b-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "alias",
+            "request_id": "org-b-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          }
+        ]
+      },
+      "route_inventory": [
+        {
+          "method": "GET",
+          "path": "/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 1,
+          "router_guarded": false
+        },
+        {
+          "method": "POST",
+          "path": "/documents/doc-b1",
+          "action": "documents:write",
+          "handler": "write_document",
+          "handler_slot": 2,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 2,
+          "router_guarded": false
+        },
+        {
+          "method": "GET",
+          "path": "/legacy/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_late_routes",
+          "registration_order": 3,
+          "router_guarded": false
+        }
+      ],
+      "guard_invocations": [
+        {
+          "request_id": "org-a-read",
+          "placement": "decorator",
+          "action": "documents:read",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-a-write",
+          "placement": "decorator",
+          "action": "documents:write",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-a-alias",
+          "placement": "decorator",
+          "action": "documents:read",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-read",
+          "placement": "decorator",
+          "action": "documents:read",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-write",
+          "placement": "decorator",
+          "action": "documents:write",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-alias",
+          "placement": "decorator",
+          "action": "documents:read",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "request_id": "org-b-read",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-write",
+          "action": "documents:write",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-alias",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        }
+      ]
+    },
+    {
+      "arrangement": "handler-complete",
+      "guard_placement": "handler",
+      "guard_scope": "read_and_write_handlers",
+      "policy_source": "allow if action in roles and resource_org == grant_org; resource_org is loaded from the object store",
+      "policy_sha256": "4341be4fd44131f2252965997ae3a2f826bf19bd929256a7d08aa4928a9cf7e3",
+      "direct_policy_decision": {
+        "allow": false,
+        "action_granted": true,
+        "relation_matches": false,
+        "evaluated": [
+          "action",
+          "roles",
+          "resource_org",
+          "grant_org"
+        ],
+        "resource_org_source": "object_store"
+      },
+      "checks": [
+        {
+          "check": "POLICY_DENIES_OUT_OF_SCOPE_WHEN_CALLED",
+          "outcome": "PASS",
+          "detail": "The shared policy directly denied org-a authority over the org-b object."
+        },
+        {
+          "check": "OUT_OF_SCOPE_READ_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical read status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_WRITE_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical write status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "late alias status=403 effect_delta=0"
+        },
+        {
+          "check": "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+          "outcome": "PASS",
+          "detail": "guarded=['org-a-alias', 'org-a-read', 'org-a-write'] missing=[]"
+        },
+        {
+          "check": "ZERO_UNAUTHORIZED_EFFECTS",
+          "outcome": "PASS",
+          "detail": "unauthorized_effect_count=0"
+        },
+        {
+          "check": "ENTITLED_READ_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled read status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_WRITE_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled write status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_ALIAS_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled alias status=200 effect_delta=1"
+        },
+        {
+          "check": "ROUTE_INVENTORY_COMPLETE",
+          "outcome": "PASS",
+          "detail": "Three paths recorded; the later alias is in a separate module and reaches the canonical read handler."
+        },
+        {
+          "check": "LATE_REGISTRATION_COVERED",
+          "outcome": "PASS",
+          "detail": "alias guard_invoked=True status=403"
+        }
+      ],
+      "predicted_failures": [],
+      "actual_failures": [],
+      "prediction_matched": true,
+      "requests": {
+        "out_of_scope": [
+          {
+            "label": "read",
+            "request_id": "org-a-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "write",
+            "request_id": "org-a-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "alias",
+            "request_id": "org-a-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          }
+        ],
+        "entitled": [
+          {
+            "label": "read",
+            "request_id": "org-b-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "write",
+            "request_id": "org-b-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "alias",
+            "request_id": "org-b-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          }
+        ]
+      },
+      "route_inventory": [
+        {
+          "method": "GET",
+          "path": "/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 1,
+          "router_guarded": false
+        },
+        {
+          "method": "POST",
+          "path": "/documents/doc-b1",
+          "action": "documents:write",
+          "handler": "write_document",
+          "handler_slot": 2,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 2,
+          "router_guarded": false
+        },
+        {
+          "method": "GET",
+          "path": "/legacy/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_late_routes",
+          "registration_order": 3,
+          "router_guarded": false
+        }
+      ],
+      "guard_invocations": [
+        {
+          "request_id": "org-a-read",
+          "placement": "handler",
+          "action": "documents:read",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-a-write",
+          "placement": "handler",
+          "action": "documents:write",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-a-alias",
+          "placement": "handler",
+          "action": "documents:read",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-read",
+          "placement": "handler",
+          "action": "documents:read",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-write",
+          "placement": "handler",
+          "action": "documents:write",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-alias",
+          "placement": "handler",
+          "action": "documents:read",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "request_id": "org-b-read",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-write",
+          "action": "documents:write",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-alias",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        }
+      ]
+    },
+    {
+      "arrangement": "verb-asymmetric",
+      "guard_placement": "decorator",
+      "guard_scope": "write_handler_only",
+      "policy_source": "allow if action in roles and resource_org == grant_org; resource_org is loaded from the object store",
+      "policy_sha256": "4341be4fd44131f2252965997ae3a2f826bf19bd929256a7d08aa4928a9cf7e3",
+      "direct_policy_decision": {
+        "allow": false,
+        "action_granted": true,
+        "relation_matches": false,
+        "evaluated": [
+          "action",
+          "roles",
+          "resource_org",
+          "grant_org"
+        ],
+        "resource_org_source": "object_store"
+      },
+      "checks": [
+        {
+          "check": "POLICY_DENIES_OUT_OF_SCOPE_WHEN_CALLED",
+          "outcome": "PASS",
+          "detail": "The shared policy directly denied org-a authority over the org-b object."
+        },
+        {
+          "check": "OUT_OF_SCOPE_READ_BLOCKED_BEFORE_EFFECT",
+          "outcome": "FAIL",
+          "detail": "canonical read status=200 effect_delta=1"
+        },
+        {
+          "check": "OUT_OF_SCOPE_WRITE_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical write status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+          "outcome": "FAIL",
+          "detail": "late alias status=200 effect_delta=1"
+        },
+        {
+          "check": "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+          "outcome": "FAIL",
+          "detail": "guarded=['org-a-write'] missing=['org-a-alias', 'org-a-read']"
+        },
+        {
+          "check": "ZERO_UNAUTHORIZED_EFFECTS",
+          "outcome": "FAIL",
+          "detail": "unauthorized_effect_count=2"
+        },
+        {
+          "check": "ENTITLED_READ_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled read status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_WRITE_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled write status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_ALIAS_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled alias status=200 effect_delta=1"
+        },
+        {
+          "check": "ROUTE_INVENTORY_COMPLETE",
+          "outcome": "PASS",
+          "detail": "Three paths recorded; the later alias is in a separate module and reaches the canonical read handler."
+        },
+        {
+          "check": "LATE_REGISTRATION_COVERED",
+          "outcome": "FAIL",
+          "detail": "alias guard_invoked=False status=200"
+        }
+      ],
+      "predicted_failures": [
+        "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+        "LATE_REGISTRATION_COVERED",
+        "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+        "OUT_OF_SCOPE_READ_BLOCKED_BEFORE_EFFECT",
+        "ZERO_UNAUTHORIZED_EFFECTS"
+      ],
+      "actual_failures": [
+        "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+        "LATE_REGISTRATION_COVERED",
+        "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+        "OUT_OF_SCOPE_READ_BLOCKED_BEFORE_EFFECT",
+        "ZERO_UNAUTHORIZED_EFFECTS"
+      ],
+      "prediction_matched": true,
+      "requests": {
+        "out_of_scope": [
+          {
+            "label": "read",
+            "request_id": "org-a-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": false,
+            "effect_delta": 1
+          },
+          {
+            "label": "write",
+            "request_id": "org-a-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "alias",
+            "request_id": "org-a-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": false,
+            "effect_delta": 1
+          }
+        ],
+        "entitled": [
+          {
+            "label": "read",
+            "request_id": "org-b-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": false,
+            "effect_delta": 1
+          },
+          {
+            "label": "write",
+            "request_id": "org-b-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "alias",
+            "request_id": "org-b-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": false,
+            "effect_delta": 1
+          }
+        ]
+      },
+      "route_inventory": [
+        {
+          "method": "GET",
+          "path": "/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 1,
+          "router_guarded": false
+        },
+        {
+          "method": "POST",
+          "path": "/documents/doc-b1",
+          "action": "documents:write",
+          "handler": "write_document",
+          "handler_slot": 2,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 2,
+          "router_guarded": false
+        },
+        {
+          "method": "GET",
+          "path": "/legacy/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_late_routes",
+          "registration_order": 3,
+          "router_guarded": false
+        }
+      ],
+      "guard_invocations": [
+        {
+          "request_id": "org-a-write",
+          "placement": "decorator",
+          "action": "documents:write",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-write",
+          "placement": "decorator",
+          "action": "documents:write",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "request_id": "org-a-read",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-a"
+        },
+        {
+          "request_id": "org-a-alias",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-a"
+        },
+        {
+          "request_id": "org-b-read",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-write",
+          "action": "documents:write",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-alias",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        }
+      ]
+    },
+    {
+      "arrangement": "router-late-bypass",
+      "guard_placement": "router",
+      "guard_scope": "canonical_router_only",
+      "policy_source": "allow if action in roles and resource_org == grant_org; resource_org is loaded from the object store",
+      "policy_sha256": "4341be4fd44131f2252965997ae3a2f826bf19bd929256a7d08aa4928a9cf7e3",
+      "direct_policy_decision": {
+        "allow": false,
+        "action_granted": true,
+        "relation_matches": false,
+        "evaluated": [
+          "action",
+          "roles",
+          "resource_org",
+          "grant_org"
+        ],
+        "resource_org_source": "object_store"
+      },
+      "checks": [
+        {
+          "check": "POLICY_DENIES_OUT_OF_SCOPE_WHEN_CALLED",
+          "outcome": "PASS",
+          "detail": "The shared policy directly denied org-a authority over the org-b object."
+        },
+        {
+          "check": "OUT_OF_SCOPE_READ_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical read status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_WRITE_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical write status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+          "outcome": "FAIL",
+          "detail": "late alias status=200 effect_delta=1"
+        },
+        {
+          "check": "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+          "outcome": "FAIL",
+          "detail": "guarded=['org-a-read', 'org-a-write'] missing=['org-a-alias']"
+        },
+        {
+          "check": "ZERO_UNAUTHORIZED_EFFECTS",
+          "outcome": "FAIL",
+          "detail": "unauthorized_effect_count=1"
+        },
+        {
+          "check": "ENTITLED_READ_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled read status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_WRITE_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled write status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_ALIAS_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled alias status=200 effect_delta=1"
+        },
+        {
+          "check": "ROUTE_INVENTORY_COMPLETE",
+          "outcome": "PASS",
+          "detail": "Three paths recorded; the later alias is in a separate module and reaches the canonical read handler."
+        },
+        {
+          "check": "LATE_REGISTRATION_COVERED",
+          "outcome": "FAIL",
+          "detail": "alias guard_invoked=False status=200"
+        }
+      ],
+      "predicted_failures": [
+        "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+        "LATE_REGISTRATION_COVERED",
+        "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+        "ZERO_UNAUTHORIZED_EFFECTS"
+      ],
+      "actual_failures": [
+        "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+        "LATE_REGISTRATION_COVERED",
+        "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+        "ZERO_UNAUTHORIZED_EFFECTS"
+      ],
+      "prediction_matched": true,
+      "requests": {
+        "out_of_scope": [
+          {
+            "label": "read",
+            "request_id": "org-a-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "write",
+            "request_id": "org-a-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "alias",
+            "request_id": "org-a-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": false,
+            "effect_delta": 1
+          }
+        ],
+        "entitled": [
+          {
+            "label": "read",
+            "request_id": "org-b-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "write",
+            "request_id": "org-b-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "alias",
+            "request_id": "org-b-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": false,
+            "effect_delta": 1
+          }
+        ]
+      },
+      "route_inventory": [
+        {
+          "method": "GET",
+          "path": "/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 1,
+          "router_guarded": true
+        },
+        {
+          "method": "POST",
+          "path": "/documents/doc-b1",
+          "action": "documents:write",
+          "handler": "write_document",
+          "handler_slot": 2,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 2,
+          "router_guarded": true
+        },
+        {
+          "method": "GET",
+          "path": "/legacy/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_late_routes",
+          "registration_order": 3,
+          "router_guarded": false
+        }
+      ],
+      "guard_invocations": [
+        {
+          "request_id": "org-a-read",
+          "placement": "router",
+          "action": "documents:read",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-a-write",
+          "placement": "router",
+          "action": "documents:write",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-read",
+          "placement": "router",
+          "action": "documents:read",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-write",
+          "placement": "router",
+          "action": "documents:write",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "request_id": "org-a-alias",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-a"
+        },
+        {
+          "request_id": "org-b-read",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-write",
+          "action": "documents:write",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-alias",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        }
+      ]
+    },
+    {
+      "arrangement": "middleware-late-bypass",
+      "guard_placement": "middleware",
+      "guard_scope": "path_prefix:/documents/",
+      "policy_source": "allow if action in roles and resource_org == grant_org; resource_org is loaded from the object store",
+      "policy_sha256": "4341be4fd44131f2252965997ae3a2f826bf19bd929256a7d08aa4928a9cf7e3",
+      "direct_policy_decision": {
+        "allow": false,
+        "action_granted": true,
+        "relation_matches": false,
+        "evaluated": [
+          "action",
+          "roles",
+          "resource_org",
+          "grant_org"
+        ],
+        "resource_org_source": "object_store"
+      },
+      "checks": [
+        {
+          "check": "POLICY_DENIES_OUT_OF_SCOPE_WHEN_CALLED",
+          "outcome": "PASS",
+          "detail": "The shared policy directly denied org-a authority over the org-b object."
+        },
+        {
+          "check": "OUT_OF_SCOPE_READ_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical read status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_WRITE_BLOCKED_BEFORE_EFFECT",
+          "outcome": "PASS",
+          "detail": "canonical write status=403 effect_delta=0"
+        },
+        {
+          "check": "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+          "outcome": "FAIL",
+          "detail": "late alias status=200 effect_delta=1"
+        },
+        {
+          "check": "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+          "outcome": "FAIL",
+          "detail": "guarded=['org-a-read', 'org-a-write'] missing=['org-a-alias']"
+        },
+        {
+          "check": "ZERO_UNAUTHORIZED_EFFECTS",
+          "outcome": "FAIL",
+          "detail": "unauthorized_effect_count=1"
+        },
+        {
+          "check": "ENTITLED_READ_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled read status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_WRITE_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled write status=200 effect_delta=1"
+        },
+        {
+          "check": "ENTITLED_ALIAS_ALLOWED",
+          "outcome": "PASS",
+          "detail": "entitled alias status=200 effect_delta=1"
+        },
+        {
+          "check": "ROUTE_INVENTORY_COMPLETE",
+          "outcome": "PASS",
+          "detail": "Three paths recorded; the later alias is in a separate module and reaches the canonical read handler."
+        },
+        {
+          "check": "LATE_REGISTRATION_COVERED",
+          "outcome": "FAIL",
+          "detail": "alias guard_invoked=False status=200"
+        }
+      ],
+      "predicted_failures": [
+        "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+        "LATE_REGISTRATION_COVERED",
+        "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+        "ZERO_UNAUTHORIZED_EFFECTS"
+      ],
+      "actual_failures": [
+        "GUARD_INVOKED_ON_EVERY_OUT_OF_SCOPE_PATH",
+        "LATE_REGISTRATION_COVERED",
+        "OUT_OF_SCOPE_ALIAS_BLOCKED_BEFORE_EFFECT",
+        "ZERO_UNAUTHORIZED_EFFECTS"
+      ],
+      "prediction_matched": true,
+      "requests": {
+        "out_of_scope": [
+          {
+            "label": "read",
+            "request_id": "org-a-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "write",
+            "request_id": "org-a-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 403,
+            "decision": "deny",
+            "reason": "resource outside delegated organization",
+            "guard_invoked": true,
+            "effect_delta": 0
+          },
+          {
+            "label": "alias",
+            "request_id": "org-a-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-a",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": false,
+            "effect_delta": 1
+          }
+        ],
+        "entitled": [
+          {
+            "label": "read",
+            "request_id": "org-b-read",
+            "method": "GET",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "write",
+            "request_id": "org-b-write",
+            "method": "POST",
+            "path": "/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": true,
+            "effect_delta": 1
+          },
+          {
+            "label": "alias",
+            "request_id": "org-b-alias",
+            "method": "GET",
+            "path": "/legacy/documents/doc-b1",
+            "grant_org": "org-b",
+            "status": 200,
+            "decision": "allow",
+            "reason": "handler effect completed",
+            "guard_invoked": false,
+            "effect_delta": 1
+          }
+        ]
+      },
+      "route_inventory": [
+        {
+          "method": "GET",
+          "path": "/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 1,
+          "router_guarded": false
+        },
+        {
+          "method": "POST",
+          "path": "/documents/doc-b1",
+          "action": "documents:write",
+          "handler": "write_document",
+          "handler_slot": 2,
+          "registration_module": "agent_trust_benchmark.e007_primary_routes",
+          "registration_order": 2,
+          "router_guarded": false
+        },
+        {
+          "method": "GET",
+          "path": "/legacy/documents/doc-b1",
+          "action": "documents:read",
+          "handler": "read_document",
+          "handler_slot": 1,
+          "registration_module": "agent_trust_benchmark.e007_late_routes",
+          "registration_order": 3,
+          "router_guarded": false
+        }
+      ],
+      "guard_invocations": [
+        {
+          "request_id": "org-a-read",
+          "placement": "middleware",
+          "action": "documents:read",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-a-write",
+          "placement": "middleware",
+          "action": "documents:write",
+          "grant_org": "org-a",
+          "resource_org": "org-b",
+          "allow": false,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-read",
+          "placement": "middleware",
+          "action": "documents:read",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        },
+        {
+          "request_id": "org-b-write",
+          "placement": "middleware",
+          "action": "documents:write",
+          "grant_org": "org-b",
+          "resource_org": "org-b",
+          "allow": true,
+          "evaluated": [
+            "action",
+            "roles",
+            "resource_org",
+            "grant_org"
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "request_id": "org-a-alias",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-a"
+        },
+        {
+          "request_id": "org-b-read",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-write",
+          "action": "documents:write",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        },
+        {
+          "request_id": "org-b-alias",
+          "action": "documents:read",
+          "resource_id": "doc-b1",
+          "resource_org": "org-b",
+          "grant_org": "org-b"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Synthetic standard-library routing fixture; no production MCP implementation or web framework was measured.",
+    "Expressibility and detectability are supported; prevalence is not measured.",
+    "Entitled controls prevent default-deny false confidence but do not measure false-positive rate against an external labelled corpus.",
+    "Reverse proxies, generated routes, service meshes, and direct resource bypasses are outside this fixture."
+  ]
+}
