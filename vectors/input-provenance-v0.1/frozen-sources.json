@@ -1,0 +1,23 @@
+{
+  "fixture_id": "CDX-AADP-INPUT-PROVENANCE-001",
+  "frozen_at": "2026-08-25T16:00:00Z",
+  "aadp": {
+    "draft": "draft-saha-aadp-01",
+    "published": "2026-08-20",
+    "url": "https://www.ietf.org/archive/id/draft-saha-aadp-01.txt",
+    "sha256": "ba6d9db982b23f642227b5a8f9f68589d0f3692c2e97adbfa2ac8a18792d8db8"
+  },
+  "cyclonedx": {
+    "branch": "2.0-dev",
+    "commit": "1a950b106df221c30cf208b4ffad3e5e1303385f",
+    "schema_path": "schema/2.0/cyclonedx-2.0-bundled.schema.json",
+    "schema_sha256": "4a1496ea9db25c3b86bbb8e9402cd4c97c6d25d07e19bc9aec6227e10ed2b420",
+    "behavior_taxonomy_path": "schema/behavior-taxonomy.schema.json",
+    "behavior_taxonomy_sha256": "6e62e4ffd34399a517b28bfea2ae897f7b04ef89215957af0800f30d4156058f"
+  },
+  "e006": {
+    "repository": "https://github.com/Silentpartnercoding/agent-trust-benchmark",
+    "commit": "dea23be5618625e1d40aba708ad62aae9934e7b5",
+    "protocol_path": "docs/E006.md"
+  }
+}

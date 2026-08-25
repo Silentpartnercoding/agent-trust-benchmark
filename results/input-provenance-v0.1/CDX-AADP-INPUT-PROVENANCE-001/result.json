@@ -1,0 +1,30 @@
+{
+  "schema": "atb-input-provenance-result/0.1",
+  "fixture_id": "CDX-AADP-INPUT-PROVENANCE-001",
+  "classification": "EXACT",
+  "same_tool_digest": true,
+  "same_policy_digest": true,
+  "same_decision_input_value": true,
+  "same_verdict": true,
+  "same_non_provenance_projection": true,
+  "distinct_source_edges": true,
+  "whole_record_signatures_valid": true,
+  "authority_sourced": {
+    "classification": "EXACT",
+    "field": "organization",
+    "value": "org-b",
+    "pointer": "/formulation/0/workflows/0/tasks/0/inputs/2/parameters/0/value",
+    "source_ref": "authority-state",
+    "attributed_to": "authority-state-party",
+    "process_ref": "task-aadp-decision"
+  },
+  "caller_sourced": {
+    "classification": "EXACT",
+    "field": "organization",
+    "value": "org-b",
+    "pointer": "/formulation/0/workflows/0/tasks/0/inputs/2/parameters/0/value",
+    "source_ref": "caller-agent",
+    "attributed_to": "caller-agent-party",
+    "process_ref": "task-aadp-decision"
+  }
+}

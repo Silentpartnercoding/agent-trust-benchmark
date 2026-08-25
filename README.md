@@ -117,6 +117,26 @@ hash `sha256:ffc2363895a77a62b5673366e334140d2682f436891f570b9bfb321bdfa4ade3`.
 The runner verifies that manifest before executing adapters. Independent
 implementers should follow the [adapter and submission guide](docs/AUTHORITY-RELATIONS-ADAPTER.md).
 
+## Decision-input provenance interoperability fixture
+
+[`CDX-AADP-INPUT-PROVENANCE-001`](docs/CDX-AADP-INPUT-PROVENANCE-001.md) asks whether
+native CycloneDX 2.0 records can distinguish the same authorization value when it comes from
+authenticated authority state versus caller input. The tool digest, policy digest, value,
+verdict, behavior, and non-provenance projection are identical, and both records carry valid
+whole-record JSS signatures.
+
+The result is **`EXACT`** at the frozen CycloneDX 2.0 development commit. A field-level citation
+binds the precise formulation parameter to its supplying party and the decision process without a
+custom evidence schema. AADP-01 is used as one independent authorization profile; the underlying
+test is protocol-neutral and does not imply coordination or endorsement by either standards effort.
+
+```bash
+PYTHONPATH=src python3 -m agent_trust_benchmark.input_provenance \
+  vectors/input-provenance-v0.1/authority-sourced.cdx.json \
+  vectors/input-provenance-v0.1/caller-sourced.cdx.json \
+  --expect EXACT
+```
+
 ## Current provider boundary
 
 - `baseline`: fully runnable local reference implementation.

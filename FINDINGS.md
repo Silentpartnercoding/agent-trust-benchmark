@@ -11,6 +11,23 @@ adapter in this repository reproduces it. They are marked as such in
 [`RUN-REGISTER.md`](results/e001/RUN-REGISTER.md). Treat them as reported observations, not as
 independently checkable ones, until the adapters land.
 
+## CDX-AADP-INPUT-PROVENANCE-001 — native representation is exact
+
+At CycloneDX 2.0 development commit `1a950b106df221c30cf208b4ffad3e5e1303385f`, two
+schema-valid and cryptographically signed records preserve the difference between an
+authorization field supplied by authenticated authority state and the same field supplied by the
+caller. Tool digest, policy digest, evaluated value, verdict, behavior, and the complete
+non-provenance projection are identical.
+
+The verifier returns **`EXACT`** because a native CycloneDX citation addresses the exact
+formulation parameter and binds it to both a supplying party and the decision task. Negative
+controls return `DERIVABLE`, `AMBIGUOUS`, and `UNREPRESENTED` as the attribution edges are removed.
+
+This is a synthetic interoperability result using AADP-01 as one profile. It is not evidence that
+AADP has been adopted, that CycloneDX endorses the mapping, or that a production gateway collects
+the provenance. See the [fixture protocol](docs/CDX-AADP-INPUT-PROVENANCE-001.md) and
+[machine result](results/input-provenance-v0.1/CDX-AADP-INPUT-PROVENANCE-001/result.json).
+
 ## Headline
 
 **No exercised provider lets an independent observer establish that a specific human

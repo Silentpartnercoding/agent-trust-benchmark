@@ -22,6 +22,15 @@
       "protocol": "docs/E005.md"
     },
     {
+      "id": "CDX-AADP-INPUT-PROVENANCE-001",
+      "status": "independent-compatibility-fixture",
+      "protocol": "docs/CDX-AADP-INPUT-PROVENANCE-001.md",
+      "vectors": "vectors/input-provenance-v0.1",
+      "result": "results/input-provenance-v0.1/CDX-AADP-INPUT-PROVENANCE-001/result.json",
+      "classification": "EXACT",
+      "invariant": "AUTHORIZATION-RELEVANT FIELDS MUST PRESERVE THEIR SOURCE"
+    },
+    {
       "id": "authority-relations-v0.1",
       "status": "frozen-candidate-conformance",
       "protocol": "AUTHORITY-RELATIONS-NOTE.md",

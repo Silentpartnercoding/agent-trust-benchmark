@@ -1,0 +1,300 @@
+{
+  "$schema": "https://cyclonedx.org/schema/2.0/cyclonedx-2.0.schema.json",
+  "specFormat": "CycloneDX",
+  "specVersion": "2.0",
+  "serialNumber": "urn:uuid:10000000-0000-4000-8000-000000000001",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-08-25T16:00:00Z"
+  },
+  "components": [
+    {
+      "type": "application",
+      "bom-ref": "tool-documents-read",
+      "name": "documents.read tool definition",
+      "version": "fixture-1",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "e97e0a1104410ee8b51d2666d2cc6a2c9faa75f17d9519d14dab3a7aeb3a50c8"
+        }
+      ]
+    },
+    {
+      "type": "data",
+      "bom-ref": "policy-input-provenance",
+      "name": "input provenance policy bundle",
+      "version": "fixture-1",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "4baac4e6e2bfc0af791d86023c9fd417f80209e39153efafe1edbd35b09b3ab0"
+        }
+      ]
+    },
+    {
+      "type": "service",
+      "bom-ref": "pdp",
+      "name": "Policy Decision Point",
+      "version": "fixture-1",
+      "parties": [
+        {
+          "bom-ref": "pdp-party",
+          "roles": [
+            {
+              "role": "operator"
+            }
+          ],
+          "system": {
+            "kind": "software-system",
+            "ref": "pdp"
+          }
+        }
+      ]
+    },
+    {
+      "type": "service",
+      "bom-ref": "authority-state",
+      "name": "Authenticated authority state",
+      "version": "fixture-1",
+      "parties": [
+        {
+          "bom-ref": "authority-state-party",
+          "roles": [
+            {
+              "role": "provider"
+            }
+          ],
+          "system": {
+            "kind": "machine-identity",
+            "ref": "authority-state"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "caller-agent",
+      "name": "Caller agent",
+      "version": "fixture-1",
+      "parties": [
+        {
+          "bom-ref": "caller-agent-party",
+          "roles": [
+            {
+              "role": "agent"
+            }
+          ],
+          "system": {
+            "kind": "agent",
+            "ref": "caller-agent"
+          }
+        }
+      ]
+    },
+    {
+      "type": "data",
+      "bom-ref": "document-doc-b1",
+      "name": "doc-b1",
+      "version": "fixture-1"
+    }
+  ],
+  "formulation": [
+    {
+      "bom-ref": "formula-aadp-decision",
+      "workflows": [
+        {
+          "bom-ref": "workflow-aadp-exchange",
+          "uid": "aadp-request-0a5f2c3e",
+          "name": "AADP-style per-action decision",
+          "taskTypes": [
+            "other"
+          ],
+          "tasks": [
+            {
+              "bom-ref": "task-aadp-decision",
+              "uid": "aud-input-provenance-001",
+              "name": "Evaluate documents.read",
+              "description": "The full evaluation input used by the PDP, including the authorization-relevant field and its source.",
+              "taskTypes": [
+                "other"
+              ],
+              "resourceReferences": [
+                {
+                  "ref": "tool-documents-read"
+                },
+                {
+                  "ref": "policy-input-provenance"
+                }
+              ],
+              "inputs": [
+                {
+                  "source": {
+                    "ref": "caller-agent"
+                  },
+                  "parameters": [
+                    {
+                      "name": "action_type",
+                      "value": "documents.read",
+                      "dataType": "string"
+                    },
+                    {
+                      "name": "document_id",
+                      "value": "doc-b1",
+                      "dataType": "string"
+                    },
+                    {
+                      "name": "agent_id",
+                      "value": "agent-g",
+                      "dataType": "string"
+                    }
+                  ]
+                },
+                {
+                  "source": {
+                    "ref": "authority-state"
+                  },
+                  "parameters": [
+                    {
+                      "name": "resource_organization",
+                      "value": "org-b",
+                      "dataType": "string"
+                    }
+                  ]
+                },
+                {
+                  "source": {
+                    "ref": "authority-state"
+                  },
+                  "parameters": [
+                    {
+                      "name": "organization",
+                      "value": "org-b",
+                      "dataType": "string"
+                    }
+                  ]
+                },
+                {
+                  "source": {
+                    "ref": "authority-state"
+                  },
+                  "parameters": [
+                    {
+                      "name": "delegation_agent",
+                      "value": "agent-g",
+                      "dataType": "string"
+                    }
+                  ]
+                },
+                {
+                  "source": {
+                    "ref": "pdp"
+                  },
+                  "parameters": [
+                    {
+                      "name": "kill_switch",
+                      "value": "false",
+                      "dataType": "boolean"
+                    },
+                    {
+                      "name": "evaluation_time",
+                      "value": "2026-08-25T16:00:00Z",
+                      "dataType": "date-time"
+                    }
+                  ]
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "evidence",
+                  "source": {
+                    "ref": "pdp"
+                  },
+                  "data": {
+                    "mediaType": "application/json",
+                    "content": "{\"verdict\":\"permit\",\"reason\":\"passed\"}"
+                  }
+                }
+              ],
+              "timeStart": "2026-08-25T16:00:00Z",
+              "timeEnd": "2026-08-25T16:00:00Z"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "blueprints": [
+    {
+      "bom-ref": "blueprint-agent-action",
+      "name": "Observed authorization and agent action",
+      "modelTypes": [
+        "behavioral"
+      ],
+      "behaviors": {
+        "instances": [
+          {
+            "bom-ref": "behavior-evaluate-policy",
+            "behavior": "security:authorization:evaluatesPolicy",
+            "acknowledgment": [
+              "observed"
+            ],
+            "actors": [
+              "pdp"
+            ],
+            "targets": [
+              "policy-input-provenance"
+            ]
+          },
+          {
+            "bom-ref": "behavior-grant-access",
+            "behavior": "security:authorization:grantsAccess",
+            "acknowledgment": [
+              "observed"
+            ],
+            "actors": [
+              "pdp"
+            ],
+            "targets": [
+              "tool-documents-read"
+            ]
+          },
+          {
+            "bom-ref": "behavior-invoke-tool",
+            "behavior": "ai:agent:invokesTool",
+            "acknowledgment": [
+              "observed"
+            ],
+            "actors": [
+              "caller-agent"
+            ],
+            "targets": [
+              "tool-documents-read",
+              "document-doc-b1"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "citations": [
+    {
+      "bom-ref": "citation-organization-provenance",
+      "pointers": [
+        "/formulation/0/workflows/0/tasks/0/inputs/2/parameters/0/value"
+      ],
+      "timestamp": "2026-08-25T16:00:00Z",
+      "attributedTo": "authority-state-party",
+      "process": "task-aadp-decision",
+      "note": "The organization value evaluated by policy was supplied through authenticated authority state."
+    }
+  ],
+  "signatures": [
+    {
+      "hash_algorithm": "sha-256",
+      "algorithm": "Ed25519",
+      "public_key": "MCowBQYDK2VwAyEAubMonBfU9pvIbj5RCiWQLD45Jvu6mKr+kQXjvjW8ZkU=",
+      "value": "f1kCBVJa9WWhkpjPguRG3Ajsx3GKlm4BYyMJqvkZI6KFpvKRYoMMnKlHZpc5dyJsiNWh1rdhjvtjPMjd_zdnDA"
+    }
+  ]
+}
