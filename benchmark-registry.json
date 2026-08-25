@@ -22,6 +22,11 @@
       "protocol": "docs/E005.md"
     },
     {
+      "id": "E007",
+      "status": "preregistered",
+      "protocol": "docs/E007.md"
+    },
+    {
       "id": "authority-relations-v0.1",
       "status": "frozen-candidate-conformance",
       "protocol": "AUTHORITY-RELATIONS-NOTE.md",
