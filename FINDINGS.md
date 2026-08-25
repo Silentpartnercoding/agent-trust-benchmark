@@ -419,29 +419,6 @@ Preregistration: [`docs/E006.md`](docs/E006.md). Runs: [`results/e006/`](results
 
 Narrative detail for E001 is in [`docs/E001-FINDINGS.md`](docs/E001-FINDINGS.md).
 
-## Observations
-
-Field studies of systems outside this repository. **Hand-authored, not harness-emitted** — no
-adapter here reproduces them, and they should not be cited as measurements without saying so.
-
-- **[Observation 001 — An abstention rate is not a safety metric](docs/OBSERVATION-001-ABSTENTION-IS-NOT-SAFETY.md)**
-  — a model invoked 1,452 times as an adversarial critic abstained 95.4% of the time and fabricated
-  zero citations, but 77% of those invocations supplied an empty evidence set. The clean number is an
-  artefact of a starved harness, not a property of the model: a fabrication screen over that corpus
-  is structurally incapable of detecting fabrication. Effect Reachability, one level over.
-
-- **[Observation 002 — A preregistered test that could not run, twice](docs/OBSERVATION-002-A-TEST-THAT-COULD-NOT-RUN.md)**
-  — a machine-generated hypothesis, preregistered by hand and tested against a public NASA dataset,
-  terminated both times at a validity precondition frozen in advance: the labels survive in two
-  loading histories where three are needed. No detector was fitted. The hypothesis is released
-  untested for anyone to pick up, and the reportable content is what the preregistration caught —
-  including two defects of mine that produced a *false* null, and three rescues that would each have
-  turned it into a result.
-
-Read together: the first returns a clean number that could never have been dirty; the second returns
-nothing and could never have returned anything. Nobody is tempted to publish a null. Everybody is
-tempted to publish 95.4%.
-
 ## Method
 
 Preregistered — the question is frozen before the run ([`docs/E001.md`](docs/E001.md)). Every
