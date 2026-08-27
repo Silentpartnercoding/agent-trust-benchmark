@@ -30,9 +30,17 @@ which source supplied the value that produced the verdict.
 
 AADP-01 is one test profile, not the benchmark's foundation. Its evaluation invariant says a
 verdict is determined over the full evaluation input: policy, request, mutable authorization
-state, and evaluation time. Its request model also says the wire-level `source` value is
-self-asserted and must not be treated as authenticated authority; authorization-relevant
-provenance must instead come from authenticated context.
+state, and evaluation time. Its evidence requirement makes each verdict re-derivable given the
+policy version in force. Its request model also says the wire-level `source` value is self-asserted
+and must not be treated as authenticated authority; authorization-relevant provenance must instead
+come from authenticated context.
+
+AADP-01's minimum evidence entry does not explicitly enumerate the provenance of every
+authorization-relevant field. In this fixture's byte-identical-value case, preserving that
+provenance is a necessary consequence of re-derivability: without it, two different evaluation
+inputs collapse into the same record. The fixture therefore treats field-level provenance as a
+derived requirement for this case, not as verbatim AADP-01 record syntax. The AADP author has
+indicated that AADP-02 is expected to make the distinction explicit.
 
 AADP does not define a portable schema for that internal authorization context. This fixture
 therefore does not invent one. It records the value the PDP evaluated as a CycloneDX formulation
