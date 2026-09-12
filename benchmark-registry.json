@@ -22,6 +22,12 @@
       "protocol": "docs/E005.md"
     },
     {
+      "id": "E006",
+      "status": "development",
+      "protocol": "docs/E006.md",
+      "results": "results/e006"
+    },
+    {
       "id": "E007",
       "status": "exploratory",
       "protocol": "docs/E007.md",
