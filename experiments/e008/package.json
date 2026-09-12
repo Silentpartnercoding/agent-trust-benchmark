@@ -1,0 +1,8 @@
+{
+  "name": "e008-val-actor-binding",
+  "private": true,
+  "type": "module",
+  "description": "E008 runner: actor binding in the VAL offline verifier.",
+  "scripts": { "start": "node probe.mjs" },
+  "dependencies": { "@val-protocol/chain-verifier": "0.11.2" }
+}
