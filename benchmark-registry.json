@@ -22,6 +22,12 @@
       "protocol": "docs/E005.md"
     },
     {
+      "id": "E007",
+      "status": "exploratory",
+      "protocol": "docs/E007.md",
+      "result": "results/e007/e007-routing-matrix-v1/result.json"
+    },
+    {
       "id": "E008",
       "status": "exploratory",
       "protocol": "docs/E008.md",

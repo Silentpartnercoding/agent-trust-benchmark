@@ -3,16 +3,19 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from .experiment import ADAPTERS, run_e001
-from .e004 import write_e004
-from .e005 import write_e005
 from .authority_relations import write_conformance
 from .authority_release import verify_release_manifest
+from .e004 import write_e004
+from .e005 import write_e005
+from .e007 import write_e007
+from .experiment import ADAPTERS, run_e001
 from .report import render_markdown, write_result
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="benchmark", description="Vendor-neutral agent trust benchmark")
+    parser = argparse.ArgumentParser(
+        prog="benchmark", description="Vendor-neutral agent trust benchmark"
+    )
     subcommands = parser.add_subparsers(dest="command", required=True)
     run = subcommands.add_parser("run")
     run.add_argument("experiment", choices=["e001"])
@@ -23,6 +26,8 @@ def build_parser() -> argparse.ArgumentParser:
     e004.add_argument("--output-dir", type=Path, default=Path("results/e004/latest"))
     e005 = subcommands.add_parser("e005")
     e005.add_argument("--output-dir", type=Path, default=Path("results/e005/latest"))
+    e007 = subcommands.add_parser("e007")
+    e007.add_argument("--output-dir", type=Path, default=Path("results/e007/latest"))
     relations = subcommands.add_parser("authority-relations")
     relations.add_argument(
         "--vector-dir", type=Path, default=Path("vectors/authority-relations-v0.1")
@@ -35,7 +40,9 @@ def build_parser() -> argparse.ArgumentParser:
         help="JSON stdin/stdout adapter; may be supplied more than once",
     )
     relations.add_argument(
-        "--output-dir", type=Path, default=Path("results/authority-relations-v0.1/latest")
+        "--output-dir",
+        type=Path,
+        default=Path("results/authority-relations-v0.1/latest"),
     )
     relations.add_argument(
         "--release-manifest",
@@ -57,6 +64,10 @@ def main(argv: list[str] | None = None) -> int:
         json_path, markdown_path = write_e005(args.output_dir)
         print(f"Wrote {json_path} and {markdown_path}")
         return 0
+    if args.command == "e007":
+        json_path, markdown_path = write_e007(args.output_dir)
+        print(f"Wrote {json_path} and {markdown_path}")
+        return 0
     if args.command == "authority-relations-verify-release":
         manifest = verify_release_manifest(
             Path("releases/authority-relations-v0.1.json"), repository_root=Path.cwd()
@@ -68,7 +79,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "authority-relations":
         manifest = verify_release_manifest(
-            args.release_manifest, repository_root=Path.cwd(), vector_dir=args.vector_dir
+            args.release_manifest,
+            repository_root=Path.cwd(),
+            vector_dir=args.vector_dir,
         )
         using_reference_controls = not args.adapters
         adapters = args.adapters or [
@@ -82,12 +95,16 @@ def main(argv: list[str] | None = None) -> int:
         if result["vector_manifest_hash"] != manifest["vector_manifest_hash"]:
             raise RuntimeError("run result does not match the frozen vector manifest")
         if not using_reference_controls:
-            return 0 if all(run["passed"] == run["total"] for run in result["runs"]) else 1
+            return (
+                0 if all(run["passed"] == run["total"] for run in result["runs"]) else 1
+            )
         by_adapter = {run["adapter"]: run for run in result["runs"]}
         aware = by_adapter["relation_aware.py"]
         limited = by_adapter["delegation_only.py"]
         mandate = next(
-            case for case in limited["cases"] if case["vector_id"] == "AR-002-VALID-MANDATE"
+            case
+            for case in limited["cases"]
+            if case["vector_id"] == "AR-002-VALID-MANDATE"
         )
         controls_discriminate = (
             aware["passed"] == aware["total"]
