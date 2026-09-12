@@ -1,0 +1,192 @@
+{
+  "schema_version": "e008/v1",
+  "experiment_id": "E008",
+  "run_id": "e008-val-actor-binding-v1",
+  "status": "exploratory",
+  "preregistered": false,
+  "disclosure": "The arms below were run during an investigation of a third-party claim and written up afterwards. They were not preregistered. The expectations recorded in probe.mjs were fixed before this file was generated, so a later change in the subject would surface as DIVERGED, but they cannot be counted as predictions made in advance of first observation.",
+  "subject": {
+    "implementation": "@val-protocol/chain-verifier",
+    "version": "0.11.2",
+    "source": "npm",
+    "protocol": "VAL v0.1"
+  },
+  "started_at": "2026-09-12T01:02:07.642Z",
+  "completed_at": "2026-09-12T01:02:07.646Z",
+  "arms": [
+    {
+      "arm": "root-subj-impostor",
+      "note": "Root grant names the actor; a different agent acts.",
+      "assignment_body_version": 2,
+      "grant_names": "agent:legit",
+      "sub_assignment_names": null,
+      "acted_as": "agent:impostor",
+      "expected": {
+        "scope": "red",
+        "authority": "green"
+      },
+      "observed": {
+        "scope": "red",
+        "authority": "green",
+        "integrity": "green",
+        "lineage": "green"
+      },
+      "status": "MATCHED",
+      "first_scope_violation": "principal 'agent:impostor' != scope subj 'agent:legit'",
+      "first_authority_violation": null,
+      "chain_hashes": [
+        "8110e85511039833c64dc2f74d00575b87dd79597a08a0c8f422cebb43e43086",
+        "68c67f9de127a6eed89e985ff83f330609c8b88587cc56bdfdf18ed64565f1f5"
+      ]
+    },
+    {
+      "arm": "root-subj-named-control",
+      "note": "Control. The named agent acts.",
+      "assignment_body_version": 2,
+      "grant_names": "agent:legit",
+      "sub_assignment_names": null,
+      "acted_as": "agent:legit",
+      "expected": {
+        "scope": "green",
+        "authority": "green"
+      },
+      "observed": {
+        "scope": "green",
+        "authority": "green",
+        "integrity": "green",
+        "lineage": "green"
+      },
+      "status": "MATCHED",
+      "first_scope_violation": null,
+      "first_authority_violation": null,
+      "chain_hashes": [
+        "8110e85511039833c64dc2f74d00575b87dd79597a08a0c8f422cebb43e43086",
+        "091b4f4021bf9dc9af588588bad858d8b23985939176d3ca534069e853c11f71"
+      ]
+    },
+    {
+      "arm": "root-nosubj-impostor",
+      "note": "Root grant omits the subject clause; a different agent acts.",
+      "assignment_body_version": 2,
+      "grant_names": null,
+      "sub_assignment_names": null,
+      "acted_as": "agent:impostor",
+      "expected": {
+        "scope": "green",
+        "authority": "green"
+      },
+      "observed": {
+        "scope": "green",
+        "authority": "green",
+        "integrity": "green",
+        "lineage": "green"
+      },
+      "status": "MATCHED",
+      "first_scope_violation": null,
+      "first_authority_violation": null,
+      "chain_hashes": [
+        "480224acc71b03ffee82c16f68580a7087a29f473dbe6931d3b9eca3ff17169a",
+        "ce06287e5f6a32d718856e2688d1c9ccc29335f36c7a4211e0aec47dddc5c377"
+      ]
+    },
+    {
+      "arm": "root-nosubj-v3-grantee",
+      "note": "No subject clause, but a v3 body carrying grantee.",
+      "assignment_body_version": 3,
+      "grant_names": "agent:legit",
+      "sub_assignment_names": null,
+      "acted_as": "agent:impostor",
+      "expected": {
+        "scope": "green",
+        "authority": "red"
+      },
+      "observed": {
+        "scope": "green",
+        "authority": "red",
+        "integrity": "green",
+        "lineage": "green"
+      },
+      "status": "MATCHED",
+      "first_scope_violation": null,
+      "first_authority_violation": "agent-equity: action principal 'agent:impostor' != grant grantee 'agent:legit' (v3 ASSIGNMENT)",
+      "chain_hashes": [
+        "5cb106faaa67bed349582521fdc550dd45bbe3c3dd644d1ea4edae4b54396232",
+        "b6c4f85f1d1c4c6e12144e3f8f6002574c9440f82a19f938c857997e2dfe5362"
+      ]
+    },
+    {
+      "arm": "sub-drops-subj",
+      "note": "Sub-assignment omits the clause its root set.",
+      "assignment_body_version": 2,
+      "grant_names": "agent:legit",
+      "sub_assignment_names": null,
+      "acted_as": "agent:impostor",
+      "expected": {
+        "scope": "red",
+        "authority": "green"
+      },
+      "observed": {
+        "scope": "red",
+        "authority": "green",
+        "integrity": "green",
+        "lineage": "green"
+      },
+      "status": "MATCHED",
+      "first_scope_violation": "principal 'agent:impostor' != scope subj 'agent:legit'",
+      "first_authority_violation": null,
+      "chain_hashes": [
+        "8110e85511039833c64dc2f74d00575b87dd79597a08a0c8f422cebb43e43086",
+        "2fab1f3a279a3043b9c3e0e5226851a2ce0ae42046830792ce17e3a386caa793",
+        "2c0d4a6b41d3bb68fff2e6097569d5eb1ad38f747cf802dff24dfbb6bf0a23f5"
+      ]
+    },
+    {
+      "arm": "sub-renames-subj",
+      "note": "Sub-assignment names the impostor instead.",
+      "assignment_body_version": 2,
+      "grant_names": "agent:legit",
+      "sub_assignment_names": "agent:impostor",
+      "acted_as": "agent:impostor",
+      "expected": {
+        "scope": "red",
+        "authority": "green"
+      },
+      "observed": {
+        "scope": "red",
+        "authority": "green",
+        "integrity": "green",
+        "lineage": "green"
+      },
+      "status": "MATCHED",
+      "first_scope_violation": "principal 'agent:impostor' != scope subj 'agent:legit'",
+      "first_authority_violation": null,
+      "chain_hashes": [
+        "8110e85511039833c64dc2f74d00575b87dd79597a08a0c8f422cebb43e43086",
+        "f62217213cc83837949ea18bdfb270c0f618b66dee3232f091c063a7a6e87608",
+        "a6adc028de90be1512aeb07bddbade4cdc9cf9502a4212a5eee50db58a78bef7"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "check": "ACTOR_BINDING_ENFORCED_WHEN_NAMED",
+      "status": "PASS",
+      "detail": "A grant naming its actor refuses an action by a different agent."
+    },
+    {
+      "check": "ACTOR_BINDING_SURVIVES_SUBDELEGATION",
+      "status": "PASS",
+      "detail": "A sub-assignment can neither drop nor widen the subject clause its root established."
+    },
+    {
+      "check": "ACTOR_BINDING_PRESENT_BY_DEFAULT",
+      "status": "FAIL",
+      "detail": "A root grant that omits the optional subject clause still binds the actor. FAIL records that it does not: every property verifies green for an unnamed agent."
+    }
+  ],
+  "metrics": {
+    "ARMS_TOTAL": 6,
+    "ARMS_MATCHING_EXPECTATION": 6,
+    "ARMS_DIVERGED": 0
+  }
+}

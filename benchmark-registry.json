@@ -22,6 +22,12 @@
       "protocol": "docs/E005.md"
     },
     {
+      "id": "E008",
+      "status": "exploratory",
+      "protocol": "docs/E008.md",
+      "result": "results/e008/e008-val-actor-binding-v1/result.json"
+    },
+    {
       "id": "CDX-AADP-INPUT-PROVENANCE-001",
       "status": "independent-compatibility-fixture",
       "protocol": "docs/CDX-AADP-INPUT-PROVENANCE-001.md",

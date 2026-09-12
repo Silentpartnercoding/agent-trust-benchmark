@@ -12,3 +12,6 @@ infrastructure/zitadel/runtime/
 *.key
 *.pat
 runtime/
+
+# E008 runner dependencies
+node_modules/
