@@ -40,6 +40,15 @@
       "result": "results/e008/e008-val-actor-binding-v1/result.json"
     },
     {
+      "id": "consent-origin-v1.0",
+      "status": "independent-compatibility-fixture",
+      "protocol": "vectors/consent-origin-v1.0/README.md",
+      "vectors": "vectors/consent-origin-v1.0",
+      "result": "vectors/consent-origin-v1.0/fixtures.json",
+      "vector_count": 27,
+      "invariant": "A RECORD MUST NOT REPORT A STRONGER ATTRIBUTION THAN ITS WEAKEST AUTHORIZATION"
+    },
+    {
       "id": "CDX-AADP-INPUT-PROVENANCE-001",
       "status": "independent-compatibility-fixture",
       "protocol": "docs/CDX-AADP-INPUT-PROVENANCE-001.md",
