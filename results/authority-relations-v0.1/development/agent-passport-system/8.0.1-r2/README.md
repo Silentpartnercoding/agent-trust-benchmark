@@ -7,7 +7,7 @@ This is a second oracle-exposed development run, not a submission. It sits besid
 - Runner: aeoess, 2026-10-30, Python 3.14.6, Node v24.11.1, npm 11.6.2, macOS. The runner exits 1 because not every vector passed, as the adapter guide describes for a completed run.
 - `result.json` and `SUMMARY.md` are the unaltered scored runner output, with the adapter returning the v0.1 reason codes.
 - `supplementary-aps-labels/` is an unscored comparison: the same adapter with `ATB_APS_REASONS=native`, which returns adapter-defined APS labels instead of the v0.1 codes. It is there only to show which results depend on the reason translation.
-- `counterfactuals/` holds fourteen boundary cases, each one change from a frozen vector, run against the first adapter, this adapter and the suite's reference control `adapters/relation_aware.py`.
+- `counterfactuals/` holds fourteen boundary cases built from the frozen vectors, run against the first adapter, this adapter and the suite's reference control `adapters/relation_aware.py`.
 
 | file | sha256 |
 |---|---|
@@ -19,7 +19,7 @@ This is a second oracle-exposed development run, not a submission. It sits besid
 | `adapter/aps_adapter.py` | `56c2a0057de0e1c7e109519ad824eb38d0e0640b6828b3046dcef6d622efebe4` |
 | `adapter/package.json` | `e0b3e0d2f42a3b2b0e86d936ca602cb268a95741a5b8bdbc924a9bd351c8f09e` |
 | `adapter/package-lock.json` | `b36f695f256bc7ff093c62ea0a3ab1c3aa5ceb48b84fb3af16f21f909384f5f0` |
-| `counterfactuals/counterfactual.py` | `a968b4d0e17beb7437ff6eb1ce3321f12cc3ec26f38efbe5768822cf5f469fb6` |
+| `counterfactuals/counterfactual.py` | `3a91f114811e84832fd76d823f61ad8eaac6b2a1246612f4bbaab049aa64a5b7` |
 | `counterfactuals/counterfactual-results.json` | `b54b057b701a913eeedb7ee6b63a7a077d2e8f2629137b04ac8f0fbbb4413918` |
 
 ## Reproduce
@@ -76,7 +76,7 @@ AR-002, AR-004 and AR-007 stay UNSUPPORTED. Each carries a VALID request-authori
 
 ## Counterfactuals
 
-`counterfactuals/counterfactual-results.json` holds every output from all three adapters for each case, compared on every output field.
+`counterfactuals/counterfactual-results.json` holds every output from all three adapters for each case, compared on every output field. Most cases change one thing in a frozen vector. CF-03, CF-07, CF-11 and CF-14 combine two.
 
 | case | change | reference | first run | this run |
 |---|---|---|---|---|

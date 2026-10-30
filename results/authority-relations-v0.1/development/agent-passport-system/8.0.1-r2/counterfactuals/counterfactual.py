@@ -2,7 +2,8 @@
 """Counterfactual cases for the APS adapter revision 2, run against the old adapter
 (8.0.1), the new adapter (8.0.1-r2, v0.1 reasons and native reasons) and the suite's
 reference control adapters/relation_aware.py. Local only, nothing here is a benchmark
-result. Each case is one change from a frozen v0.1 vector.
+result. Each case starts from a frozen v0.1 vector. Most change one thing,
+CF-03, CF-07, CF-11 and CF-14 combine two.
 
 Usage: counterfactual.py ATB_ROOT  (prints a table, writes counterfactual-results.json beside this file)
 ATB_ROOT is a checkout of the suite at the authority-relations-v0.1 tag with this results directory
