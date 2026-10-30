@@ -1,0 +1,1947 @@
+[
+  {
+    "id": "CF-01",
+    "desc": "REQUEST evidence MISSING, requester authority required, executor valid",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "evidence_status": "VERIFIED",
+      "execution_authority_source": "resource-admin-c",
+      "execution_authority_valid": true,
+      "immediate_authority_grantor": "resource-admin-c",
+      "policy_profile": "dual-authority",
+      "reason": "REQUEST_AUTHORITY_REQUIRED",
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "requester": "agent-a",
+      "requester_authority_required": true,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-01"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "UNSUPPORTED",
+      "vector_id": "CF-01",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": null,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_UNSUPPORTED: policy requires requester authority of kind REQUEST; APS models only authority held by the actor (a delegation chain from a trusted root to the subject that executes). It has no record type for authority to request an action separate from authority to execute it."
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-01",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "VERIFIED",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": "resource-admin-c",
+      "immediate_authority_grantor": "resource-admin-c",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "REQUEST_AUTHORITY_REQUIRED"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-01",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "VERIFIED",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": "resource-admin-c",
+      "immediate_authority_grantor": "resource-admin-c",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_REQUESTER_AUTHORITY_NOT_VERIFIED"
+    },
+    "old_vs_ref": [
+      "UNSUPPORTED"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-01",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request",
+          "by": "input",
+          "detail": "kind REQUEST, status MISSING: no valid request authority presented"
+        },
+        {
+          "step": "delegation",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "execution:chain",
+          "by": "sdk",
+          "detail": "valid"
+        },
+        {
+          "step": "execution:scope",
+          "by": "sdk",
+          "detail": "scopeGrantCovers: true"
+        },
+        {
+          "step": "execution:binding",
+          "by": "adapter",
+          "detail": "subject is actor and action matches: true"
+        },
+        {
+          "step": "execution:independently_issued",
+          "by": "input",
+          "detail": "true (benchmark-supplied, not verified by the SDK)"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "INDEPENDENT"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: false"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: REQUEST_AUTHORITY_REQUIRED, native label: APS_REQUESTER_AUTHORITY_NOT_VERIFIED"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-02",
+    "desc": "REQUEST evidence INVALID, policy rejects invalid evidence",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "evidence_status": "INVALID",
+      "execution_authority_source": "resource-admin-c",
+      "execution_authority_valid": true,
+      "immediate_authority_grantor": "resource-admin-c",
+      "policy_profile": "dual-authority",
+      "reason": "INVALID_EVIDENCE",
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "requester": "agent-a",
+      "requester_authority_required": true,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-02"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "UNSUPPORTED",
+      "vector_id": "CF-02",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": null,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_UNSUPPORTED: policy requires requester authority of kind REQUEST; APS models only authority held by the actor (a delegation chain from a trusted root to the subject that executes). It has no record type for authority to request an action separate from authority to execute it."
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-02",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": "resource-admin-c",
+      "immediate_authority_grantor": "resource-admin-c",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "INVALID_EVIDENCE"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-02",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": "resource-admin-c",
+      "immediate_authority_grantor": "resource-admin-c",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_EVIDENCE_INVALID"
+    },
+    "old_vs_ref": [
+      "UNSUPPORTED"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-02",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request",
+          "by": "input",
+          "detail": "kind REQUEST, status INVALID: no valid request authority presented"
+        },
+        {
+          "step": "delegation",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "execution:chain",
+          "by": "sdk",
+          "detail": "valid"
+        },
+        {
+          "step": "execution:scope",
+          "by": "sdk",
+          "detail": "scopeGrantCovers: true"
+        },
+        {
+          "step": "execution:binding",
+          "by": "adapter",
+          "detail": "subject is actor and action matches: true"
+        },
+        {
+          "step": "execution:independently_issued",
+          "by": "input",
+          "detail": "true (benchmark-supplied, not verified by the SDK)"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "INDEPENDENT"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: true"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: INVALID_EVIDENCE, native label: APS_EVIDENCE_INVALID"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-03",
+    "desc": "REQUEST evidence INVALID, policy does NOT reject invalid evidence",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "evidence_status": "INVALID",
+      "execution_authority_source": "resource-admin-c",
+      "execution_authority_valid": true,
+      "immediate_authority_grantor": "resource-admin-c",
+      "policy_profile": "dual-authority",
+      "reason": "REQUEST_AUTHORITY_REQUIRED",
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "requester": "agent-a",
+      "requester_authority_required": true,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-03"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "UNSUPPORTED",
+      "vector_id": "CF-03",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": null,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_UNSUPPORTED: policy requires requester authority of kind REQUEST; APS models only authority held by the actor (a delegation chain from a trusted root to the subject that executes). It has no record type for authority to request an action separate from authority to execute it."
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-03",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": "resource-admin-c",
+      "immediate_authority_grantor": "resource-admin-c",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "REQUEST_AUTHORITY_REQUIRED"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-03",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": "resource-admin-c",
+      "immediate_authority_grantor": "resource-admin-c",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_REQUESTER_AUTHORITY_NOT_VERIFIED"
+    },
+    "old_vs_ref": [
+      "UNSUPPORTED"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-03",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request",
+          "by": "input",
+          "detail": "kind REQUEST, status INVALID: no valid request authority presented"
+        },
+        {
+          "step": "delegation",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "execution:chain",
+          "by": "sdk",
+          "detail": "valid"
+        },
+        {
+          "step": "execution:scope",
+          "by": "sdk",
+          "detail": "scopeGrantCovers: true"
+        },
+        {
+          "step": "execution:binding",
+          "by": "adapter",
+          "detail": "subject is actor and action matches: true"
+        },
+        {
+          "step": "execution:independently_issued",
+          "by": "input",
+          "detail": "true (benchmark-supplied, not verified by the SDK)"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "INDEPENDENT"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: true"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: REQUEST_AUTHORITY_REQUIRED, native label: APS_REQUESTER_AUTHORITY_NOT_VERIFIED"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-04",
+    "desc": "execution evidence VALID but independently_issued false, requester not required",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "derived_authority_relation": "NONE",
+      "evidence_status": "INCOMPLETE",
+      "execution_authority_source": null,
+      "execution_authority_valid": false,
+      "immediate_authority_grantor": null,
+      "policy_profile": "executor-checks-permissionless-request",
+      "reason": "EXECUTION_AUTHORITY_INVALID",
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "requester": "agent-a",
+      "requester_authority_required": false,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-04"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-04",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "VERIFIED",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": "resource-admin-c",
+      "immediate_authority_grantor": "resource-admin-c",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "executor-checks-permissionless-request",
+      "requester_authority_required": false,
+      "authorized": true,
+      "reason": "APS_CHAIN_VALID_ROOT_GRANT"
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-04",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "executor-checks-permissionless-request",
+      "requester_authority_required": false,
+      "authorized": false,
+      "reason": "EXECUTION_AUTHORITY_INVALID"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-04",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "executor-checks-permissionless-request",
+      "requester_authority_required": false,
+      "authorized": false,
+      "reason": "APS_NO_VALID_CHAIN_FOR_ACTOR"
+    },
+    "old_vs_ref": [
+      "authorized",
+      "declared_relation_matches",
+      "derived_authority_relation",
+      "evidence_status",
+      "execution_authority_source",
+      "execution_authority_valid",
+      "immediate_authority_grantor",
+      "reason"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-04",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request",
+          "by": "input",
+          "detail": "kind REQUEST, status MISSING: no valid request authority presented"
+        },
+        {
+          "step": "delegation",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "execution:chain",
+          "by": "sdk",
+          "detail": "valid"
+        },
+        {
+          "step": "execution:scope",
+          "by": "sdk",
+          "detail": "scopeGrantCovers: true"
+        },
+        {
+          "step": "execution:binding",
+          "by": "adapter",
+          "detail": "subject is actor and action matches: true"
+        },
+        {
+          "step": "execution:independently_issued",
+          "by": "input",
+          "detail": "false (benchmark-supplied, not verified by the SDK)"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "NONE"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: false"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: EXECUTION_AUTHORITY_INVALID, native label: APS_NO_VALID_CHAIN_FOR_ACTOR"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-05",
+    "desc": "revocation status unknown for every record",
+    "env": {
+      "ATB_APS_REVOCATION": "unknown"
+    },
+    "ref": {
+      "actor": "agent-b",
+      "authorized": true,
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "evidence_status": "VERIFIED",
+      "execution_authority_source": "resource-admin-c",
+      "execution_authority_valid": true,
+      "immediate_authority_grantor": "resource-admin-c",
+      "policy_profile": "executor-checks-permissionless-request",
+      "reason": "EXECUTOR_AUTHORITY_VERIFIED_PERMISSIONLESS_REQUEST",
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "requester": "agent-a",
+      "requester_authority_required": false,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-05"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-05",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "VERIFIED",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": "resource-admin-c",
+      "immediate_authority_grantor": "resource-admin-c",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "executor-checks-permissionless-request",
+      "requester_authority_required": false,
+      "authorized": true,
+      "reason": "APS_CHAIN_VALID_ROOT_GRANT"
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-05",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "UNSUPPORTED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": null,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "executor-checks-permissionless-request",
+      "requester_authority_required": false,
+      "authorized": false,
+      "reason": "APS_UNSUPPORTED: execution-authority chain indeterminate (REVOCATION_UNKNOWN)"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-05",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "UNSUPPORTED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": null,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "executor-checks-permissionless-request",
+      "requester_authority_required": false,
+      "authorized": false,
+      "reason": "APS_UNSUPPORTED: execution-authority chain indeterminate (REVOCATION_UNKNOWN)"
+    },
+    "old_vs_ref": [
+      "reason"
+    ],
+    "new_vs_ref": [
+      "UNSUPPORTED"
+    ],
+    "native_vs_ref": [
+      "UNSUPPORTED"
+    ],
+    "provenance": {
+      "vector_id": "CF-05",
+      "reasons": "v01",
+      "revocation": "unknown",
+      "steps": [
+        {
+          "step": "request",
+          "by": "input",
+          "detail": "kind REQUEST, status MISSING: no valid request authority presented"
+        },
+        {
+          "step": "delegation",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "execution:chain",
+          "by": "sdk",
+          "detail": "indeterminate REVOCATION_UNKNOWN"
+        },
+        {
+          "step": "execution:scope",
+          "by": "sdk",
+          "detail": "scopeGrantCovers: true"
+        },
+        {
+          "step": "execution:binding",
+          "by": "adapter",
+          "detail": "subject is actor and action matches: true"
+        },
+        {
+          "step": "execution:independently_issued",
+          "by": "input",
+          "detail": "true (benchmark-supplied, not verified by the SDK)"
+        },
+        {
+          "step": "outcome",
+          "by": "adapter",
+          "detail": "UNSUPPORTED: execution-authority chain indeterminate (REVOCATION_UNKNOWN)"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-06",
+    "desc": "requester and executor both fail: REQUEST MISSING, execution INVALID, invalid evidence rejected",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "derived_authority_relation": "NONE",
+      "evidence_status": "INVALID",
+      "execution_authority_source": null,
+      "execution_authority_valid": false,
+      "immediate_authority_grantor": null,
+      "policy_profile": "dual-authority",
+      "reason": "INVALID_EVIDENCE",
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "requester": "agent-a",
+      "requester_authority_required": true,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-06"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "UNSUPPORTED",
+      "vector_id": "CF-06",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": null,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_UNSUPPORTED: policy requires requester authority of kind REQUEST; APS models only authority held by the actor (a delegation chain from a trusted root to the subject that executes). It has no record type for authority to request an action separate from authority to execute it."
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-06",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "INVALID_EVIDENCE"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-06",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_EVIDENCE_INVALID"
+    },
+    "old_vs_ref": [
+      "UNSUPPORTED"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-06",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request",
+          "by": "input",
+          "detail": "kind REQUEST, status MISSING: no valid request authority presented"
+        },
+        {
+          "step": "delegation",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "execution:chain",
+          "by": "sdk",
+          "detail": "invalid SIGNATURE_INVALID"
+        },
+        {
+          "step": "execution:scope",
+          "by": "sdk",
+          "detail": "scopeGrantCovers: true"
+        },
+        {
+          "step": "execution:binding",
+          "by": "adapter",
+          "detail": "subject is actor and action matches: true"
+        },
+        {
+          "step": "execution:independently_issued",
+          "by": "input",
+          "detail": "true (benchmark-supplied, not verified by the SDK)"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "NONE"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: true"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: INVALID_EVIDENCE, native label: APS_EVIDENCE_INVALID"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-07",
+    "desc": "as CF-06, invalid evidence not rejected (precedence decides the reason)",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "derived_authority_relation": "NONE",
+      "evidence_status": "INVALID",
+      "execution_authority_source": null,
+      "execution_authority_valid": false,
+      "immediate_authority_grantor": null,
+      "policy_profile": "dual-authority",
+      "reason": "REQUEST_AUTHORITY_REQUIRED",
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "requester": "agent-a",
+      "requester_authority_required": true,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-07"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "UNSUPPORTED",
+      "vector_id": "CF-07",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": null,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_UNSUPPORTED: policy requires requester authority of kind REQUEST; APS models only authority held by the actor (a delegation chain from a trusted root to the subject that executes). It has no record type for authority to request an action separate from authority to execute it."
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-07",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "REQUEST_AUTHORITY_REQUIRED"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-07",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_REQUESTER_AUTHORITY_NOT_VERIFIED"
+    },
+    "old_vs_ref": [
+      "UNSUPPORTED"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-07",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request",
+          "by": "input",
+          "detail": "kind REQUEST, status MISSING: no valid request authority presented"
+        },
+        {
+          "step": "delegation",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "execution:chain",
+          "by": "sdk",
+          "detail": "invalid SIGNATURE_INVALID"
+        },
+        {
+          "step": "execution:scope",
+          "by": "sdk",
+          "detail": "scopeGrantCovers: true"
+        },
+        {
+          "step": "execution:binding",
+          "by": "adapter",
+          "detail": "subject is actor and action matches: true"
+        },
+        {
+          "step": "execution:independently_issued",
+          "by": "input",
+          "detail": "true (benchmark-supplied, not verified by the SDK)"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "NONE"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: true"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: REQUEST_AUTHORITY_REQUIRED, native label: APS_REQUESTER_AUTHORITY_NOT_VERIFIED"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-08",
+    "desc": "delegation VALID but the delegator holds no request authority (request MISSING)",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "derived_authority_relation": "NONE",
+      "evidence_status": "INCOMPLETE",
+      "execution_authority_source": null,
+      "execution_authority_valid": false,
+      "immediate_authority_grantor": null,
+      "policy_profile": "delegated-authority",
+      "reason": "REQUEST_AUTHORITY_REQUIRED",
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "requester": "agent-a",
+      "requester_authority_required": true,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-08"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-08",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "INVALID",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_EVIDENCE_INVALID:CHAIN_CONTINUITY"
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-08",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "REQUEST_AUTHORITY_REQUIRED"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-08",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_REQUESTER_AUTHORITY_NOT_VERIFIED"
+    },
+    "old_vs_ref": [
+      "evidence_status",
+      "reason"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-08",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request",
+          "by": "input",
+          "detail": "kind EXECUTION, status MISSING: no valid request authority presented"
+        },
+        {
+          "step": "delegation",
+          "by": "adapter",
+          "detail": "no valid EXECUTION authority held by the delegator: no delegated path, not invalid evidence"
+        },
+        {
+          "step": "execution",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "NONE"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: false"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: REQUEST_AUTHORITY_REQUIRED, native label: APS_REQUESTER_AUTHORITY_NOT_VERIFIED"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-09",
+    "desc": "VALID REQUEST evidence, requester authority NOT required",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": true,
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "evidence_status": "VERIFIED",
+      "execution_authority_source": "resource-admin-c",
+      "execution_authority_valid": true,
+      "immediate_authority_grantor": "resource-admin-c",
+      "policy_profile": "dual-authority",
+      "reason": "EXECUTOR_AUTHORITY_VERIFIED_PERMISSIONLESS_REQUEST",
+      "request_authority_source": "workflow-policy-h",
+      "request_authority_valid": true,
+      "requester": "agent-a",
+      "requester_authority_required": false,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-09"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-09",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "VERIFIED",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": "resource-admin-c",
+      "immediate_authority_grantor": "resource-admin-c",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": false,
+      "authorized": true,
+      "reason": "APS_CHAIN_VALID_ROOT_GRANT"
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-09",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "UNSUPPORTED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": null,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": false,
+      "authorized": false,
+      "reason": "APS_UNSUPPORTED: a VALID request-authority item of kind REQUEST would have to be reported as valid or not. APS has no record for authority to request an action apart from authority to execute it, so it cannot establish either answer"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-09",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "UNSUPPORTED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": null,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "dual-authority",
+      "requester_authority_required": false,
+      "authorized": false,
+      "reason": "APS_UNSUPPORTED: a VALID request-authority item of kind REQUEST would have to be reported as valid or not. APS has no record for authority to request an action apart from authority to execute it, so it cannot establish either answer"
+    },
+    "old_vs_ref": [
+      "reason",
+      "request_authority_source",
+      "request_authority_valid"
+    ],
+    "new_vs_ref": [
+      "UNSUPPORTED"
+    ],
+    "native_vs_ref": [
+      "UNSUPPORTED"
+    ],
+    "provenance": {
+      "vector_id": "CF-09",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "outcome",
+          "by": "adapter",
+          "detail": "UNSUPPORTED: a VALID request-authority item of kind REQUEST would have to be reported as valid or not. APS has no record for authority to request an action apart from authority to execute it, so it cannot establish either answer"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-10",
+    "desc": "INVALID delegation whose authority_source does not match the requester root",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "derived_authority_relation": "NONE",
+      "evidence_status": "INVALID",
+      "execution_authority_source": null,
+      "execution_authority_valid": false,
+      "immediate_authority_grantor": null,
+      "policy_profile": "delegated-authority",
+      "reason": "INVALID_EVIDENCE",
+      "request_authority_source": "principal-h",
+      "request_authority_valid": true,
+      "requester": "agent-a",
+      "requester_authority_required": true,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-10"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-10",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "INVALID",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "request_authority_source": "principal-h",
+      "request_authority_valid": true,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_EVIDENCE_INVALID:CHAIN_CONTINUITY"
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-10",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "request_authority_source": "principal-h",
+      "request_authority_valid": true,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "INVALID_EVIDENCE"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-10",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "request_authority_source": "principal-h",
+      "request_authority_valid": true,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_EVIDENCE_INVALID"
+    },
+    "old_vs_ref": [
+      "reason"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-10",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request:chain",
+          "by": "sdk",
+          "detail": "valid"
+        },
+        {
+          "step": "request:binding",
+          "by": "adapter",
+          "detail": "subject is requester and action matches: true"
+        },
+        {
+          "step": "delegation",
+          "by": "adapter",
+          "detail": "no valid EXECUTION authority held by the delegator: no delegated path, not invalid evidence"
+        },
+        {
+          "step": "execution",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "NONE"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: true"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: INVALID_EVIDENCE, native label: APS_EVIDENCE_INVALID"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-11",
+    "desc": "as CF-10, plus a valid independent execution path the policy and declaration allow",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "evidence_status": "INVALID",
+      "execution_authority_source": "org:direct",
+      "execution_authority_valid": true,
+      "immediate_authority_grantor": "org:direct",
+      "policy_profile": "delegated-authority",
+      "reason": "INVALID_EVIDENCE",
+      "request_authority_source": "principal-h",
+      "request_authority_valid": true,
+      "requester": "agent-a",
+      "requester_authority_required": true,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-11"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-11",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": "principal-h",
+      "request_authority_valid": true,
+      "execution_authority_source": "org:direct",
+      "immediate_authority_grantor": "org:direct",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_EVIDENCE_INVALID:CHAIN_CONTINUITY"
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-11",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": "principal-h",
+      "request_authority_valid": true,
+      "execution_authority_source": "org:direct",
+      "immediate_authority_grantor": "org:direct",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "INVALID_EVIDENCE"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-11",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": true,
+      "request_authority_source": "principal-h",
+      "request_authority_valid": true,
+      "execution_authority_source": "org:direct",
+      "immediate_authority_grantor": "org:direct",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "INDEPENDENT",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_EVIDENCE_INVALID"
+    },
+    "old_vs_ref": [
+      "reason"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-11",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request:chain",
+          "by": "sdk",
+          "detail": "valid"
+        },
+        {
+          "step": "request:binding",
+          "by": "adapter",
+          "detail": "subject is requester and action matches: true"
+        },
+        {
+          "step": "delegation",
+          "by": "adapter",
+          "detail": "no valid EXECUTION authority held by the delegator: no delegated path, not invalid evidence"
+        },
+        {
+          "step": "execution:chain",
+          "by": "sdk",
+          "detail": "valid"
+        },
+        {
+          "step": "execution:scope",
+          "by": "sdk",
+          "detail": "scopeGrantCovers: true"
+        },
+        {
+          "step": "execution:binding",
+          "by": "adapter",
+          "detail": "subject is actor and action matches: true"
+        },
+        {
+          "step": "execution:independently_issued",
+          "by": "input",
+          "detail": "true (benchmark-supplied, not verified by the SDK)"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "INDEPENDENT"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: true"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: INVALID_EVIDENCE, native label: APS_EVIDENCE_INVALID"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-12",
+    "desc": "execution item of kind REQUEST marked INVALID",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "derived_authority_relation": "NONE",
+      "evidence_status": "INVALID",
+      "execution_authority_source": null,
+      "execution_authority_valid": false,
+      "immediate_authority_grantor": null,
+      "policy_profile": "executor-checks-permissionless-request",
+      "reason": "INVALID_EVIDENCE",
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "requester": "agent-a",
+      "requester_authority_required": false,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-12"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-12",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "executor-checks-permissionless-request",
+      "requester_authority_required": false,
+      "authorized": false,
+      "reason": "APS_EVIDENCE_INVALID:SIGNATURE_INVALID"
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-12",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "executor-checks-permissionless-request",
+      "requester_authority_required": false,
+      "authorized": false,
+      "reason": "INVALID_EVIDENCE"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-12",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INVALID",
+      "declared_relation": "INDEPENDENT",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "executor-checks-permissionless-request",
+      "requester_authority_required": false,
+      "authorized": false,
+      "reason": "APS_EVIDENCE_INVALID"
+    },
+    "old_vs_ref": [
+      "reason"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-12",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request",
+          "by": "input",
+          "detail": "kind REQUEST, status MISSING: no valid request authority presented"
+        },
+        {
+          "step": "delegation",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "execution",
+          "by": "adapter",
+          "detail": "kind REQUEST is not execution authority"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "NONE"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: true"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: INVALID_EVIDENCE, native label: APS_EVIDENCE_INVALID"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-13",
+    "desc": "requester root grant broader than the requested action (target '*')",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "derived_authority_relation": "NONE",
+      "evidence_status": "INCOMPLETE",
+      "execution_authority_source": null,
+      "execution_authority_valid": false,
+      "immediate_authority_grantor": null,
+      "policy_profile": "delegated-authority",
+      "reason": "REQUEST_AUTHORITY_REQUIRED",
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "requester": "agent-a",
+      "requester_authority_required": true,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-13"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-13",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "VERIFIED",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": true,
+      "request_authority_source": "principal-h",
+      "request_authority_valid": true,
+      "execution_authority_source": "principal-h",
+      "immediate_authority_grantor": "agent-a",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "DELEGATED",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": true,
+      "reason": "APS_CHAIN_VALID_DELEGATED"
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-13",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "REQUEST_AUTHORITY_REQUIRED"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-13",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": true,
+      "authorized": false,
+      "reason": "APS_REQUESTER_AUTHORITY_NOT_VERIFIED"
+    },
+    "old_vs_ref": [
+      "authorized",
+      "declared_relation_matches",
+      "derived_authority_relation",
+      "evidence_status",
+      "execution_authority_source",
+      "execution_authority_valid",
+      "immediate_authority_grantor",
+      "reason",
+      "request_authority_source",
+      "request_authority_valid"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-13",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request:chain",
+          "by": "sdk",
+          "detail": "valid"
+        },
+        {
+          "step": "request:binding",
+          "by": "adapter",
+          "detail": "subject is requester and action matches: false"
+        },
+        {
+          "step": "delegation",
+          "by": "adapter",
+          "detail": "no valid EXECUTION authority held by the delegator: no delegated path, not invalid evidence"
+        },
+        {
+          "step": "execution",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "NONE"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: false"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: REQUEST_AUTHORITY_REQUIRED, native label: APS_REQUESTER_AUTHORITY_NOT_VERIFIED"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CF-14",
+    "desc": "as CF-13, requester authority NOT required",
+    "env": {},
+    "ref": {
+      "actor": "agent-b",
+      "authorized": false,
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "derived_authority_relation": "NONE",
+      "evidence_status": "INCOMPLETE",
+      "execution_authority_source": null,
+      "execution_authority_valid": false,
+      "immediate_authority_grantor": null,
+      "policy_profile": "delegated-authority",
+      "reason": "EXECUTION_AUTHORITY_INVALID",
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "requester": "agent-a",
+      "requester_authority_required": false,
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-14"
+    },
+    "old": {
+      "schema": "atb-authority-relation-output/0.1",
+      "status": "DECIDED",
+      "vector_id": "CF-14",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "evidence_status": "VERIFIED",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": true,
+      "request_authority_source": "principal-h",
+      "request_authority_valid": true,
+      "execution_authority_source": "principal-h",
+      "immediate_authority_grantor": "agent-a",
+      "execution_authority_valid": true,
+      "derived_authority_relation": "DELEGATED",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": false,
+      "authorized": true,
+      "reason": "APS_CHAIN_VALID_DELEGATED"
+    },
+    "new": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-14",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": false,
+      "authorized": false,
+      "reason": "EXECUTION_AUTHORITY_INVALID"
+    },
+    "new_native": {
+      "schema": "atb-authority-relation-output/0.1",
+      "vector_id": "CF-14",
+      "requester": "agent-a",
+      "actor": "agent-b",
+      "status": "DECIDED",
+      "evidence_status": "INCOMPLETE",
+      "declared_relation": "DELEGATED",
+      "declared_relation_matches": false,
+      "request_authority_source": null,
+      "request_authority_valid": false,
+      "execution_authority_source": null,
+      "immediate_authority_grantor": null,
+      "execution_authority_valid": false,
+      "derived_authority_relation": "NONE",
+      "policy_profile": "delegated-authority",
+      "requester_authority_required": false,
+      "authorized": false,
+      "reason": "APS_NO_VALID_CHAIN_FOR_ACTOR"
+    },
+    "old_vs_ref": [
+      "authorized",
+      "declared_relation_matches",
+      "derived_authority_relation",
+      "evidence_status",
+      "execution_authority_source",
+      "execution_authority_valid",
+      "immediate_authority_grantor",
+      "reason",
+      "request_authority_source",
+      "request_authority_valid"
+    ],
+    "new_vs_ref": [],
+    "native_vs_ref": [
+      "reason"
+    ],
+    "provenance": {
+      "vector_id": "CF-14",
+      "reasons": "v01",
+      "revocation": "active",
+      "steps": [
+        {
+          "step": "request:chain",
+          "by": "sdk",
+          "detail": "valid"
+        },
+        {
+          "step": "request:binding",
+          "by": "adapter",
+          "detail": "subject is requester and action matches: false"
+        },
+        {
+          "step": "delegation",
+          "by": "adapter",
+          "detail": "no valid EXECUTION authority held by the delegator: no delegated path, not invalid evidence"
+        },
+        {
+          "step": "execution",
+          "by": "input",
+          "detail": "status MISSING"
+        },
+        {
+          "step": "relation",
+          "by": "adapter",
+          "detail": "NONE"
+        },
+        {
+          "step": "evidence:invalid-status",
+          "by": "input",
+          "detail": "any supplied item marked INVALID: false"
+        },
+        {
+          "step": "reason",
+          "by": "adapter",
+          "detail": "v0.1 precedence: EXECUTION_AUTHORITY_INVALID, native label: APS_NO_VALID_CHAIN_FOR_ACTOR"
+        }
+      ]
+    }
+  }
+]
