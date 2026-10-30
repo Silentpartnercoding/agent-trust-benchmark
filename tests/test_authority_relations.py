@@ -1,5 +1,6 @@
 import copy
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -228,3 +229,15 @@ def test_external_submission_schema_accepts_minimal_submission():
             "acceptance": {"state": "SUBMITTED", "assigned_by": None, "notes": ""},
         }
     )
+
+
+def test_adapter_guide_documents_every_expected_reason_code():
+    guide = (ROOT / "docs/AUTHORITY-RELATIONS-ADAPTER.md").read_text()
+    section = guide.split("## Reason codes", 1)[1].split("\n## ", 1)[0]
+    reference = RELATION_AWARE.read_text()
+    reference_codes = set(re.findall(r'reason = "([A-Z_]+)"', reference))
+    for code in reference_codes:
+        assert f"`{code}`" in section, code
+    for vector in load_vectors(VECTOR_DIR):
+        row = f"| {vector['vector_id']} | `{vector['expected']['reason']}` |"
+        assert row in section, row

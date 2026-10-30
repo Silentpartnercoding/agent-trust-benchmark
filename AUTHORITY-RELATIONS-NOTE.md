@@ -48,6 +48,8 @@ classification.
 The verdict is not enough. An adapter must report the requester, actor,
 evidence status, declared and derived relations, request-authority source,
 execution-authority source, policy profile, and authorization reason.
+The reason is scored by exact match against a fixed set of codes, listed
+in [the adapter guide](docs/AUTHORITY-RELATIONS-ADAPTER.md#reason-codes).
 
 ## Two-stage decision
 
